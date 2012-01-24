@@ -50,6 +50,7 @@ namespace SamuraiServer.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IGameStateRepository>().To<InMemoryGameStateRepository>().InRequestScope();
+            kernel.Bind<IPlayerRepository>().To<InMemoryPlayerRepository>().InRequestScope();
         }        
     }
 }
