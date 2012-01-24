@@ -16,5 +16,10 @@ namespace SamuraiServer.Data
         /// Save a GameState for later retrieval. An Id will be generated and stored on the object.
         /// </summary>
         void Save(GameState state);
+
+        /// <summary>
+        /// Fetch a list of currently active games that a player could join or spectate
+        /// </summary>
+        IEnumerable<GameState> ListCurrentGames();
     }
 }

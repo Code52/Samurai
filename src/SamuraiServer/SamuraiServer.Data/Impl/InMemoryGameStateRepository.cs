@@ -19,5 +19,9 @@ namespace SamuraiServer.Data.Impl
             state.Id = Guid.NewGuid();
             _state[state.Id] = state;
         }
+
+        public IEnumerable<GameState> ListCurrentGames() {
+            return _state.Select(d => d.Value);
+        }
     }
 }

@@ -15,5 +15,15 @@ namespace SamuraiServer.Controllers
             this.db = db;
         }
 
+        [HttpPost]
+        public ActionResult CreateGame(string name) {
+            var state = new GameState { Name = name };
+            db.Save(state);
+            return Json(new { ok = true });
+        }
+
+        public ActionResult ListGames() {
+            return Json(db.ListCurrentGames());
+        }
     }
 }

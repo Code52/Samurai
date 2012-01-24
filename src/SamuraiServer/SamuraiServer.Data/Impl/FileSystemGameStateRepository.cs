@@ -16,5 +16,9 @@ namespace SamuraiServer.Data.Impl
         public void Save(GameState state) {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<GameState> ListCurrentGames() {
+            throw new NotImplementedException();
+        }
     }
 }
