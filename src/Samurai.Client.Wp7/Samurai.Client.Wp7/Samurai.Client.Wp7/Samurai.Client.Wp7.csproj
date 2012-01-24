@@ -70,11 +70,29 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\GamePlayer.cs">
+      <Link>Api\Models\GamePlayer.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\GameState.cs">
       <Link>Api\Models\GameState.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Map.cs">
+      <Link>Api\Models\Map.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Move.cs">
+      <Link>Api\Models\Move.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\MoveSet.cs">
+      <Link>Api\Models\MoveSet.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Player.cs">
       <Link>Api\Models\Player.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\TileType.cs">
+      <Link>Api\Models\TileType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Unit.cs">
+      <Link>Api\Models\Unit.cs</Link>
     </Compile>
     <Compile Include="Api\ServerApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

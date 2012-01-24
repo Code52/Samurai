@@ -22,6 +22,7 @@ namespace Samurai.Client.Wp7
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         ServerApi api;
+        SpriteFont menuFont;
 
         public SamuraiGame() {
             graphics = new GraphicsDeviceManager(this);
@@ -54,7 +55,7 @@ namespace Samurai.Client.Wp7
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            menuFont = Content.Load<SpriteFont>("MenuFont");
         }
 
         /// <summary>
@@ -87,7 +88,9 @@ namespace Samurai.Client.Wp7
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.Black);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            spriteBatch.DrawString(menuFont, "Samurai Game", new Vector2((GraphicsDevice.Viewport.Width - menuFont.MeasureString("Samurai Game").X) / 2, 0), Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
