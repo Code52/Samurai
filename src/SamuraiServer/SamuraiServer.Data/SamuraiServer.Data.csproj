@@ -44,7 +44,10 @@
   <ItemGroup>
     <Compile Include="GameState.cs" />
     <Compile Include="IGameStateRepository.cs" />
+    <Compile Include="Impl\FileSystemGameStateRepository.cs" />
     <Compile Include="Impl\InMemoryGameStateRepository.cs" />
+    <Compile Include="Impl\MongoDbGameStateRepository.cs" />
+    <Compile Include="Impl\SqlServerGameStateRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
