@@ -11,10 +11,14 @@ namespace SamuraiServer.Data
 
         public string Name { get; set; }
 
-        public List<Player> Players { get; set; }
+        public List<GamePlayer> Players { get; set; }
+
+        public int Turn { get; set; }
+
+        public Map Map { get; set; }
 
         public GameState() {
-            Players = new List<Player>();
+            Players = new List<GamePlayer>();
         }
     }
 }
