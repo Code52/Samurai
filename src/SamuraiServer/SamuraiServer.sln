@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B1AB86
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SamuraiServer.Data", "SamuraiServer.Data\SamuraiServer.Data.csproj", "{BAD09243-8919-4CBD-9D4C-21EE033D9774}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{C2582F6A-C6C4-438E-9A5F-48DD1EC96386}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2582F6A-C6C4-438E-9A5F-48DD1EC96386}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2582F6A-C6C4-438E-9A5F-48DD1EC96386}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAD09243-8919-4CBD-9D4C-21EE033D9774}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAD09243-8919-4CBD-9D4C-21EE033D9774}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAD09243-8919-4CBD-9D4C-21EE033D9774}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAD09243-8919-4CBD-9D4C-21EE033D9774}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
