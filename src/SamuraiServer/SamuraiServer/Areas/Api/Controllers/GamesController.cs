@@ -12,11 +12,12 @@ namespace SamuraiServer.Areas.Api.Controllers
             _db = db;
         }
 
+        [Api]
         [HttpPost]
         public ActionResult CreateGame(string name) {
             var state = new GameState { Name = name };
             _db.Save(state);
-            return Json(new { ok = true });
+            return View(new { ok = true });
         }
 
         [Api]
