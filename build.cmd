@@ -5,10 +5,15 @@ if "%config%" == "" (
 )
 
 :: compile the code
-%WINDIR%\Microsoft.NET\Framework\v4.0.30319\msbuild src/SomeProject.sln /p:Configuration="%config%" /m /v:M /fl /flp:LogFile=msbuild.log;Verbosity=Normal /nr:false
+echo ===========Building WP7 client===========
+%WINDIR%\Microsoft.NET\Framework\v4.0.30319\msbuild src/Samurai.Client.Wp7/Samurai.Client.Wp7.sln /p:Configuration="%config%" /m /v:M /fl /flp:LogFile=msbuild.log;Verbosity=Normal /nr:false
 
+echo ===========Building Server===========
+%WINDIR%\Microsoft.NET\Framework\v4.0.30319\msbuild src/SamuraiServer/SamuraiServer.sln /p:Configuration="%config%" /m /v:M /fl /flp:LogFile=msbuild.log;Verbosity=Normal /nr:false
+
+echo ===========Tests===========
 :: remove all obj folder contents
-for /D %%f in (".\tests\*") do @(
+for /D %%f in (".\src\SamuraiServer\SamuraiServer.Tests\*") do @(
 del /S /Q "%%f\obj\*"
 )
 
