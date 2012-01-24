@@ -43,11 +43,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameState.cs" />
-    <Compile Include="IGameStateRepository.cs" />
-    <Compile Include="Impl\FileSystemGameStateRepository.cs" />
-    <Compile Include="Impl\InMemoryGameStateRepository.cs" />
-    <Compile Include="Impl\MongoDbGameStateRepository.cs" />
-    <Compile Include="Impl\SqlServerGameStateRepository.cs" />
+    <Compile Include="Impl\InMemory\InMemoryPlayerRepository.cs" />
+    <Compile Include="Interfaces\IGameStateRepository.cs" />
+    <Compile Include="Impl\Sql\SqlServerPlayerStateRepository.cs" />
+    <Compile Include="Impl\FileSystem\FileSystemGameStateRepository.cs" />
+    <Compile Include="Impl\InMemory\InMemoryGameStateRepository.cs" />
+    <Compile Include="Impl\Mongo\MongoDbGameStateRepository.cs" />
+    <Compile Include="Impl\Sql\SqlServerGameStateRepository.cs" />
+    <Compile Include="Interfaces\IPlayerRepository.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
