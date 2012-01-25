@@ -45,7 +45,8 @@ namespace SamuraiServer.Areas.Api.Controllers
 
             if (player == null)
                 return View(new {ok = false, message = "Player is not in this game"});
-                currentGame.Players.Remove(player);
+                
+            currentGame.Players.Remove(player);
 
             _prov.Save(currentGame);
             
