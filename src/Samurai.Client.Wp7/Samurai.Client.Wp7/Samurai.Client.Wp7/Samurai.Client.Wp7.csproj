@@ -68,6 +68,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Net" />
+    <Reference Include="XNInterface">
+      <HintPath>..\..\packages\XNInterface.0.3.0\lib\net40\XNInterface.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\GamePlayer.cs">
