@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using NSubstitute;
 using SamuraiServer.Areas.Api.Controllers;
@@ -64,6 +66,7 @@ namespace SamuraiServer.Tests.API
         [Fact]
         public void ListGames_WhenRepositoryErrorOccurs_ReturnsErrorCode()
         {
+            // arrange
             _db.When(db => db.ListCurrentGames(Arg.Any<string>()))
                .Do(c => { throw new Exception("oops"); });
 
@@ -78,6 +81,7 @@ namespace SamuraiServer.Tests.API
         [Fact]
         public void LeaveGame_ForUserNotInGame_ReturnsErrorCode()
         {
+            // arrange
             var gameId = Guid.NewGuid();
             _db.ListCurrentGames("someUser").Returns(new GameState[0]);
 
@@ -85,24 +89,49 @@ namespace SamuraiServer.Tests.API
             var game = _controller.LeaveGame(gameId, "someUser") as ViewResult;
 
             // assert
-            dynamic model = game.Model.AsDynamic();
+            var model = game.Model.AsDynamic();
             Assert.False(model.ok);
+            Assert.Equal(model.message, "Game does not exist");
         }
 
-
         [Fact]
-        public void LeaveGame_ForUserInCorrectGame_ReturnsTrue()
+        public void LeaveGame_ForUserNotInGame_ReturnsFalse()
         {
+            // arrange
             var gameId = Guid.NewGuid();
-            _db.ListCurrentGames("someUser").Returns(new []{ new GameState { Id = gameId } });
+            _db.ListCurrentGames("someUser").Returns(new[] { new GameState { Id = gameId } });
 
             // act
             var game = _controller.LeaveGame(gameId, "someUser") as ViewResult;
 
             // assert
-            dynamic model = game.Model.AsDynamic();
-            Assert.True(model.ok);
+            var model = game.Model.AsDynamic();
+            Assert.False(model.ok);
+            Assert.Equal(model.message, "Player is not in this game");
         }
 
+        [Fact]
+        public void LeaveGame_ForUserInCorrectGame_UsesRepository()
+        {
+            // arrange
+            var gameId = Guid.NewGuid();
+            const string userName = "someUser";
+            var currentGame = new GameState
+                                  {
+                                      Id = gameId,
+                                      Players = new List<GamePlayer>
+                                                    {
+                                                        new GamePlayer { Player = new Player { Name = userName } }
+                                                    }
+                                  };
+            _db.ListCurrentGames(userName).Returns(new[] { currentGame });
+
+            // act
+            var game = _controller.LeaveGame(gameId, userName) as ViewResult;
+
+            // assert
+            var model = game.Model.AsDynamic();
+            _db.Received().Save(new[] { currentGame }.First());
+        }
     }
 }

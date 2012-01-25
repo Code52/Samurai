@@ -38,10 +38,19 @@ namespace SamuraiServer.Areas.Api.Controllers
         [HttpPost]
         public ActionResult LeaveGame(Guid gameId, string userName)
         {
-            var possibleGames = _db.ListCurrentGames(userName).Where(g => g.Id == gameId);
+            var currentGame = _db.ListCurrentGames(userName).FirstOrDefault(g => g.Id == gameId);
 
-            if (!possibleGames.Any())
-                return View(new { ok = false });
+            if (currentGame == null)
+                return View(new { ok = false, message = "Game does not exist" });
+
+            var player = currentGame.Players.FirstOrDefault(f => f.Player.Name == userName);
+
+            if (player == null)
+                return View(new {ok = false, message = "Player is not in this game"});
+                currentGame.Players.Remove(player);
+
+            _db.Save(currentGame);
+            
 
             return View(new { ok = true });
         }
