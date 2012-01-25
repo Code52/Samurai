@@ -12,6 +12,7 @@ namespace SamuraiServer.Tests.API
 {
     public class GamesControllerTests
     {
+        // ReSharper disable PossibleNullReferenceException
         private readonly GamesController _controller;
         private readonly IGameStateRepository _db;
         private readonly GameStateProvider _prov;
@@ -104,18 +105,17 @@ namespace SamuraiServer.Tests.API
             // arrange
             var gameId = Guid.NewGuid();
 
-            var userName = "someUser";
-            var results = new[] {new GameState {Id = gameId}};
+            const string userName = "someUser";
+            var results = new[] { new GameState { Id = gameId } };
             _db.FindBy(Arg.Any<Expression<Func<GameState, bool>>>())
               .Returns(results.AsQueryable());
-
-            //_prov.ListCurrentGames(Arg.Any<string>()).Returns(new[] { new GameState { Id = gameId } });
 
             // act
             var game = _controller.LeaveGame(gameId, userName) as ViewResult;
 
             // assert
             var model = game.Model.AsDynamic();
+
             Assert.False(model.ok);
             Assert.Equal(model.message, "Player is not in this game");
         }
@@ -134,15 +134,16 @@ namespace SamuraiServer.Tests.API
                                                         new GamePlayer { Player = new Player { Name = userName } }
                                                     }
                                   };
+            var results = new[] { currentGame }.AsQueryable();
             _db.FindBy(Arg.Any<Expression<Func<GameState, bool>>>())
-               .Returns(new[] { currentGame }.AsQueryable());
+               .Returns(results);
 
             // act
-            var game = _controller.LeaveGame(gameId, userName) as ViewResult;
+            _controller.LeaveGame(gameId, userName);
 
             // assert
-            var model = game.Model.AsDynamic();
             _db.Received().Add(currentGame);
         }
+        // ReSharper restore PossibleNullReferenceException
     }
 }
