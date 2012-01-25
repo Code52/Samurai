@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SamuraiServer.Data
 {
-    public interface IPlayerRepository: IGenericRepository<Player, Guid>
+    public interface IPlayerRepository: IGenericRepository<Player>
     {
     }
 }

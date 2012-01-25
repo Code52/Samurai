@@ -6,13 +6,13 @@ using System.Text;
 
 namespace SamuraiServer.Data
 {
-    public interface IGenericRepository<T, in I> where T : class
+    public interface IGenericRepository<T> where T : class
     {
         IQueryable<T> GetAll();
         IQueryable<T> FindBy(Expression<Func<T, bool>> predicate);
-        T Get(I id);
+        T Get(Guid id);
         void Add(T entity);
-        void Delete(I id);
+        void Delete(Guid id);
         void Edit(T entity);
         void Save();
     }
