@@ -23,6 +23,7 @@ namespace SamuraiServer.Data
         IEnumerable<GameState> ListOpenGames();
 
         /// <summary>
+        
         /// Fetch a list of currently active games for a signed-in user
         /// </summary>
         /// <param name="userName"></param>
