@@ -52,7 +52,7 @@
     <Compile Include="API\Extensions.cs" />
     <Compile Include="API\GamesControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\Class1.cs" />
+    <Compile Include="Providers\GameStateProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
