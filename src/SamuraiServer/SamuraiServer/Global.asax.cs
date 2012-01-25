@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Autofac;
+using Autofac.Integration.Mvc;
+using SamuraiServer.Data;
+using SamuraiServer.Data.Impl;
 
 namespace SamuraiServer
 {
@@ -30,8 +35,30 @@ namespace SamuraiServer
         protected void Application_Start() {
             AreaRegistration.RegisterAllAreas();
 
+            RegisterContainer();
+
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+        }
+
+        private static void RegisterContainer()
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterAssemblyTypes(typeof(Player).Assembly)
+                   .Where(t => t.Name.EndsWith("Repository"))
+                   .Where(t => t.Name.StartsWith("InMemory"))
+                   .AsImplementedInterfaces()
+                   .InstancePerHttpRequest();
+
+            builder.RegisterAssemblyTypes(typeof(Player).Assembly)
+                   .Where(t => t.Name.EndsWith("Provider"))
+                   .AsImplementedInterfaces()
+                   .InstancePerHttpRequest();
+
+            builder.RegisterControllers(Assembly.GetExecutingAssembly()); 
+
+            var container = builder.Build();
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }
     }
 }

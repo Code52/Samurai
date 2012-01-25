@@ -9,34 +9,66 @@ namespace SamuraiServer.Areas.Api.Controllers
 {
     public class GamesController : Controller
     {
-        private readonly GameStateProvider _prov;
+        private readonly IGameStateProvider _gameStateProvider;
+        private readonly IPlayersProvider _playersProvider;
 
-        public GamesController(GameStateProvider prov)
+        public GamesController(IGameStateProvider prov, IPlayersProvider playersProvider)
         {
-            _prov = prov;
+            _gameStateProvider = prov;
+            _playersProvider = playersProvider;
+        }
+
+        [Api]
+        [HttpPost]
+        public ActionResult CreateGameAndJoin(string name, Guid playerId)
+        {
+            try
+            {
+                var gameState = _gameStateProvider.CreateAndJoin(name, playerId);
+                return View(new {ok = true, game = gameState});
+            }
+            catch
+            {
+                return View(new {ok = false});
+            }
         }
 
         [Api]
         [HttpPost]
         public ActionResult CreateGame(string name)
         {
-            var state = new GameState { Name = name };
-            _prov.Save(state);
-            return View(new { ok = true });
+            try
+            {
+                var gameState = _gameStateProvider.CreateGame(name);
+                return View(new { ok = true, game = gameState });
+            }
+            catch
+            {
+                return View(new { ok = false });
+            }
         }
 
         [Api]
         [HttpPost]
         public ActionResult JoinGame(Guid gameId, string userName)
         {
-            return View(new { ok = true });
+            try
+            {
+                var player = _playersProvider.Create(userName);
+                var game = _gameStateProvider.JoinGame(gameId, player.Id);
+                return View(new {ok = true, game, player});
+            }
+            catch
+            {
+                return View(new {ok = false});
+            }
         }
 
         [Api]
         [HttpPost]
         public ActionResult LeaveGame(Guid gameId, string userName)
         {
-            var currentGame = _prov.ListCurrentGames(userName).FirstOrDefault(g => g.Id == gameId);
+            var currentGame = _gameStateProvider.ListCurrentGames(userName).FirstOrDefault(g => g.Id == gameId);
 
             if (currentGame == null)
                 return View(new { ok = false, message = "Game does not exist" });
@@ -48,7 +80,7 @@ namespace SamuraiServer.Areas.Api.Controllers
                 
             currentGame.Players.Remove(player);
 
-            _prov.Save(currentGame);
+            _gameStateProvider.Save(currentGame);
             
 
             return View(new { ok = true });
@@ -65,7 +97,7 @@ namespace SamuraiServer.Areas.Api.Controllers
 
             try
             {
-                currentGames = _prov.ListCurrentGames(userName);
+                currentGames = _gameStateProvider.ListCurrentGames(userName);
             }
             catch (Exception)
             {
@@ -78,7 +110,7 @@ namespace SamuraiServer.Areas.Api.Controllers
         [Api]
         public ActionResult GetOpenGames()
         {
-            return View(new { games = _prov.ListOpenGames() });
+            return View(new { games = _gameStateProvider.ListOpenGames() });
         }
     }
 }

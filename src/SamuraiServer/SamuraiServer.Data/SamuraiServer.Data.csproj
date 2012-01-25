@@ -60,7 +60,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\TileType.cs" />
     <Compile Include="Models\Unit.cs" />
+    <Compile Include="Providers\GameStateProviderExtensions.cs" />
+    <Compile Include="Providers\IGameStateProvider.cs" />
     <Compile Include="Providers\GameStateProvider.cs" />
+    <Compile Include="Providers\IMapProvider.cs" />
+    <Compile Include="Providers\IPlayersProvider.cs" />
+    <Compile Include="Providers\MapProvider.cs" />
     <Compile Include="Providers\PlayersProvider.cs" />
   </ItemGroup>
   <ItemGroup>
