@@ -7,15 +7,13 @@ using MvcApi;
 
 namespace SamuraiServer.Areas.Api.Controllers
 {
-
-
     public class GamesController : Controller
     {
-        private readonly IGameStateRepository _db;
+        private readonly GameStateProvider _prov;
 
-        public GamesController(IGameStateRepository db)
+        public GamesController(GameStateProvider prov)
         {
-            _db = db;
+            _prov = prov;
         }
 
         [Api]
@@ -23,7 +21,7 @@ namespace SamuraiServer.Areas.Api.Controllers
         public ActionResult CreateGame(string name)
         {
             var state = new GameState { Name = name };
-            _db.Save(state);
+            _prov.Save(state);
             return View(new { ok = true });
         }
 
@@ -38,7 +36,7 @@ namespace SamuraiServer.Areas.Api.Controllers
         [HttpPost]
         public ActionResult LeaveGame(Guid gameId, string userName)
         {
-            var currentGame = _db.ListCurrentGames(userName).FirstOrDefault(g => g.Id == gameId);
+            var currentGame = _prov.ListCurrentGames(userName).FirstOrDefault(g => g.Id == gameId);
 
             if (currentGame == null)
                 return View(new { ok = false, message = "Game does not exist" });
@@ -47,9 +45,10 @@ namespace SamuraiServer.Areas.Api.Controllers
 
             if (player == null)
                 return View(new {ok = false, message = "Player is not in this game"});
-                currentGame.Players.Remove(player);
+                
+            currentGame.Players.Remove(player);
 
-            _db.Save(currentGame);
+            _prov.Save(currentGame);
             
 
             return View(new { ok = true });
@@ -66,7 +65,7 @@ namespace SamuraiServer.Areas.Api.Controllers
 
             try
             {
-                currentGames = _db.ListCurrentGames(userName);
+                currentGames = _prov.ListCurrentGames(userName);
             }
             catch (Exception)
             {
@@ -79,7 +78,7 @@ namespace SamuraiServer.Areas.Api.Controllers
         [Api]
         public ActionResult GetOpenGames()
         {
-            return View(new { games = _db.ListOpenGames() });
+            return View(new { games = _prov.ListOpenGames() });
         }
     }
 }

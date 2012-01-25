@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace SamuraiServer.Data.Impl
 {
@@ -8,28 +9,43 @@ namespace SamuraiServer.Data.Impl
     {
         private static Dictionary<Guid, GameState> _state = new Dictionary<Guid, GameState>();
 
-        public GameState Load(Guid id)
+        public IQueryable<GameState> GetAll()
         {
-            if (!_state.ContainsKey(id))
-                return null;
+            return _state.Values.AsQueryable();
+        }
+
+        public IQueryable<GameState> FindBy(Expression<Func<GameState, bool>> predicate)
+        {
+            return _state.Values.AsQueryable().Where(predicate);
+        }
+
+        public GameState Get(Guid id)
+        {
             return _state[id];
         }
 
-        public void Save(GameState state)
+        public void Add(GameState entity)
         {
-            state.Id = Guid.NewGuid();
-            _state[state.Id] = state;
+            _state.Add(entity.Id, entity);
         }
 
-        public IEnumerable<GameState> ListOpenGames()
+        public void Delete(Guid id)
         {
-            return _state.Select(d => d.Value);
+            _state.Remove(id);
         }
 
-        public IEnumerable<GameState> ListCurrentGames(string userName)
+        public void Edit(GameState entity)
         {
-            return _state.Where(d => d.Value.Players.Any(c => c.Player.Name == userName))
-                         .Select(d => d.Value);
+            var gameState = _state[entity.Id];
+
+            gameState.Map = entity.Map;
+            gameState.Name = entity.Name;
+            gameState.Players = entity.Players;
+            gameState.Turn = entity.Turn;
+        }
+
+        public void Save()
+        {
         }
     }
 }
