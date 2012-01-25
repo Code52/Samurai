@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using MvcApi;
 
 namespace SamuraiServer.Areas.Api.Controllers
 {
@@ -9,10 +10,27 @@ namespace SamuraiServer.Areas.Api.Controllers
         // GET: /Api/Match/
 
         /// <summary>
+        /// Indicate that the players associated with a game are ready to start
+        /// </summary>
+        /// <param name="matchId"></param>
+        /// <returns></returns>
+        [Api]
+        public ActionResult Start(Guid matchId)
+        {
+            // check if a game exists
+            // check if it is not started
+            // check if there is more than 1 participant available
+
+            return View(new { status = true });
+        }
+
+
+        /// <summary>
         /// get updates to the game since a specific event
         /// </summary>
         /// <param name="matchId"></param>
         /// <returns></returns>
+        [Api]
         public ActionResult GetMovesSince(Guid matchId)
         {
             return View(); // list of moves and their associated players

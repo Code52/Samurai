@@ -107,6 +107,7 @@
     <Compile Include="App_Start\NinjectMVC3.cs" />
     <Compile Include="Areas\Api\ApiAreaRegistration.cs" />
     <Compile Include="Areas\Api\Controllers\GamesController.cs" />
+    <Compile Include="Areas\Api\Controllers\MatchController.cs" />
     <Compile Include="Areas\Api\Controllers\PlayersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
