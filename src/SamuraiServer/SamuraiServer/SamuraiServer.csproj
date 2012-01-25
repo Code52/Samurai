@@ -133,6 +133,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Api\Models\" />
+    <Folder Include="Areas\Api\Views\Games\" />
+    <Folder Include="Areas\Api\Views\Players\" />
     <Folder Include="Areas\Api\Views\Shared\" />
     <Folder Include="Models\" />
   </ItemGroup>
@@ -150,18 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Api\Views\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Api\Views\Games\GetOpenGames.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Api\Views\Players\Leaderboard.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Api\Views\Players\CreatePlayer.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Api\Views\Games\CreateGame.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
