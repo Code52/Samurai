@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Autofac;
 using Autofac.Integration.Mvc;
+using SamuraiServer.Data;
 using SamuraiServer.Data.Impl;
 
 namespace SamuraiServer
@@ -42,13 +43,12 @@ namespace SamuraiServer
         private static void RegisterContainer()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterType<InMemoryGameStateRepository>()
+            builder.RegisterAssemblyTypes(typeof(Player).Assembly)
+                   .Where(t => t.Name.EndsWith("Repository"))
+                   .Where(t => t.Name.StartsWith("InMemory"))
                    .AsImplementedInterfaces()
                    .InstancePerHttpRequest();
-            builder.RegisterType<InMemoryPlayerRepository>()
-                   .AsImplementedInterfaces()
-                   .InstancePerHttpRequest();
-
+         
             var container = builder.Build();
 
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
