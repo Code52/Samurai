@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SamuraiServer.Data
 {
-    public class PlayersProvider
+    public class PlayersProvider : IPlayersProvider
     {
         private readonly IPlayerRepository _repo;
 
@@ -19,27 +19,27 @@ namespace SamuraiServer.Data
             return _repo.GetAll().Where(p => p.IsActive).OrderByDescending(p => p.Wins).Skip(page*players).Take(players);
         }
 
-        public Player Create(Player player)
+        public Player Create(string name)
         {
             var random = new Random();
 
-            var p = player;
+            var player = new Player{Name = name};
             
-            p.Id = Guid.NewGuid();
-            p.IsOnline = true;
-            p.LastSeen = DateTime.Now;
-            p.ApiKey = string.Format("{0}{1}{2}{3}{4}",
+            player.Id = Guid.NewGuid();
+            player.IsOnline = true;
+            player.LastSeen = DateTime.Now;
+            player.ApiKey = string.Format("{0}{1}{2}{3}{4}",
                                      random.Next(0, 9),
                                      random.Next(0, 9),
                                      random.Next(0, 9),
                                      random.Next(0, 9),
                                      random.Next(0, 9));
 
-            p.IsActive = true;
+            player.IsActive = true;
 
             _repo.Add(player);
 
-            return p;
+            return player;
         }
 
         public Player Get(Guid id)
