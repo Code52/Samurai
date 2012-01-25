@@ -74,5 +74,35 @@ namespace SamuraiServer.Tests.API
             dynamic model = game.Model.AsDynamic();
             Assert.False(model.ok);
         }
+
+        [Fact]
+        public void LeaveGame_ForUserNotInGame_ReturnsErrorCode()
+        {
+            var gameId = Guid.NewGuid();
+            _db.ListCurrentGames("someUser").Returns(new GameState[0]);
+
+            // act
+            var game = _controller.LeaveGame(gameId, "someUser") as ViewResult;
+
+            // assert
+            dynamic model = game.Model.AsDynamic();
+            Assert.False(model.ok);
+        }
+
+
+        [Fact]
+        public void LeaveGame_ForUserInCorrectGame_ReturnsTrue()
+        {
+            var gameId = Guid.NewGuid();
+            _db.ListCurrentGames("someUser").Returns(new []{ new GameState { Id = gameId } });
+
+            // act
+            var game = _controller.LeaveGame(gameId, "someUser") as ViewResult;
+
+            // assert
+            dynamic model = game.Model.AsDynamic();
+            Assert.True(model.ok);
+        }
+
     }
 }

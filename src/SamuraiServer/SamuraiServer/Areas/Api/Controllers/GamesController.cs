@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using SamuraiServer.Data;
 using MvcApi;
@@ -37,6 +38,11 @@ namespace SamuraiServer.Areas.Api.Controllers
         [HttpPost]
         public ActionResult LeaveGame(Guid gameId, string userName)
         {
+            var possibleGames = _db.ListCurrentGames(userName).Where(g => g.Id == gameId);
+
+            if (!possibleGames.Any())
+                return View(new { ok = false });
+
             return View(new { ok = true });
         }
 
