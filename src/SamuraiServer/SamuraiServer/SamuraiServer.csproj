@@ -152,7 +152,7 @@
     <Content Include="Areas\Api\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Api\Views\Games\ListGames.cshtml" />
+    <Content Include="Areas\Api\Views\Games\GetOpenGames.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Api\Views\Players\Leaderboard.cshtml" />
