@@ -9,9 +9,9 @@ namespace SamuraiServer.Areas.Api.Controllers
         //
         // GET: /Api/Players/
 
-        private readonly PlayersProvider _prov;
+        private readonly IPlayersProvider _prov;
 
-        public PlayersController(PlayersProvider prov)
+        public PlayersController(IPlayersProvider prov)
         {
             _prov = prov;
         }
