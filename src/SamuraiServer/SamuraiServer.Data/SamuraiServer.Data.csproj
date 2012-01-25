@@ -65,6 +65,7 @@
     <Compile Include="Providers\GameStateProvider.cs" />
     <Compile Include="Providers\IMapProvider.cs" />
     <Compile Include="Providers\IPlayersProvider.cs" />
+    <Compile Include="Providers\MapProvider.cs" />
     <Compile Include="Providers\PlayersProvider.cs" />
   </ItemGroup>
   <ItemGroup>
