@@ -30,12 +30,34 @@
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.XImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.AudioImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
+    <Reference Include="XNInterface">
+      <HintPath>..\..\packages\XNInterfaceContentPipeline.0.3.2\lib\net40\XNInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="XNInterfaceCompilerLib">
+      <HintPath>..\..\packages\XNInterfaceContentPipeline.0.3.2\lib\net40\XNInterfaceCompilerLib.dll</HintPath>
+    </Reference>
+    <Reference Include="XNInterfaceImporters">
+      <HintPath>..\..\packages\XNInterfaceContentPipeline.0.3.2\lib\net40\XNInterfaceImporters.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MenuFont.spritefont">
       <Name>MenuFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <Name>packages</Name>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="GUI\MainMenu.xml">
+      <Name>MainMenu</Name>
+      <Importer>XNIImporter</Importer>
+      <Processor>XNIProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
