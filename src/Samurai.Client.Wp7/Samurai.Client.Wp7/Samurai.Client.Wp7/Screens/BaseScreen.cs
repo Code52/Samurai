@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Samurai.Client.Wp7.Screens
 {
-    public class BaseScreen
+    public abstract class BaseScreen
     {
         public ScreenManager Manager { get; set; }
 
