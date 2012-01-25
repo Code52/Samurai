@@ -13,11 +13,13 @@ namespace SamuraiServer.Tests.API
     {
         private readonly GamesController _controller;
         private readonly IGameStateRepository _db;
+        private readonly GameStateProvider _prov;
 
         public GamesControllerTests()
         {
             _db = Substitute.For<IGameStateRepository>();
-            _controller = new GamesController(_db);
+            _prov = Substitute.For<GameStateProvider>(_db);
+            _controller = new GamesController(_prov);
         }
 
         [Fact]
@@ -28,7 +30,7 @@ namespace SamuraiServer.Tests.API
 
             // assert
             Assert.NotNull(game.Model);
-            _db.Received().Save(Arg.Any<GameState>());
+            _prov.Received().Save(Arg.Any<GameState>());
         }
 
         [Fact]
@@ -38,7 +40,7 @@ namespace SamuraiServer.Tests.API
             _controller.GetGames("");
 
             // assert
-            _db.DidNotReceive().ListCurrentGames(Arg.Any<string>());
+            _prov.DidNotReceive().ListCurrentGames(Arg.Any<string>());
         }
 
         [Fact]
@@ -60,14 +62,14 @@ namespace SamuraiServer.Tests.API
 
             // assert
             Assert.NotNull(game.Model);
-            _db.Received().ListOpenGames();
+            _prov.Received().ListOpenGames();
         }
 
         [Fact]
         public void ListGames_WhenRepositoryErrorOccurs_ReturnsErrorCode()
         {
             // arrange
-            _db.When(db => db.ListCurrentGames(Arg.Any<string>()))
+            _prov.When(db => db.ListCurrentGames(Arg.Any<string>()))
                .Do(c => { throw new Exception("oops"); });
 
             // act
@@ -83,7 +85,7 @@ namespace SamuraiServer.Tests.API
         {
             // arrange
             var gameId = Guid.NewGuid();
-            _db.ListCurrentGames("someUser").Returns(new GameState[0]);
+            _prov.ListCurrentGames("someUser").Returns(new GameState[0]);
 
             // act
             var game = _controller.LeaveGame(gameId, "someUser") as ViewResult;
@@ -99,7 +101,8 @@ namespace SamuraiServer.Tests.API
         {
             // arrange
             var gameId = Guid.NewGuid();
-            _db.ListCurrentGames("someUser").Returns(new[] { new GameState { Id = gameId } });
+            
+            _prov.ListCurrentGames("someUser").Returns(new[] { new GameState { Id = gameId } });
 
             // act
             var game = _controller.LeaveGame(gameId, "someUser") as ViewResult;
@@ -124,14 +127,14 @@ namespace SamuraiServer.Tests.API
                                                         new GamePlayer { Player = new Player { Name = userName } }
                                                     }
                                   };
-            _db.ListCurrentGames(userName).Returns(new[] { currentGame });
+            _prov.ListCurrentGames(userName).Returns(new[] { currentGame });
 
             // act
             var game = _controller.LeaveGame(gameId, userName) as ViewResult;
 
             // assert
             var model = game.Model.AsDynamic();
-            _db.Received().Save(new[] { currentGame }.First());
+            _prov.Received().Save(new[] { currentGame }.First());
         }
     }
 }
