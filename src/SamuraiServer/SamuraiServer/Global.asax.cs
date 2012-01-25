@@ -48,6 +48,11 @@ namespace SamuraiServer
                    .Where(t => t.Name.StartsWith("InMemory"))
                    .AsImplementedInterfaces()
                    .InstancePerHttpRequest();
+
+            builder.RegisterAssemblyTypes(typeof (Player).Assembly)
+                   .Where(t => t.Name.EndsWith("Provider"))
+                   .AsSelf()
+                   .InstancePerHttpRequest();
          
             var container = builder.Build();
 

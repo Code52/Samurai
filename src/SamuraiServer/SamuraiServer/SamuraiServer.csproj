@@ -45,6 +45,12 @@
     <Reference Include="Autofac.Integration.Mvc">
       <HintPath>..\packages\Autofac.Mvc3.2.5.2.830\lib\NET40\Autofac.Integration.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="Glimpse.Core">
+      <HintPath>..\packages\Glimpse.0.87\lib\net40\Glimpse.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Mvc3">
+      <HintPath>..\packages\Glimpse.Mvc3.0.87\lib\net40\Glimpse.Mvc3.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -55,6 +61,12 @@
     </Reference>
     <Reference Include="MvcApiActionFilter">
       <HintPath>..\..\Libraries\MvcApiActionFilter.dll</HintPath>
+    </Reference>
+    <Reference Include="Nustache.Core">
+      <HintPath>..\packages\Nustache.1.0.0.20110812\Net40\Nustache.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Nustache.Mvc">
+      <HintPath>..\packages\Nustache-Mvc.1.0.0.20110812\Net40\Nustache.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -115,8 +127,27 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Readme\glimpse.mvc3.readme.txt" />
+    <Content Include="App_Readme\glimpse.readme.txt" />
+    <Content Include="Content\bootstrap-overrides.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootstrap-alerts.js" />
+    <Content Include="Scripts\bootstrap-buttons.js" />
+    <Content Include="Scripts\bootstrap-dropdown.js" />
+    <Content Include="Scripts\bootstrap-modal.js" />
+    <Content Include="Scripts\bootstrap-popover.js" />
+    <Content Include="Scripts\bootstrap-scrollspy.js" />
+    <Content Include="Scripts\bootstrap-tabs.js" />
+    <Content Include="Scripts\bootstrap-twipsy.js" />
+    <Content Include="Scripts\jquery-1.7.1-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.7.1.js" />
+    <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <Content Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -152,6 +183,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Api\Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CodeTemplates\AddView\CSHTML\Create.tt" />
+    <None Include="CodeTemplates\AddView\CSHTML\Delete.tt" />
+    <None Include="CodeTemplates\AddView\CSHTML\Details.tt" />
+    <None Include="CodeTemplates\AddView\CSHTML\Edit.tt" />
+    <None Include="CodeTemplates\AddView\CSHTML\Empty.tt" />
+    <None Include="CodeTemplates\AddView\CSHTML\List.tt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

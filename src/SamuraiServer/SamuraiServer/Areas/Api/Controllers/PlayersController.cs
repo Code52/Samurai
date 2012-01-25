@@ -9,17 +9,17 @@ namespace SamuraiServer.Areas.Api.Controllers
         //
         // GET: /Api/Players/
 
-        private readonly IPlayerRepository _db;
+        private readonly PlayersProvider _prov;
 
-        public PlayersController(IPlayerRepository db)
+        public PlayersController(PlayersProvider prov)
         {
-            _db = db;
+            _prov = prov;
         }
 
         [Api]
         public ActionResult Leaderboard()
         {
-            var leaders = _db.GetLeaderboard(0, 20);
+            var leaders = _prov.GetLeaderboard(0, 20);
 
             return View(leaders);
         }
@@ -29,7 +29,7 @@ namespace SamuraiServer.Areas.Api.Controllers
         public ActionResult CreatePlayer(string name)
         {
             var player = new Player { Name = name };
-            var resultPlayer = _db.Create(player);
+            var resultPlayer = _prov.Create(player);
 
             return View(new { ok = true, player = resultPlayer });
         }

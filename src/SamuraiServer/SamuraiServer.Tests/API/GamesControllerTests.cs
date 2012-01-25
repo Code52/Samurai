@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web.Mvc;
 using NSubstitute;
 using SamuraiServer.Areas.Api.Controllers;
@@ -11,13 +12,16 @@ namespace SamuraiServer.Tests.API
 {
     public class GamesControllerTests
     {
+        // ReSharper disable PossibleNullReferenceException
         private readonly GamesController _controller;
         private readonly IGameStateRepository _db;
+        private readonly GameStateProvider _prov;
 
         public GamesControllerTests()
         {
             _db = Substitute.For<IGameStateRepository>();
-            _controller = new GamesController(_db);
+            _prov = new GameStateProvider(_db);
+            _controller = new GamesController(_prov);
         }
 
         [Fact]
@@ -28,7 +32,7 @@ namespace SamuraiServer.Tests.API
 
             // assert
             Assert.NotNull(game.Model);
-            _db.Received().Save(Arg.Any<GameState>());
+            _db.Received().Add(Arg.Any<GameState>());
         }
 
         [Fact]
@@ -38,7 +42,7 @@ namespace SamuraiServer.Tests.API
             _controller.GetGames("");
 
             // assert
-            _db.DidNotReceive().ListCurrentGames(Arg.Any<string>());
+            _db.DidNotReceiveWithAnyArgs().FindBy(null);
         }
 
         [Fact]
@@ -60,14 +64,14 @@ namespace SamuraiServer.Tests.API
 
             // assert
             Assert.NotNull(game.Model);
-            _db.Received().ListOpenGames();
+            _db.Received().GetAll();
         }
 
         [Fact]
         public void ListGames_WhenRepositoryErrorOccurs_ReturnsErrorCode()
         {
             // arrange
-            _db.When(db => db.ListCurrentGames(Arg.Any<string>()))
+            _db.When(db => db.FindBy(Arg.Any<Expression<Func<GameState, bool>>>()))
                .Do(c => { throw new Exception("oops"); });
 
             // act
@@ -83,7 +87,8 @@ namespace SamuraiServer.Tests.API
         {
             // arrange
             var gameId = Guid.NewGuid();
-            _db.ListCurrentGames("someUser").Returns(new GameState[0]);
+            _db.FindBy(Arg.Any<Expression<Func<GameState, bool>>>())
+               .Returns(new GameState[0].AsQueryable());
 
             // act
             var game = _controller.LeaveGame(gameId, "someUser") as ViewResult;
@@ -99,13 +104,18 @@ namespace SamuraiServer.Tests.API
         {
             // arrange
             var gameId = Guid.NewGuid();
-            _db.ListCurrentGames("someUser").Returns(new[] { new GameState { Id = gameId } });
+
+            const string userName = "someUser";
+            var results = new[] { new GameState { Id = gameId } };
+            _db.FindBy(Arg.Any<Expression<Func<GameState, bool>>>())
+              .Returns(results.AsQueryable());
 
             // act
-            var game = _controller.LeaveGame(gameId, "someUser") as ViewResult;
+            var game = _controller.LeaveGame(gameId, userName) as ViewResult;
 
             // assert
             var model = game.Model.AsDynamic();
+
             Assert.False(model.ok);
             Assert.Equal(model.message, "Player is not in this game");
         }
@@ -124,14 +134,16 @@ namespace SamuraiServer.Tests.API
                                                         new GamePlayer { Player = new Player { Name = userName } }
                                                     }
                                   };
-            _db.ListCurrentGames(userName).Returns(new[] { currentGame });
+            var results = new[] { currentGame }.AsQueryable();
+            _db.FindBy(Arg.Any<Expression<Func<GameState, bool>>>())
+               .Returns(results);
 
             // act
-            var game = _controller.LeaveGame(gameId, userName) as ViewResult;
+            _controller.LeaveGame(gameId, userName);
 
             // assert
-            var model = game.Model.AsDynamic();
-            _db.Received().Save(new[] { currentGame }.First());
+            _db.Received().Add(currentGame);
         }
+        // ReSharper restore PossibleNullReferenceException
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace SamuraiServer.Data.Impl
 {
@@ -7,22 +9,37 @@ namespace SamuraiServer.Data.Impl
     {
         // TODO: If we decide to launch with MongoDb then we need to be able to store our game state
 
-        public GameState Load(Guid id)
+        public IQueryable<GameState> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public void Save(GameState state)
+        public IQueryable<GameState> FindBy(Expression<Func<GameState, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<GameState> ListOpenGames()
+        public GameState Get(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<GameState> ListCurrentGames(string userName)
+        public void Add(GameState entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Edit(GameState entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Save()
         {
             throw new NotImplementedException();
         }
