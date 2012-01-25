@@ -52,10 +52,11 @@ namespace SamuraiServer
 
             builder.RegisterAssemblyTypes(typeof(Player).Assembly)
                    .Where(t => t.Name.EndsWith("Provider"))
-                   .AsSelf()
+                   .AsImplementedInterfaces()
                    .InstancePerHttpRequest();
 
             builder.RegisterControllers(Assembly.GetExecutingAssembly()); 
+
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }
