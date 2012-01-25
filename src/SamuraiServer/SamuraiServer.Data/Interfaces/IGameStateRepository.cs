@@ -20,6 +20,13 @@ namespace SamuraiServer.Data
         /// <summary>
         /// Fetch a list of currently active games that a player could join or spectate
         /// </summary>
-        IEnumerable<GameState> ListCurrentGames();
+        IEnumerable<GameState> ListOpenGames();
+
+        /// <summary>
+        /// Fetch a list of currently active games for a signed-in user
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        IEnumerable<GameState> ListCurrentGames(string userName);
     }
 }
