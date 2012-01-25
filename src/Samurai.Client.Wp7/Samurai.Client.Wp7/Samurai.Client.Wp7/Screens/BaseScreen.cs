@@ -6,7 +6,7 @@ namespace Samurai.Client.Wp7.Screens
     {
         public ScreenManager Manager { get; set; }
 
-        public bool IsReady { get; private set; }
+        public bool IsReady { get; protected set; }
 
         public BaseScreen() { }
 

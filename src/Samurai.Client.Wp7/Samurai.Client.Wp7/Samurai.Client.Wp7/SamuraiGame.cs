@@ -42,6 +42,14 @@ namespace Samurai.Client.Wp7
             base.Initialize();
         }
 
+        protected override void LoadContent()
+        {
+            // Do this here so that the Graphics device is ready
+            _screens.GetOrCreateScreen<MainMenuScreen>();
+            _screens.TransitionTo<MainMenuScreen>();
+            base.LoadContent();
+        }
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -49,9 +57,6 @@ namespace Samurai.Client.Wp7
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // TODO: Remove when a screen is implemented
-            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back))
-                Exit();
             // DrawableGameComponent automatically does this for our screens
             base.Update(gameTime);
         }

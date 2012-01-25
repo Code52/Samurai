@@ -20,6 +20,7 @@ namespace Samurai.Client.Wp7.Screens
         {
             screens = new List<BaseScreen>();
             Jobs = new BackgroundJobs();
+            Jobs.SpinUp();
         }
 
         protected override void LoadContent()
@@ -88,6 +89,8 @@ namespace Samurai.Client.Wp7.Screens
         {
             var scr = GetOrCreateScreen<T>();
             nextScreen = scr;
+            if (!nextScreen.IsReady)
+                nextScreen.LoadContent();
             // Switch to loading screen if it exists
             if (LoadingScreen != null)
             {
