@@ -6,15 +6,14 @@ namespace SamuraiServer.Areas.Api.Controllers
 {
     public class PlayersController : Controller
     {
-        //
-        // GET: /Api/Players/
+        private readonly IPlayersProvider _prov;
 
-        private readonly PlayersProvider _prov;
-
-        public PlayersController(PlayersProvider prov)
+        public PlayersController(IPlayersProvider prov)
         {
             _prov = prov;
         }
+
+        // api/players/leaderboard
 
         [Api]
         public ActionResult Leaderboard()

@@ -2,15 +2,49 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace SamuraiServer.Data.Impl
 {
     public class InMemoryPlayerRepository : IPlayerRepository
     {
         private static List<Player> _players = new List<Player>();
-        
+
         public dynamic Context { get { return _players; } }
+
+        public InMemoryPlayerRepository()
+        {
+            _players.Add(new Player
+            {
+                Id = Guid.NewGuid(),
+                IsActive = false,
+                IsOnline = true,
+                LastSeen = DateTime.Now.Subtract(TimeSpan.FromHours(24)),
+                Name = "shiftkey",
+                GamesPlayed = 20,
+                Wins = 10
+            });
+            _players.Add(new Player
+            {
+                Id = Guid.NewGuid(),
+                IsActive = true,
+                IsOnline = true,
+                LastSeen = DateTime.Now.Subtract(TimeSpan.FromHours(1)),
+                Name = "aeoth",
+                GamesPlayed = 50,
+                Wins = 40
+            });
+            _players.Add(new Player
+            {
+                Id = Guid.NewGuid(),
+                IsActive = true,
+                IsOnline = false,
+                LastSeen = DateTime.Now.Subtract(TimeSpan.FromHours(48)),
+                Name = "tobin",
+                GamesPlayed = 25,
+                Wins = 15
+            });
+
+        }
 
         public IQueryable<Player> GetAll()
         {
