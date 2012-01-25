@@ -10,7 +10,7 @@
     <Position X="3.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQACAAAAAAAAAAgAAAAAAAAAAAAAAAAAEAAAAQAAAAA=</HashCode>
-      <FileName>GamePlayer.cs</FileName>
+      <FileName>Models\GamePlayer.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Player" />
@@ -23,14 +23,14 @@
     <Position X="6.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAEAAAgAQAAACAAAAgAAAgAQAAAAA=</HashCode>
-      <FileName>Player.cs</FileName>
+      <FileName>Models\Player.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SamuraiServer.Data.GameState">
     <Position X="0.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAABAAAAAAAAACAAQAAAAgAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>GameState.cs</FileName>
+      <FileName>Models\GameState.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="Players" />
@@ -40,7 +40,7 @@
     <Position X="3.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAIAAAAIiAAAAAAABAQAAABAAAAAEAAAAAAAYAA=</HashCode>
-      <FileName>Unit.cs</FileName>
+      <FileName>Models\Unit.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

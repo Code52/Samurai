@@ -51,6 +51,7 @@ namespace SamuraiServer.App_Start
         {
             kernel.Bind<IGameStateRepository>().To<InMemoryGameStateRepository>().InRequestScope();
             kernel.Bind<IPlayerRepository>().To<InMemoryPlayerRepository>().InRequestScope();
+            kernel.Bind<PlayersProvider>().To<PlayersProvider>().InRequestScope();
         }        
     }
 }

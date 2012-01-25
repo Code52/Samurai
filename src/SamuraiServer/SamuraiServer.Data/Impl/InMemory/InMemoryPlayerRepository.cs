@@ -1,63 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace SamuraiServer.Data.Impl
 {
-    public class InMemoryPlayerRepository: IPlayerRepository
+    public class InMemoryPlayerRepository : IPlayerRepository
     {
-        private static List<Player> _players = new List<Player>(); 
+        private static List<Player> _players = new List<Player>();
+        
+        public dynamic Context { get { return _players; } }
 
-        public IEnumerable<Player> GetLeaderboard(int page, int players)
+        public IQueryable<Player> GetAll()
         {
-            return _players.Where(p => p.IsActive).OrderByDescending(p => p.Wins).Skip(page*players).Take(players);
+            return _players.AsQueryable();
         }
 
-        public Player Create(Player player)
+        public IQueryable<Player> FindBy(Expression<Func<Player, bool>> predicate)
         {
-            var random = new Random();
-
-            var p = player;
-            
-            p.Id = Guid.NewGuid();
-            p.IsOnline = true;
-            p.LastSeen = DateTime.Now;
-            p.ApiKey = string.Format("{0}{1}{2}{3}{4}",
-                                     random.Next(0, 9),
-                                     random.Next(0, 9),
-                                     random.Next(0, 9),
-                                     random.Next(0, 9),
-                                     random.Next(0, 9));
-
-            p.IsActive = true;
-
-            _players.Add(p);
-
-            return p;
+            return _players.AsQueryable().Where(predicate);
         }
 
         public Player Get(Guid id)
         {
-            return _players.FirstOrDefault(p => p.IsActive && p.Id == id);
+            return _players.FirstOrDefault(p => p.Id == id);
         }
 
-        public void Invite(Guid id)
+        public void Add(Player entity)
         {
-            throw new NotImplementedException();
+            _players.Add(entity);
         }
 
-        public void Ban(Guid id)
+        public void Delete(Guid id)
         {
-            var player = _players.FirstOrDefault(p => p.IsActive && p.Id == id);
-            player.IsActive = false;
+            var player = _players.FirstOrDefault(p => p.Id == id);
+            _players.Remove(player);
         }
 
-        public IEnumerable<Player> Search(string searchTerm)
+        public void Edit(Player entity)
         {
-            var players = _players.Where(p => p.IsActive && p.Name.Contains(searchTerm));
+            var player = _players.FirstOrDefault(p => p.Id == entity.Id);
+            if (player != null)
+            {
+                player.IsActive = entity.IsActive;
+                player.IsOnline = entity.IsOnline;
+                player.LastSeen = entity.LastSeen;
+                player.Name = entity.Name;
+                player.Wins = entity.Wins;
+                player.GamesPlayed = entity.GamesPlayed;
+            }
+        }
 
-            return players;
+        public void Save()
+        {
         }
     }
 }
