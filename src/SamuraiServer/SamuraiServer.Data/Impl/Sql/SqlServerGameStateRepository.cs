@@ -9,15 +9,23 @@ namespace SamuraiServer.Data.Impl
     {
         // TODO: We may also store our json in SQL nvarchar(MAX) if that is easier for people
 
-        public GameState Load(Guid id) {
+        public GameState Load(Guid id)
+        {
             throw new NotImplementedException();
         }
 
-        public void Save(GameState state) {
+        public void Save(GameState state)
+        {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<GameState> ListCurrentGames() {
+        public IEnumerable<GameState> ListOpenGames()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<GameState> ListCurrentGames(string userName)
+        {
             throw new NotImplementedException();
         }
     }
