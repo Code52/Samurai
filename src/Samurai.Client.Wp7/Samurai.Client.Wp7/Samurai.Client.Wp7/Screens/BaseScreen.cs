@@ -10,6 +10,10 @@ namespace Samurai.Client.Wp7.Screens
 
         public BaseScreen() { }
 
+        public virtual void LoadContent() { }
+
+        public virtual void UnloadContent() { }
+
         public virtual void Update(double elapsedSeconds) { }
 
         public virtual void Draw(double elapsedSeconds, GraphicsDevice device) { }

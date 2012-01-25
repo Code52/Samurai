@@ -6,16 +6,42 @@ namespace Samurai.Client.Wp7.Screens
 {
     public class ScreenManager : DrawableGameComponent
     {
-        private readonly List<BaseScreen> screens = new List<BaseScreen>();
+        private readonly List<BaseScreen> screens;
 
         public BaseScreen LoadingScreen = null;
 
         private BaseScreen curScreen = null;
         private BaseScreen nextScreen = null;
 
+        public readonly BackgroundJobs Jobs;
+
         public ScreenManager(Game game)
             : base(game)
         {
+            screens = new List<BaseScreen>();
+            Jobs = new BackgroundJobs();
+        }
+
+        protected override void LoadContent()
+        {
+            for (int i = 0; i < screens.Count; i++)
+                screens[i].LoadContent();
+
+            if (LoadingScreen != null)
+                LoadingScreen.LoadContent();
+
+            base.LoadContent();
+        }
+
+        protected override void UnloadContent()
+        {
+            for (int i = 0; i < screens.Count; i++)
+                screens[i].UnloadContent();
+
+            if (LoadingScreen != null)
+                LoadingScreen.UnloadContent();
+
+            base.UnloadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -70,6 +96,11 @@ namespace Samurai.Client.Wp7.Screens
                 curScreen = LoadingScreen;
                 curScreen.OnNavigatedTo();
             }
+        }
+
+        public void ExitGame()
+        {
+            Game.Exit();
         }
     }
 }

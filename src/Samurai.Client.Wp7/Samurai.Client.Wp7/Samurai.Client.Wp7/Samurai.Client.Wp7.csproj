@@ -98,6 +98,7 @@
       <Link>Api\Models\Unit.cs</Link>
     </Compile>
     <Compile Include="Api\ServerApi.cs" />
+    <Compile Include="BackgroundJobs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screens\BaseScreen.cs" />
     <Compile Include="Screens\ScreenManager.cs" />
