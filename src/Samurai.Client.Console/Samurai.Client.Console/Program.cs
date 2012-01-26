@@ -13,6 +13,7 @@ namespace Samurai.Client.ConsoleClient
 
         static Player CurrentPlayer = null;
         static Dictionary<Guid, GameState> CurrentGames = new Dictionary<Guid, GameState>();
+        static GameState CurrentGame = null;
 
         private static void Main(string[] args) {
             Welcome();
@@ -122,12 +123,59 @@ namespace Samurai.Client.ConsoleClient
 
         private static void ViewGame(Guid id) {
             Console.Clear();
-            Console.WriteLine("Viewing game " + id);
-            Console.ReadLine();
+            CurrentGame = CurrentGames[id];
+
+            int col2Left = Console.WindowWidth - 20;
+
+            // Draw the map
+            Console.SetCursorPosition(0, 0);
+            Console.Write("Map");
+            Console.SetCursorPosition(col2Left, 0);
+            Console.Write("Players");
+            Console.SetCursorPosition(0, 1);
+            Console.WriteLine(new String('-', Console.WindowWidth));
+            for (int i = 0; i < CurrentGame.Map.Tiles.Length; i++) {
+                Console.SetCursorPosition(0, 2 + i);
+                var row = CurrentGame.Map.Tiles[i];
+                Console.Write(String.Join("", row.Select(d => GetTileView(d))));
+            }
+
+            // Write out the players
+            for (int i = 0; i < CurrentGame.Players.Count; i++) {
+                Console.SetCursorPosition(col2Left, 2 + i);
+                Console.Write(String.Format("{2}{0} - {3}pts", CurrentGame.Players[i].Player.Name, CurrentGame.Players[i].Id, CurrentGame.Players[i].IsAlive ? "" : "x", CurrentGame.Players[i].Score));
+            }
+
+            Console.SetCursorPosition(0, Console.WindowHeight - 4);
+            Console.WriteLine("[R] Refresh");
+            Console.WriteLine("[X] Exit");
+
+            Choose(new Dictionary<char, Action> {
+                { 'R', Refresh },
+                { 'X', ListGames },
+            });
+        }
+
+        private static string GetTileView(TileType tile) {
+            switch (tile.Name) {
+                case "Grass":
+                    return ".";
+                case "Rock":
+                    return "@";
+                case "Tree":
+                    return "T";
+                case "Water":
+                    return "~";
+                default:
+                    return "?";
+            }
+        }
+
+        private static void Refresh() {
+            ViewGame(CurrentGame.Id);
         }
 
         private static void Choose(Dictionary<char, Action> actions) {
-            Console.WriteLine();
             Console.Write("?");
             Char c = Char.MinValue;
             while (!actions.ContainsKey(c)) {
