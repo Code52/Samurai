@@ -66,7 +66,7 @@ namespace SamuraiServer.Data
 
             if (playerId == Guid.Empty)
             {
-                throw new ArgumentException("gameId not set");
+                throw new ArgumentException("playerId not set");
             }
 
             var player = _playersProvider.Get(playerId);

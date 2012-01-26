@@ -113,15 +113,13 @@ namespace SamuraiServer.Tests.API
             var gameId = _dummyGameState.Id;
 
             //act
-            var viewResult = _controller.JoinGame(gameId, _dummyPlayer.Name) as ViewResult;
+            var viewResult = _controller.JoinGame(gameId, _dummyPlayer.Id) as ViewResult;
 
             //assert
             Assert.NotNull(viewResult.Model);
             var model = viewResult.Model.AsDynamic();
 
             Assert.NotNull(model.game);
-            Assert.NotNull(model.player);
-            _playersProvider.Received().Create(_dummyPlayer.Name);
             _gameStateProvider.Received().JoinGame(_dummyGameState.Id, _dummyPlayer.Id);
 
         }
@@ -134,7 +132,7 @@ namespace SamuraiServer.Tests.API
             SetupPlayerProviderException();
 
             //act
-            var viewResult = _controller.JoinGame(gameId, _dummyPlayer.Name) as ViewResult;
+            var viewResult = _controller.JoinGame(gameId, _dummyPlayer.Id) as ViewResult;
 
             //assert
             TestForViewOkFalse(viewResult);
@@ -277,7 +275,7 @@ namespace SamuraiServer.Tests.API
 
         private void SetupPlayerProviderException()
         {
-            _playersProvider.When(p => p.Create(Arg.Any<string>())).Do(c =>
+            _gameStateProvider.When(p => p.JoinGame(Arg.Any<Guid>(), Arg.Any<Guid>())).Do(c =>
             {
                 throw new BarrierPostPhaseException();
             });
