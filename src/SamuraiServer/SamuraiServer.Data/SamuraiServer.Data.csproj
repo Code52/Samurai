@@ -67,6 +67,7 @@
     <Compile Include="Providers\IPlayersProvider.cs" />
     <Compile Include="Providers\MapProvider.cs" />
     <Compile Include="Providers\PlayersProvider.cs" />
+    <Compile Include="Providers\MatchReferee.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Models\ClassDiagram.cd" />
