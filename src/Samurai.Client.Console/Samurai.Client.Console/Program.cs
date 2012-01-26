@@ -43,7 +43,7 @@ namespace Samurai.Client.ConsoleClient
         private static void CreateUser() {
             Console.Clear();
             var name = GetText("Please enter your username", s => !String.IsNullOrWhiteSpace(s));
-            api.CreateUser(name, (data, e) => {
+            api.CreatePlayer(name, (data, e) => {
                 if (e != null) { Error(e); return; }
                 if (!data.Ok) { BadResponse(); return; }
                 CurrentPlayer = data.Player;
@@ -83,7 +83,7 @@ namespace Samurai.Client.ConsoleClient
         private static void CreateGame() {
             Console.Clear();
             string name = GetText("Enter the name of your game", s => !String.IsNullOrWhiteSpace(s));
-            api.CreateGame(name, (data, e) => {
+            api.CreateGameAndJoin(name, CurrentPlayer.Id, (data, e) => {
                 if (e != null) { Error(e); return; }
                 if (!data.Ok) { BadResponse(); return; }
 

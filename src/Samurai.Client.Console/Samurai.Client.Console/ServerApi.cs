@@ -17,7 +17,7 @@ namespace Samurai.Client.Api
             this.serverUrl = serverUrl;
         }
 
-        public void CreateUser(string name, Action<CreateUserResponse, Exception> callback) {
+        public void CreatePlayer(string name, Action<CreatePlayerResponse, Exception> callback) {
             Post("/Api/Players/CreatePlayer", "name=" + System.Uri.EscapeDataString(name), callback);
         }
 
@@ -25,8 +25,8 @@ namespace Samurai.Client.Api
             Get("/Api/Games/GetOpenGames", callback);
         }
 
-        public void CreateGame(string name, Action<CreateGameResponse, Exception> callback) {
-            Post("/Api/Games/CreateGame", "name=" + System.Uri.EscapeDataString(name), callback);
+        public void CreateGameAndJoin(string name, Guid playerId, Action<CreateGameAndJoinResponse, Exception> callback) {
+            Post("/Api/Games/CreateGameAndJoin", "name=" + System.Uri.EscapeDataString(name) + "&playerid=" + playerId, callback);
         }
 
         // A sync method in an async pattern. Easier to work with for the console app.
@@ -94,12 +94,12 @@ namespace Samurai.Client.Api
         public GameState[] Games { get; set; }
     }
 
-    public class CreateGameResponse : ServerResponse
+    public class CreateGameAndJoinResponse : ServerResponse
     {
         public GameState Game { get; set; }
     }
 
-    public class CreateUserResponse : ServerResponse
+    public class CreatePlayerResponse : ServerResponse
     {
         public Player Player { get; set; }
     }
