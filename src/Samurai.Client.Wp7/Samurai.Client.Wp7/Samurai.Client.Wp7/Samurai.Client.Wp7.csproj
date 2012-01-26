@@ -73,28 +73,28 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\GamePlayer.cs">
+    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Models\GamePlayer.cs">
       <Link>Api\Models\GamePlayer.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\GameState.cs">
+    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Models\GameState.cs">
       <Link>Api\Models\GameState.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Map.cs">
+    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Models\Map.cs">
       <Link>Api\Models\Map.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Move.cs">
+    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Models\Move.cs">
       <Link>Api\Models\Move.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\MoveSet.cs">
+    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Models\MoveSet.cs">
       <Link>Api\Models\MoveSet.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Player.cs">
+    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Models\Player.cs">
       <Link>Api\Models\Player.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\TileType.cs">
+    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Models\TileType.cs">
       <Link>Api\Models\TileType.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Unit.cs">
+    <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Models\Unit.cs">
       <Link>Api\Models\Unit.cs</Link>
     </Compile>
     <Compile Include="Api\ServerApi.cs" />
