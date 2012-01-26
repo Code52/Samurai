@@ -13,13 +13,5 @@ namespace SamuraiServer.Data
         public abstract bool CanMoveOn { get; }
 
         public abstract bool CanShootOver { get; }
-
-        public static Grass G() { return new Grass(); }
-
-        public static Rock R() { return new Rock(); }
-
-        public static Tree T() { return new Tree(); }
-
-        public static Water W() { return new Water(); }
     }
 }
