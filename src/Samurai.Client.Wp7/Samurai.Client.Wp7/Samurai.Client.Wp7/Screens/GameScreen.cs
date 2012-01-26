@@ -1,11 +1,20 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
+using Samurai.Client.Wp7.Graphics;
+using SamuraiServer.Data;
 
 namespace Samurai.Client.Wp7.Screens
 {
     public class GameScreen : BaseScreen
     {
+        private ContentManager content;
+        private SpriteBatch sb;
+        private Renderer renderer;
+
+        private Map fakemap;
+
         public GameScreen()
             : base()
         {
@@ -13,8 +22,20 @@ namespace Samurai.Client.Wp7.Screens
 
         public override void LoadContent()
         {
-            // This indicates that the screen has finished loading and can be displayed without issues
-            IsReady = true;
+            if (IsReady)
+                return;
+
+            content = new ContentManager(Manager.Game.Services, "Content");
+            sb = new SpriteBatch(Manager.GraphicsDevice);
+
+            Manager.Jobs.CreateJob(
+                () =>
+                {
+                    renderer.LoadContent(content);
+
+                    // This indicates that the screen has finished loading and can be displayed without issues
+                    IsReady = true;
+                });
             base.LoadContent();
         }
 
@@ -34,6 +55,13 @@ namespace Samurai.Client.Wp7.Screens
 
         public override void Draw(double elapsedSeconds, GraphicsDevice device)
         {
+            if (renderer == null)
+                return;
+
+            sb.Begin();
+            renderer.DrawMap(device, sb, null, 0, 0);
+            sb.End();
+
             base.Draw(elapsedSeconds, device);
         }
 
