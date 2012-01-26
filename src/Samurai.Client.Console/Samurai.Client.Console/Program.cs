@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Samurai.Client.Api;
+using SamuraiServer.Data;
 
 namespace Samurai.Client.ConsoleClient
 {
@@ -10,17 +11,28 @@ namespace Samurai.Client.ConsoleClient
     {
         static ServerApi api = new ServerApi("http://localhost:49706/");
 
+        static Player CurrentPlayer = null;
+
         private static void Main(string[] args) {
             Welcome();
         }
 
-        private static void Welcome() {
+        private static void Welcome(string message = "") {
             Console.Clear();
             Console.WriteLine("Welcome to Samurai");
+            if (CurrentPlayer != null) {
+                Console.WriteLine("Logged in as " + CurrentPlayer.Name + " " + CurrentPlayer.Id);
+            }
+            if (!String.IsNullOrEmpty(message)) {
+                Console.WriteLine("----");
+                Console.WriteLine(message);
+            }
             Console.WriteLine("----");
+            Console.WriteLine("[C] Create user");
             Console.WriteLine("[L] List games");
             Console.WriteLine("[X] Exit");
             Choose(new Dictionary<char, Action> {
+                { 'C', CreateUser },
                 { 'L', ListGames },
                 { 'X', Exit }
             });
@@ -28,21 +40,38 @@ namespace Samurai.Client.ConsoleClient
 
         private static void Exit() { }
 
+        private static void CreateUser() {
+            Console.Clear();
+            var name = GetText("Please enter your username", s => !String.IsNullOrWhiteSpace(s));
+            api.CreateUser(name, (data, e) => {
+                if (e != null) { Error(e); return; }
+                if (!data.Ok) { BadResponse(); return; }
+                CurrentPlayer = data.Player;
+                Welcome();
+            });
+        }
+
         private static void ListGames() {
+            if (CurrentPlayer == null) {
+                Welcome("Please log in");
+                return;
+            }
+
             api.GetOpenGames((data, e) => {
                 if (e != null) { Error(e); return; }
                 if (!data.Ok) { BadResponse(); return; }
 
                 Dictionary<char, Action> actions = new Dictionary<char, Action>();
                 actions.Add('C', CreateGame);
-                actions.Add('X', Welcome);
+                actions.Add('X', () => Welcome());
 
                 Console.Clear();
                 Console.WriteLine("Choose a game to join");
                 Console.WriteLine("---");
                 for (int i = 0; i < data.Games.Length; i++) {
-                    Console.WriteLine(String.Format("[{0}] {1}", i + 1, data.Games[i].Name));
-                    actions.Add((i + 1).ToString()[0], () => { JoinGame(data.Games[i].Id); });
+                    Console.WriteLine(String.Format("[{0}] {1} - {2}", i + 1, data.Games[i].Name, data.Games[i].Id));
+                    var id = data.Games[i].Id;
+                    actions.Add((i + 1).ToString()[0], () => JoinGame(id));
                 }
                 Console.WriteLine("---");
                 Console.WriteLine("[C] Create a new game");
