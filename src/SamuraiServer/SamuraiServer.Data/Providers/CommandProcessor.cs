@@ -33,7 +33,8 @@ namespace SamuraiServer.Data.Providers
                         units.Add(result);
                     else
                     {
-                        errors.Add(new ValidationResult { IsValid = false, Message = "Could not move unit" });
+                        // TODO: more specific error messages?
+                        errors.Add(new ValidationResult { IsValid = false, Message = string.Format("Could not move unit '{0}'", c.unitId) });
                     }
                 }
                 //if (c.type == "attack")
@@ -65,7 +66,7 @@ namespace SamuraiServer.Data.Providers
             return MoveUnit(id, x, y);
         }
 
-        public Unit MoveUnit(Guid id, int x, int y)
+        private Unit MoveUnit(Guid id, int x, int y)
         {
             var foundUnit = _match.Players.SelectMany(c => c.Units).FirstOrDefault(g => g.Id == id);
 

@@ -8,7 +8,7 @@ using Xunit;
 
 namespace SamuraiServer.Tests.Providers
 {
-    public class CommandProcessorTests
+    public class CommandProcessorMovementTests
     {
         public class Ninja : Unit { }
 
