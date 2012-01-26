@@ -10,6 +10,8 @@ namespace SamuraiServer.Tests.Providers
 {
     public class CommandProcessorTests
     {
+        public class Ninja : Unit { }
+
         const string moveCommandTemplate = " [{{\"unitId\": \"{0}\",\"action\":\"move\",\"X\":1,\"Y\":0}}] ";
 
         public class Client_Sends_Message_To_Move_A_Unit : TwoPlayerGame
@@ -34,9 +36,7 @@ namespace SamuraiServer.Tests.Providers
             public override void When()
             {
                 var json = String.Format(moveCommandTemplate, id);
-
                 var obj = JsonConvert.DeserializeObject<IEnumerable<dynamic>>(json);
-
                 result = Subject.Process(obj);
                 unit = result.Units.First();
             }
@@ -63,14 +63,14 @@ namespace SamuraiServer.Tests.Providers
 
         public class Client_Attempts_To_Move_Unit_When_Not_Permitted : TwoPlayerGame
         {
-            readonly Guid id = Guid.NewGuid();
+            Guid id;
             Ninja activeUnit;
             Ninja otherUnit;
-            Unit adjustedUnit;
             CommandResult result;
 
             public override CommandProcessor Given()
             {
+                id = Guid.NewGuid();
                 activeUnit = new Ninja { Id = id, X = 0, Y = 0 };
                 otherUnit = new Ninja { Id = Guid.NewGuid(), X = 1, Y = 1 };
 
@@ -85,14 +85,44 @@ namespace SamuraiServer.Tests.Providers
             public override void When()
             {
                 var json = String.Format(moveCommandTemplate, id);
-
                 var obj = JsonConvert.DeserializeObject<IEnumerable<dynamic>>(json);
-
                 result = Subject.Process(obj);
             }
 
             [Fact]
             public void An_Error_Message_Is_Returned()
+            {
+                Assert.True(result.Errors.Any());
+            }
+        }
+
+        public class When_A_Unit_Moves_More_Than_Its_Allowed_Range : TwoPlayerGame
+        {
+            const string moveCommandTemplate = " [{{\"unitId\": \"{0}\",\"action\":\"move\",\"X\":1,\"Y\":1}}] ";
+
+            Guid id = Guid.NewGuid();
+            Ninja activeUnit;
+            CommandResult result;
+
+            public override CommandProcessor Given()
+            {
+                activeUnit = new Ninja { Id = id, X = 0, Y = 0 };
+                activeUnit.Range = 1;
+
+                FirstPlayer.Units.Add(activeUnit);
+
+                return new CommandProcessor(State);
+            }
+
+            public override void When()
+            {
+                var json = String.Format(moveCommandTemplate, id);
+                var obj = JsonConvert.DeserializeObject<IEnumerable<dynamic>>(json);
+                result = Subject.Process(obj);
+            }
+
+            [Fact]
+            public void An_Error_Is_Included()
             {
                 Assert.True(result.Errors.Any());
             }

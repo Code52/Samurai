@@ -58,7 +58,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\CommandProcessorTests.cs" />
     <Compile Include="Providers\GameStateProviderTests.cs" />
-    <Compile Include="Providers\SimpleCommandProcessorTests.cs" />
     <Compile Include="Providers\PlayersProviderTests.cs" />
     <Compile Include="Providers\TwoPlayerGame.cs" />
     <Compile Include="SamuraiContextBase.cs" />
