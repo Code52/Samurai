@@ -19,8 +19,10 @@ namespace SamuraiServer.Data
             return _repo.GetAll().Where(p => p.IsActive).OrderByDescending(p => p.Wins).Skip(page*players).Take(players);
         }
 
-        public Player Create(string name)
+        public ValidationResult<Player> Create(string name)
         {
+            if (_repo.GetByName(name) != null) return ValidationResult<Player>.Failure("User already exists");
+
             var random = new Random();
 
             var player = new Player{Name = name};
@@ -38,8 +40,9 @@ namespace SamuraiServer.Data
             player.IsActive = true;
 
             _repo.Add(player);
+            _repo.Save();
 
-            return player;
+            return ValidationResult<Player>.Success.WithData(player);
         }
 
         public Player Get(Guid id)

@@ -29,47 +29,14 @@ namespace SamuraiServer.Tests.API
             _dummyMap = GetDummyMap();
 
             _gameStateProvider = Substitute.For<IGameStateProvider>();
-            _gameStateProvider.CreateGame(Arg.Any<string>()).ReturnsForAnyArgs(_dummyGameState);
-            _gameStateProvider.JoinGame(Arg.Any<Guid>(), Arg.Any<Guid>()).ReturnsForAnyArgs(_dummyGameState);
+            _gameStateProvider.CreateGame(Arg.Any<string>()).ReturnsForAnyArgs(ValidationResult<GameState>.Success.WithData(_dummyGameState));
+            _gameStateProvider.JoinGame(Arg.Any<Guid>(), Arg.Any<Guid>()).ReturnsForAnyArgs(ValidationResult<GameState>.Success.WithData(_dummyGameState));
 
             _playersProvider = Substitute.For<IPlayersProvider>();
-            _playersProvider.Create(Arg.Any<string>()).ReturnsForAnyArgs(_dummyPlayer);
+            _playersProvider.Create(Arg.Any<string>()).ReturnsForAnyArgs(ValidationResult<Player>.Success.WithData(_dummyPlayer));
 
 
             _controller = new GamesController(_gameStateProvider, _playersProvider);
-        }
-
-        // ReSharper disable PossibleNullReferenceException
-        [Fact]
-        public void CreateGame_AnyNameAnyUser_CallsProvider()
-        {
-            //arrange
-            var gameName = "someName";
-
-            //act
-            var viewResult = _controller.CreateGame(gameName) as ViewResult;
-
-            // assert
-            Assert.NotNull(viewResult.Model);
-            var model = viewResult.Model.AsDynamic();
-
-            Assert.NotNull(model.game);
-            Assert.Equal(_dummyGameState, model.game);
-            _gameStateProvider.Received().CreateGame(gameName);
-        }
-
-        [Fact]
-        public void CreateGame_WhenExceptionOccurs_ReturnsFalse()
-        {
-            //arrange
-            var gameName = "someName";
-            SetupGameStateProviderException();
-
-            //act
-            var viewResult = _controller.CreateGame(gameName) as ViewResult;
-
-            //assert
-            TestForViewOkFalse(viewResult);
         }
 
         [Fact]
@@ -168,8 +135,9 @@ namespace SamuraiServer.Tests.API
         {
             // arrange
             var gameId = Guid.NewGuid();
-            _gameStateProvider.ListCurrentGames(Arg.Any<string>()).Returns(new GameState[0]);
+            _gameStateProvider.ListCurrentGames(Arg.Any<string>()).Returns(new List<GameState> { _dummyGameState });
 
+            _gameStateProvider.LeaveGame(Arg.Any<Guid>(), Arg.Any<string>()).Returns(ValidationResult<GameState>.Failure("Game does not exist"));
             // act
             var game = _controller.LeaveGame(gameId, "someUser") as ViewResult;
 
@@ -190,6 +158,8 @@ namespace SamuraiServer.Tests.API
             _gameStateProvider.ListCurrentGames(userName)
               .Returns(results.AsQueryable());
 
+            _gameStateProvider.LeaveGame(Arg.Any<Guid>(), Arg.Any<string>()).Returns(ValidationResult<GameState>.Failure("Player is not in this game"));
+
             // act
             var game = _controller.LeaveGame(gameId, userName) as ViewResult;
 
@@ -201,29 +171,22 @@ namespace SamuraiServer.Tests.API
         }
 
         [Fact]
-        public void LeaveGame_ForUserInCorrectGame_UsesRepository()
+        public void LeaveGame_ForUserInCorrectGame_UsesProvider()
         {
             // arrange
-            var gameId = Guid.NewGuid();
-            const string userName = "someUser";
-            var currentGame = new GameState
-            {
-                Id = gameId,
-                Players = new List<GamePlayer>
-                                                    {
-                                                        new GamePlayer { Player = new Player { Name = userName } }
-                                                    }
-            };
+            var currentGame = _dummyGameState;
+
             var results = new[] { currentGame }.AsQueryable();
             _gameStateProvider.ListCurrentGames(Arg.Any<string>())
                .Returns(results);
+            
+            _gameStateProvider.LeaveGame(Arg.Any<Guid>(), Arg.Any<string>()).Returns(ValidationResult.Success);
 
             // act
-            _controller.LeaveGame(gameId, userName);
+            _controller.LeaveGame(_dummyGameState.Id, _dummyPlayer.Name);
 
             // assert
-            _gameStateProvider.Received().Save(results.First());
-            Assert.Equal(0,results.First().Players.Count);
+            _gameStateProvider.Received().LeaveGame(_dummyGameState.Id, _dummyPlayer.Name);
         }
 
         // ReSharper restore PossibleNullReferenceException
