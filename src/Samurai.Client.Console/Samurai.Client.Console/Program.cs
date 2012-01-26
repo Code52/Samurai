@@ -70,7 +70,7 @@ namespace Samurai.Client.ConsoleClient
                 Console.WriteLine("---");
                 for (int i = 0; i < data.Games.Length; i++) {
                     Console.WriteLine(String.Format("[{0}] {1} - {2}", i + 1, data.Games[i].Name, data.Games[i].Id));
-                    var id = data.Games[i].Id;
+                    var id = data.Games[i].Id;  // This copy of the variable is for the lambda below. Passing a reference to [i] into it is broken by the loop.
                     actions.Add((i + 1).ToString()[0], () => JoinGame(id));
                 }
                 Console.WriteLine("---");
