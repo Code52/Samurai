@@ -19,7 +19,7 @@ namespace SamuraiServer.Tests.Providers
             }
 
             const string PlayerName = "Name";
-            Player _player;
+            ValidationResult<Player> _player;
 
             public override void When()
             {
@@ -29,13 +29,13 @@ namespace SamuraiServer.Tests.Providers
             [Fact]
             public void The_Name_Matches_The_Input_Parameter()
             {
-                Assert.Equal(PlayerName, _player.Name);
+                Assert.Equal(PlayerName, _player.Data.Name);
             }
 
             [Fact]
             public void The_Id_Is_Not_Empty()
             {
-                Assert.NotEqual(Guid.Empty, _player.Id);
+                Assert.NotEqual(Guid.Empty, _player.Data.Id);
             }
 
             [Fact]

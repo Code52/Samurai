@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using IdeaStrike.Tests;
 using SamuraiServer.Data;
 using SamuraiServer.Data.Providers;
 using Xunit;
 
 namespace SamuraiServer.Tests.Providers
 {
-    public class Ninja : Unit { }
-
     public class SimpleCommandProcessorTests
     {
+        private class Ninja : Unit { }
+
         public class When_Moving_A_Unit_In_A_Game : TwoPlayerGame
         {
             readonly Guid id = Guid.NewGuid();
@@ -102,23 +100,6 @@ namespace SamuraiServer.Tests.Providers
             public void The_Result_Is_Null()
             {
                 Assert.Null(modifiedUnit);
-            }
-        }
-    }
-
-    public class ComplexCommandProcessorTests
-    {
-
-        public class When_Sending_A_Move_As_JSON : SpecificationFor<CommandProcessor>
-        {
-            public override CommandProcessor Given()
-            {
-                throw new NotImplementedException();
-            }
-
-            public override void When()
-            {
-                throw new NotImplementedException();
             }
         }
     }
