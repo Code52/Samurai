@@ -27,6 +27,11 @@ namespace SamuraiServer.Data.Impl
             return _players.FirstOrDefault(p => p.Id == id);
         }
 
+        public Player GetByName(string name)
+        {
+            return _players.FirstOrDefault(p => p.Name == name);
+        }
+
         public void Add(Player entity)
         {
             _players.Add(entity);
