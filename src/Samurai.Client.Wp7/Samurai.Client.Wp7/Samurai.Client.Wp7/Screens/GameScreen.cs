@@ -1,9 +1,11 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Content;
 using Samurai.Client.Wp7.Graphics;
 using SamuraiServer.Data;
+using SamuraiServer.Data.Tiles;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Samurai.Client.Wp7.Screens
 {
@@ -12,12 +14,18 @@ namespace Samurai.Client.Wp7.Screens
         private ContentManager content;
         private SpriteBatch sb;
         private Renderer renderer;
+        // For map scrolling
+        private int xOffset = 0;
+        private int yOffset = 0;
+        private Vector2 prevPos = Vector2.Zero;
 
+        // TESTING
         private Map fakemap;
 
         public GameScreen()
             : base()
         {
+            renderer = new Renderer();
         }
 
         public override void LoadContent()
@@ -33,6 +41,18 @@ namespace Samurai.Client.Wp7.Screens
                 {
                     renderer.LoadContent(content);
 
+                    // TESTING
+                    fakemap = new Map();
+                    fakemap.Tiles = new TileType[2][];
+                    for (int x = 0; x < 2; x++)
+                    {
+                        fakemap.Tiles[x] = new TileType[2];
+                        for (int y = 0; y < 2; y++)
+                        {
+                            fakemap.Tiles[x][y] = new Grass();
+                        }
+                    }
+
                     // This indicates that the screen has finished loading and can be displayed without issues
                     IsReady = true;
                 });
@@ -41,6 +61,9 @@ namespace Samurai.Client.Wp7.Screens
 
         public override void UnloadContent()
         {
+            content.Unload();
+            content.Dispose();
+            sb.Dispose();
             base.UnloadContent();
         }
 
@@ -49,6 +72,24 @@ namespace Samurai.Client.Wp7.Screens
             // TODO: Replace with proper logic once implemented
             if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back))
                 Manager.ExitGame();
+
+            // TESTING
+            var touches = TouchPanel.GetState();
+            if (touches.Count > 0)
+            {
+                if (touches[0].State == TouchLocationState.Pressed)
+                    prevPos = touches[0].Position;
+                else if (touches[0].State == TouchLocationState.Moved)
+                {
+                    xOffset -= (int)(touches[0].Position.X - prevPos.X);
+                    if (xOffset < 0)
+                        xOffset = 0;
+                    yOffset -= (int)(touches[0].Position.Y - prevPos.Y);
+                    if (yOffset < 0)
+                        yOffset = 0;
+                    prevPos = touches[0].Position;
+                }
+            }
 
             base.Update(elapsedSeconds);
         }
@@ -59,7 +100,7 @@ namespace Samurai.Client.Wp7.Screens
                 return;
 
             sb.Begin();
-            renderer.DrawMap(device, sb, null, 0, 0);
+            renderer.DrawMap(device, sb, fakemap, xOffset, yOffset);
             sb.End();
 
             base.Draw(elapsedSeconds, device);
