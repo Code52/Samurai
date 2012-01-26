@@ -4,6 +4,12 @@ using System.Linq;
 
 namespace SamuraiServer.Data.Providers
 {
+    public class CommandResult
+    {
+        public IEnumerable<Unit> Units { get; set; }
+        public IEnumerable<ValidationResult> Errors { get; set; }
+    }
+
     public class CommandProcessor
     {
         private readonly GameState _match;
@@ -13,13 +19,22 @@ namespace SamuraiServer.Data.Providers
             _match = match;
         }
 
-        public void Process(IEnumerable<dynamic> commands)
+        public CommandResult Process(IEnumerable<dynamic> commands)
         {
+            var units = new List<Unit>();
+            var errors = new List<ValidationResult>();
+
             foreach (var c in commands)
             {
-                if (c.type == "move")
+                if (c.action == "move")
                 {
-                    ProcessMove(c);
+                    var result = ProcessMove(c);
+                    if (result != null)
+                        units.Add(result);
+                    else
+                    {
+                        errors.Add(new ValidationResult { IsValid = false, Message = "Could not move unit" });
+                    }
                 }
                 //if (c.type == "attack")
                 //{
@@ -34,16 +49,20 @@ namespace SamuraiServer.Data.Providers
             }
 
 
+            return new CommandResult { Units = units, Errors = errors };
         }
 
-        private void ProcessMove(dynamic o)
+        private Unit ProcessMove(dynamic o)
         {
-            string unitId = o.unitId.ToString(); // mismatch between this and "unit-id" from JSON
+            string unitId = o.unitId.ToString();
             Guid id;
             if (!Guid.TryParse(unitId, out id))
-            {
+                return null;
 
-            }
+            int x = o.X;
+            int y = o.Y;
+
+            return MoveUnit(id, x, y);
         }
 
         public Unit MoveUnit(Guid id, int x, int y)
