@@ -12,6 +12,7 @@ namespace Samurai.Client.ConsoleClient
         static ServerApi api = new ServerApi("http://localhost:49706/");
 
         static Player CurrentPlayer = null;
+        static Dictionary<Guid, GameState> CurrentGames = new Dictionary<Guid, GameState>();
 
         private static void Main(string[] args) {
             Welcome();
@@ -69,6 +70,7 @@ namespace Samurai.Client.ConsoleClient
                 Console.WriteLine("Choose a game to join");
                 Console.WriteLine("---");
                 for (int i = 0; i < data.Games.Length; i++) {
+                    UpdateGame(data.Games[i]);
                     Console.WriteLine(String.Format("[{0}] {1} - {2}", i + 1, data.Games[i].Name, data.Games[i].Id));
                     var id = data.Games[i].Id;  // This copy of the variable is for the lambda below. Passing a reference to [i] into it is broken by the loop.
                     actions.Add((i + 1).ToString()[0], () => JoinGame(id));
@@ -87,16 +89,39 @@ namespace Samurai.Client.ConsoleClient
                 if (e != null) { Error(e); return; }
                 if (!data.Ok) { BadResponse(); return; }
 
+                UpdateGame(data.Game);
                 ViewGame(data.Game.Id);
             });
         }
 
+        private static void UpdateGame(GameState game) {
+            if (CurrentGames.ContainsKey(game.Id)) {
+                CurrentGames[game.Id] = game;
+            } else {
+                CurrentGames.Add(game.Id, game);
+            }
+        }
+
         private static void JoinGame(Guid id) {
-            Console.WriteLine("Joining " + id);
-            Console.ReadLine();
+            Console.Clear();
+            var game = CurrentGames[id];
+
+            if (game.Players.Any(d => d.Id == CurrentPlayer.Id)) {
+                ViewGame(id);
+                return;
+            }
+
+            api.JoinGame(id, CurrentPlayer.Id, (data, e) => {
+                if (e != null) { Error(e); return; }
+                if (!data.Ok) { BadResponse(); return; }
+
+                UpdateGame(data.Game);
+                ViewGame(data.Game.Id);
+            });
         }
 
         private static void ViewGame(Guid id) {
+            Console.Clear();
             Console.WriteLine("Viewing game " + id);
             Console.ReadLine();
         }

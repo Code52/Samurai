@@ -29,6 +29,10 @@ namespace Samurai.Client.Api
             Post("/Api/Games/CreateGameAndJoin", "name=" + System.Uri.EscapeDataString(name) + "&playerid=" + playerId, callback);
         }
 
+        public void JoinGame(Guid gameId, Guid playerId, Action<CreateGameAndJoinResponse, Exception> callback) {
+            Post("/Api/Games/JoinGame", "gameid=" + gameId + "&playerid=" + playerId, callback);
+        }
+
         // A sync method in an async pattern. Easier to work with for the console app.
         private void Get<T>(string url, Action<T, Exception> callback) {
             try {
@@ -95,6 +99,11 @@ namespace Samurai.Client.Api
     }
 
     public class CreateGameAndJoinResponse : ServerResponse
+    {
+        public GameState Game { get; set; }
+    }
+
+    public class JoinGameResponse : ServerResponse
     {
         public GameState Game { get; set; }
     }
