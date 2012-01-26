@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SamuraiServer.Data
 {
@@ -9,7 +7,7 @@ namespace SamuraiServer.Data
     {
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; }  // NOTE: what does this represent?
 
         public List<GamePlayer> Players { get; set; }
 

@@ -9,6 +9,17 @@ namespace SamuraiServer.Data.Impl
     {
         private static Dictionary<Guid, GameState> _state = new Dictionary<Guid, GameState>();
 
+        public InMemoryGameStateRepository()
+        {
+            _state.Add(Guid.NewGuid(), new GameState { Id = Guid.NewGuid(), Map = new Map(), Players = new List<GamePlayer>(), Turn = 0 });
+            _state.Add(Guid.NewGuid(), new GameState { Id = Guid.NewGuid(), Map = new Map(), Players = new List<GamePlayer>(), Turn = 0 });
+            _state.Add(Guid.NewGuid(), new GameState { Id = Guid.NewGuid(), Map = new Map(), Players = new List<GamePlayer>(), Turn = 0 });
+            _state.Add(Guid.NewGuid(), new GameState { Id = Guid.NewGuid(), Map = new Map(), Players = new List<GamePlayer>(), Turn = 0 });
+            _state.Add(Guid.NewGuid(), new GameState { Id = Guid.NewGuid(), Map = new Map(), Players = new List<GamePlayer>(), Turn = 0 });
+            _state.Add(Guid.NewGuid(), new GameState { Id = Guid.NewGuid(), Map = new Map(), Players = new List<GamePlayer>(), Turn = 0 });
+        }
+
+
         public IQueryable<GameState> GetAll()
         {
             return _state.Values.AsQueryable();
