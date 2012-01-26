@@ -49,6 +49,7 @@ namespace SamuraiServer.Data
             {
                 return Enumerable.Empty<GameState>();
             }
+
             return _repo.FindBy(d => d.Players.Any(c => c.Player.Name == userName));
         }
 
@@ -59,7 +60,7 @@ namespace SamuraiServer.Data
 
             var id = Guid.NewGuid();
             
-            var gameState = new GameState { Id = id, Name = name, Map = _mapProvider.GetRandomMap() };
+            var gameState = new GameState { Id = id, Name = name, Started = false, Map = _mapProvider.GetRandomMap() };
             
             _repo.Add(gameState);
             _repo.Save();
@@ -85,6 +86,11 @@ namespace SamuraiServer.Data
             if (player == null) return ValidationResult<GameState>.Failure("Could not find Player");
             if (game == null) return ValidationResult<GameState>.Failure("Could not find Game");
 
+            if (game.Players.Any(p => p.Player.Id == player.Id))
+                return ValidationResult<GameState>.Failure("Player is already a member of that game");
+
+            if (game.Started) return ValidationResult<GameState>.Failure("Cannot join a game in progress");
+
             game.Players.Add(new GamePlayer { Id = Guid.NewGuid(), Player = player, IsAlive = true, Score = 0 });
             _repo.Save();
 
@@ -108,6 +114,38 @@ namespace SamuraiServer.Data
             this.Save(currentGame);
 
             return ValidationResult.Success;
+        }
+
+        public ValidationResult<GameState> StartGame(Guid gameId)
+        {
+            if (gameId == Guid.Empty) return ValidationResult<GameState>.Failure("gameId needs to be set");
+
+            var game = _repo.Get(gameId);
+
+            if (game == null) return ValidationResult<GameState>.Failure("Game could not be found");
+
+            if(game.Players.Count < 2)
+                ValidationResult<GamePlayer>.Failure("Game must have at least 2 players to start");
+
+            var list = new List<GamePlayer>(game.Players);
+
+            for (int i = 1; i <= game.Players.Count; i++)
+            {
+                var random = new Random();
+
+                var item = list.ElementAt(random.Next(0, list.Count - 1));
+
+                game.PlayerOrder.Add(i, item.Id);
+
+                list.Remove(item);
+            }
+
+            game.Turn = 1;
+            game.Started = true;
+
+            _repo.Save();
+
+            return ValidationResult<GameState>.Success.WithData(game);
         }
     }
 }

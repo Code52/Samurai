@@ -106,5 +106,15 @@ namespace SamuraiServer.Areas.Api.Controllers
         {
             return View(new { ok = true, games = _gameStateProvider.ListOpenGames() });
         }
+
+        [Api]
+        public ActionResult StartGame(Guid gameId)
+        {
+            var result = _gameStateProvider.StartGame(gameId);
+
+            if (result.IsValid == false) return View(new { ok = false, message = result.Message });
+
+            return View(new { ok = true, game = result.Data });
+        }
     }
 }
