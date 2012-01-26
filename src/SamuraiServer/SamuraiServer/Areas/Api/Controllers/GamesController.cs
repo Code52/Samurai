@@ -24,7 +24,8 @@ namespace SamuraiServer.Areas.Api.Controllers
         {
             try
             {
-                var gameState = _gameStateProvider.CreateAndJoin(name, playerId);
+                var gameState = _gameStateProvider.CreateGame(name);
+                gameState = _gameStateProvider.JoinGame(gameState.Id, playerId);
                 return View(new {ok = true, game = gameState});
             }
             catch
@@ -50,13 +51,12 @@ namespace SamuraiServer.Areas.Api.Controllers
 
         [Api]
         [HttpPost]
-        public ActionResult JoinGame(Guid gameId, string userName)
+        public ActionResult JoinGame(Guid gameId, Guid playerId)
         {
             try
             {
-                var player = _playersProvider.Create(userName);
-                var game = _gameStateProvider.JoinGame(gameId, player.Id);
-                return View(new {ok = true, game, player});
+                var game = _gameStateProvider.JoinGame(gameId, playerId);
+                return View(new {ok = true, game});
             }
             catch
             {
