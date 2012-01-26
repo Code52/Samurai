@@ -6,7 +6,7 @@ namespace SamuraiServer.Data
     public interface IPlayersProvider
     {
         IEnumerable<Player> GetLeaderboard(int page, int players);
-        Player Create(string name);
+        ValidationResult<Player> Create(string name);
         Player Get(Guid id);
         void Invite(Guid id);
         void Ban(Guid id);

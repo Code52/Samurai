@@ -53,6 +53,11 @@ namespace SamuraiServer.Data.Impl
             throw new NotImplementedException();
         }
 
+        public Player GetByName(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Invite(Guid id)
         {
             throw new NotImplementedException();

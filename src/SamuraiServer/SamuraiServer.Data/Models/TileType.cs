@@ -7,10 +7,10 @@ namespace SamuraiServer.Data
 {
     public abstract class TileType
     {
-        public string Name { get; set; }
+        public abstract string Name { get; }
 
-        public string ImageSpriteResource { get; set; }
+        public abstract bool CanMoveOn { get; }
 
-        public bool CanMoveOn { get; set; }
+        public abstract bool CanShootOver { get; }
     }
 }

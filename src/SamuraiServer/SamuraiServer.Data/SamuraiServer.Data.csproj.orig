@@ -67,17 +67,21 @@
     <Compile Include="Providers\IPlayersProvider.cs" />
     <Compile Include="Providers\MapProvider.cs" />
     <Compile Include="Providers\PlayersProvider.cs" />
+<<<<<<< HEAD
     <Compile Include="Providers\CommandProcessor.cs" />
     <Compile Include="Providers\Point.cs" />
+=======
     <Compile Include="Tiles\Grass.cs" />
     <Compile Include="Tiles\Rock.cs" />
     <Compile Include="Tiles\Tree.cs" />
     <Compile Include="Tiles\Water.cs" />
+>>>>>>> master
   </ItemGroup>
   <ItemGroup>
     <None Include="Models\ClassDiagram.cd" />
     <None Include="Models\Persist.cd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

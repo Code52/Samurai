@@ -8,10 +8,11 @@ namespace SamuraiServer.Data
     public interface IGameStateProvider
     {
         GameState Load(Guid id);
-        void Save(GameState state);
+        ValidationResult Save(GameState state);
         IEnumerable<GameState> ListOpenGames();
         IEnumerable<GameState> ListCurrentGames(string userName);
-        GameState CreateGame(string name);
-        GameState JoinGame(Guid gameId, Guid playerId);
+        ValidationResult<GameState> CreateGame(string name);
+        ValidationResult<GameState> JoinGame(Guid gameId, Guid playerId);
+        ValidationResult LeaveGame(Guid gameId, string userName);
     }
 }

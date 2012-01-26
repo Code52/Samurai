@@ -7,5 +7,6 @@ namespace SamuraiServer.Data
 {
     public interface IGameStateRepository: IGenericRepository<GameState>
     {
+        GameState GetByName(string name);
     }
 }
