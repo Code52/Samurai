@@ -9,7 +9,6 @@ namespace SamuraiServer.Tests.API
 {
     public class MatchControllerTests
     {
-
         public class When_User_Sends_No_Command_For_Match : SpecificationFor<MatchController>
         {
             public override MatchController Given()
