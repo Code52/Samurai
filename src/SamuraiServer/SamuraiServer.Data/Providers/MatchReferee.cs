@@ -18,6 +18,9 @@ namespace SamuraiServer.Data.Providers
 
             if (foundUnit != null)
             {
+                if (!IsCurrentPlayer(foundUnit))
+                    return null;
+
                 // TODO: we need to check that the move is valid
                 // TODO: how do we specify the "range" of a unit's movement?
                 // TODO: how do we specify the destination of a move is valid?
@@ -27,6 +30,15 @@ namespace SamuraiServer.Data.Providers
             }
 
             return foundUnit;
+        }
+
+        private bool IsCurrentPlayer(Unit foundUnit)
+        {
+            var playerOwningUnit = _match.Players.FirstOrDefault(c => c.Units.Contains(foundUnit));
+            if (playerOwningUnit == null)
+                return false;
+
+            return _match.Players[_match.Turn] == playerOwningUnit;
         }
     }
 }

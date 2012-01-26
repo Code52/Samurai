@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using MvcApi;
 
@@ -52,9 +53,9 @@ namespace SamuraiServer.Areas.Api.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public ActionResult SendCommand(int user) // TODO: model to map values to
+        public ActionResult SendCommand(Guid matchId, string userName, IEnumerable<dynamic> commands) 
         {
-            return View(); // return details around the success/failure of the move
+            return View(new { status = true }); // return details around the success/failure of the move
         }
     }
 }

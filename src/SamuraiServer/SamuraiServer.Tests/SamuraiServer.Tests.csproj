@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="API\Extensions.cs" />
     <Compile Include="API\GamesControllerTests.cs" />
+    <Compile Include="API\MatchControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\GameStateProviderTests.cs" />
     <Compile Include="Providers\PlayersProviderTests.cs" />
