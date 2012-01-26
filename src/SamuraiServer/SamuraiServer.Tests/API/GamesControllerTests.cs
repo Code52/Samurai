@@ -29,11 +29,11 @@ namespace SamuraiServer.Tests.API
             _dummyMap = GetDummyMap();
 
             _gameStateProvider = Substitute.For<IGameStateProvider>();
-            _gameStateProvider.CreateGame(Arg.Any<string>()).ReturnsForAnyArgs(_dummyGameState);
-            _gameStateProvider.JoinGame(Arg.Any<Guid>(), Arg.Any<Guid>()).ReturnsForAnyArgs(_dummyGameState);
+            _gameStateProvider.CreateGame(Arg.Any<string>()).ReturnsForAnyArgs(ValidationResult<GameState>.Success.WithData(_dummyGameState));
+            _gameStateProvider.JoinGame(Arg.Any<Guid>(), Arg.Any<Guid>()).ReturnsForAnyArgs(ValidationResult<GameState>.Success.WithData(_dummyGameState));
 
             _playersProvider = Substitute.For<IPlayersProvider>();
-            _playersProvider.Create(Arg.Any<string>()).ReturnsForAnyArgs(_dummyPlayer);
+            _playersProvider.Create(Arg.Any<string>()).ReturnsForAnyArgs(ValidationResult<Player>.Success.WithData(_dummyPlayer));
 
 
             _controller = new GamesController(_gameStateProvider, _playersProvider);

@@ -43,5 +43,10 @@ namespace SamuraiServer.Data.Impl
         {
             throw new NotImplementedException();
         }
+
+        public GameState GetByName(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

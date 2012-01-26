@@ -7,5 +7,6 @@ namespace SamuraiServer.Data
 {
     public interface IPlayerRepository: IGenericRepository<Player>
     {
+        Player GetByName(string name);
     }
 }
