@@ -1,0 +1,27 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <UsingTask AssemblyFile=".\tools\xunit\xunit.runner.msbuild.dll" TaskName="Xunit.Runner.MSBuild.xunit" />
+
+  <Target Name="CompileClient">
+  	<MSBuild Projects="./src/Samurai.Client.Wp7/Samurai.Client.Wp7.sln" Properties="Configuration=$(Configuration)" />
+  </Target>
+
+  <Target Name="CompileService">
+	<MSBuild Projects="./src/SamuraiServer/SamuraiServer.sln" Properties="Configuration=$(Configuration)" />
+  </Target>
+
+  <Target Name="Compile" DependsOnTargets="CompileService;CompileClient">
+
+  </Target>
+
+  
+  <Target Name="Test" DependsOnTargets="Compile">
+
+  	<ItemGroup>
+  		<TestFiles Include=".\**\bin\$(Configuration)\*Tests.dll" />
+	</ItemGroup>
+
+    <xunit Assembly="@(TestFiles)" />
+  </Target>
+
+</Project>
