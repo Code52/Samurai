@@ -9,7 +9,7 @@ namespace Samurai.Client.ConsoleClient
 {
     internal class Program
     {
-        static ServerApi api = new ServerApi("http://localhost:49706/");
+        static ServerApi api = new ServerApi("http://samuraitest.apphb.com/");
 
         static Player CurrentPlayer = null;
         static Dictionary<Guid, GameState> CurrentGames = new Dictionary<Guid, GameState>();

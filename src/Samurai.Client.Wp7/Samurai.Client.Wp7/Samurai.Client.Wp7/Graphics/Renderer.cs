@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SamuraiServer.Data;
-using SamuraiServer.Data.Tiles;
 
 namespace Samurai.Client.Wp7.Graphics
 {
@@ -16,10 +15,12 @@ namespace Samurai.Client.Wp7.Graphics
 
         public void LoadContent(ContentManager content)
         {
+            // TODO: Uncomment when other tile type images added
+
             textures.Clear();
             textures.Add(content.Load<Texture2D>("Textures\\grass"));
-            // TODO: Uncomment when other tile type images added
-            //textures.Add(content.Load<Texture2D>("Textures\\rock"));
+            textures.Add(content.Load<Texture2D>("Textures\\rock"));
+
             //textures.Add(content.Load<Texture2D>("Textures\\tree"));
             //textures.Add(content.Load<Texture2D>("Textures\\water"));
         }
@@ -58,13 +59,16 @@ namespace Samurai.Client.Wp7.Graphics
 
         protected Texture2D GetTex(TileType cell)
         {
-            if (cell is Grass) return textures[0];
-            // TODO: Uncomment when other tile type images added
-            //if (cell is Rock) return textures[1];
-            //if (cell is Tree) return textures[2];
-            //if (cell is Water) return textures[3];
+            switch (cell.Name)
+            {
+                case "Grass":
+                    return textures[0];
+                case "Rock":
+                    return textures[1];
 
-            return null;
+                default:
+                    return null;
+            }
         }
     }
 }
