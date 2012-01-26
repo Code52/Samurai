@@ -7,31 +7,23 @@ using Xunit;
 
 namespace SamuraiServer.Tests.Providers
 {
-    public class UmpireTests
-    {
-        public class Ninja : Unit { }
+    public class Ninja : Unit { }
 
-        public class When_Moving_A_Unit_In_A_Game : SpecificationFor<MatchReferee>
+    public class SimpleCommandProcessorTests
+    {
+        public class When_Moving_A_Unit_In_A_Game : TwoPlayerGame
         {
             readonly Guid id = Guid.NewGuid();
-            
-            GameState match;
             Ninja activeUnit;
             Unit adjustedUnit;
 
-            public override MatchReferee Given()
+            public override CommandProcessor Given()
             {
-                activeUnit = new Ninja { Id = id, X = 0, Y = 0 };
-                activeUnit.Range = 1;
+                activeUnit = new Ninja { Id = id, X = 0, Y = 0, Range = 1 };
 
-                var firstPlayer = new GamePlayer();
-                firstPlayer.Units.Add(activeUnit);
+                FirstPlayer.Units.Add(activeUnit);
 
-                match = new GameState();
-                match.Players.Add(firstPlayer);
-                match.Players.Add(new GamePlayer());
-
-                return new MatchReferee(match);
+                return new CommandProcessor(State);
             }
 
             public override void When()
@@ -53,27 +45,24 @@ namespace SamuraiServer.Tests.Providers
             }
         }
 
-        public class When_A_Player_Moves_Out_Of_Order : SpecificationFor<MatchReferee>
+        public class When_A_Player_Moves_Out_Of_Order : TwoPlayerGame
         {
             readonly Guid id = Guid.NewGuid();
             Ninja activeUnit;
             Ninja otherUnit;
             Unit adjustedUnit;
 
-            public override MatchReferee Given()
+            public override CommandProcessor Given()
             {
                 activeUnit = new Ninja { Id = id, X = 0, Y = 0 };
                 otherUnit = new Ninja { Id = Guid.NewGuid(), X = 1, Y = 1 };
-                var firstPlayer = new GamePlayer();
-                firstPlayer.Units.Add(activeUnit);
-                var secondPlayer = new GamePlayer();
-                secondPlayer.Units.Add(otherUnit);
 
-                var match = new GameState();
-                match.Players = new List<GamePlayer> { firstPlayer, secondPlayer };
-                match.Turn = match.Players.IndexOf(secondPlayer);
+                FirstPlayer.Units.Add(activeUnit);
+                SecondPlayer.Units.Add(otherUnit);
 
-                return new MatchReferee(match);
+                State.Turn = State.Players.IndexOf(SecondPlayer);
+
+                return new CommandProcessor(State);
             }
 
             public override void When()
@@ -88,26 +77,20 @@ namespace SamuraiServer.Tests.Providers
             }
         }
 
-
-        public class When_A_Unit_Moves_More_Than_Its_Allowed_Range : SpecificationFor<MatchReferee>
+        public class When_A_Unit_Moves_More_Than_Its_Allowed_Range : TwoPlayerGame
         {
             Guid id = Guid.NewGuid();
             Ninja activeUnit;
-            GameState match;
             Unit modifiedUnit;
 
-            public override MatchReferee Given()
+            public override CommandProcessor Given()
             {
                 activeUnit = new Ninja { Id = id, X = 0, Y = 0 };
                 activeUnit.Range = 1;
-                var firstPlayer = new GamePlayer();
-                firstPlayer.Units.Add(activeUnit);
 
-                match = new GameState();
-                match.Players.Add(firstPlayer);
-                match.Players.Add(new GamePlayer());
+                FirstPlayer.Units.Add(activeUnit);
 
-                return new MatchReferee(match);               
+                return new CommandProcessor(State);
             }
 
             public override void When()
@@ -119,6 +102,23 @@ namespace SamuraiServer.Tests.Providers
             public void The_Result_Is_Null()
             {
                 Assert.Null(modifiedUnit);
+            }
+        }
+    }
+
+    public class ComplexCommandProcessorTests
+    {
+
+        public class When_Sending_A_Move_As_JSON : SpecificationFor<CommandProcessor>
+        {
+            public override CommandProcessor Given()
+            {
+                throw new NotImplementedException();
+            }
+
+            public override void When()
+            {
+                throw new NotImplementedException();
             }
         }
     }

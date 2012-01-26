@@ -1,15 +1,49 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SamuraiServer.Data.Providers
 {
-    public class MatchReferee
+    public class CommandProcessor
     {
         private readonly GameState _match;
 
-        public MatchReferee(GameState match)
+        public CommandProcessor(GameState match)
         {
             _match = match;
+        }
+
+        public void Process(IEnumerable<dynamic> commands)
+        {
+            foreach (var c in commands)
+            {
+                if (c.type == "move")
+                {
+                    ProcessMove(c);
+                }
+                //if (c.type == "attack")
+                //{
+                //    ProcessAttack(c);
+                //}
+                //if (c.type == "create")
+                //{
+                //    ProcessCreate(c);
+                //}
+
+
+            }
+
+
+        }
+
+        private void ProcessMove(dynamic o)
+        {
+            string unitId = o.unitId.ToString(); // mismatch between this and "unit-id" from JSON
+            Guid id;
+            if (!Guid.TryParse(unitId, out id))
+            {
+
+            }
         }
 
         public Unit MoveUnit(Guid id, int x, int y)
@@ -27,10 +61,6 @@ namespace SamuraiServer.Data.Providers
 
                 if (distance > foundUnit.Range)
                     return null;
-                
-                // TODO: we need to check that the move is valid
-                // TODO: how do we specify the "range" of a unit's movement?
-                // TODO: how do we specify the destination of a move is valid?
 
                 foundUnit.X = x;
                 foundUnit.Y = y;

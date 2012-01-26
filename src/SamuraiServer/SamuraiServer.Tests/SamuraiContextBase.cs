@@ -7,8 +7,13 @@ namespace IdeaStrike.Tests
         public abstract T Given();
         public abstract void When();
 
-        public SpecificationFor()
+        public virtual void SetUp()
         {
+            
+        }
+        protected SpecificationFor()
+        {
+            SetUp();
             Subject = Given();
             When();
         }
