@@ -2,10 +2,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
+using Samurai.Client.Wp7.Api;
 using Samurai.Client.Wp7.Graphics;
 using SamuraiServer.Data;
-using SamuraiServer.Data.Tiles;
-using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Samurai.Client.Wp7.Screens
 {
@@ -14,18 +14,25 @@ namespace Samurai.Client.Wp7.Screens
         private ContentManager content;
         private SpriteBatch sb;
         private Renderer renderer;
+
         // For map scrolling
         private int xOffset = 0;
         private int yOffset = 0;
         private Vector2 prevPos = Vector2.Zero;
 
-        // TESTING
-        private Map fakemap;
+        private Map map;
+        private ServerApi api;
 
         public GameScreen()
             : base()
         {
             renderer = new Renderer();
+        }
+
+        public void Init(ServerApi api, Player player, GameState game)
+        {
+            this.api = api;
+            this.map = game.Map;
         }
 
         public override void LoadContent()
@@ -40,18 +47,6 @@ namespace Samurai.Client.Wp7.Screens
                 () =>
                 {
                     renderer.LoadContent(content);
-
-                    // TESTING
-                    fakemap = new Map();
-                    fakemap.Tiles = new TileType[50][];
-                    for (int x = 0; x < fakemap.Tiles.Length; x++)
-                    {
-                        fakemap.Tiles[x] = new TileType[50];
-                        for (int y = 0; y < fakemap.Tiles[x].Length; y++)
-                        {
-                            fakemap.Tiles[x][y] = new Grass();
-                        }
-                    }
 
                     // This indicates that the screen has finished loading and can be displayed without issues
                     IsReady = true;
@@ -73,26 +68,31 @@ namespace Samurai.Client.Wp7.Screens
             if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back))
                 Manager.ExitGame();
 
-            // TESTING
             var touches = TouchPanel.GetState();
             if (touches.Count > 0)
             {
-                var mapSize = renderer.GetMapSize(fakemap);
+                var mapSize = renderer.GetMapSize(map);
                 if (touches[0].State == TouchLocationState.Pressed)
                     prevPos = touches[0].Position;
                 else if (touches[0].State == TouchLocationState.Moved)
                 {
-                    xOffset -= (int)(touches[0].Position.X - prevPos.X);
-                    if (xOffset < 0)
-                        xOffset = 0;
-                    else if (xOffset >= (mapSize.X - Manager.GraphicsDevice.Viewport.Width))
-                        xOffset = mapSize.X - Manager.GraphicsDevice.Viewport.Width;
+                    if (mapSize.X > Manager.GraphicsDevice.Viewport.Width)
+                    {
+                        xOffset -= (int)(touches[0].Position.X - prevPos.X);
+                        if (xOffset < 0)
+                            xOffset = 0;
+                        else if (xOffset >= (mapSize.X - Manager.GraphicsDevice.Viewport.Width))
+                            xOffset = mapSize.X - Manager.GraphicsDevice.Viewport.Width;
+                    }
 
-                    yOffset -= (int)(touches[0].Position.Y - prevPos.Y);
-                    if (yOffset < 0)
-                        yOffset = 0;
-                    else if (yOffset >= (mapSize.Y - Manager.GraphicsDevice.Viewport.Height))
-                        yOffset = mapSize.Y - Manager.GraphicsDevice.Viewport.Height;
+                    if (mapSize.Y > Manager.GraphicsDevice.Viewport.Height)
+                    {
+                        yOffset -= (int)(touches[0].Position.Y - prevPos.Y);
+                        if (yOffset < 0)
+                            yOffset = 0;
+                        else if (yOffset >= (mapSize.Y - Manager.GraphicsDevice.Viewport.Height))
+                            yOffset = mapSize.Y - Manager.GraphicsDevice.Viewport.Height;
+                    }
                     prevPos = touches[0].Position;
                 }
             }
@@ -106,7 +106,7 @@ namespace Samurai.Client.Wp7.Screens
                 return;
 
             sb.Begin();
-            renderer.DrawMap(device, sb, fakemap, xOffset, yOffset);
+            renderer.DrawMap(device, sb, map, xOffset, yOffset);
             sb.End();
 
             base.Draw(elapsedSeconds, device);
