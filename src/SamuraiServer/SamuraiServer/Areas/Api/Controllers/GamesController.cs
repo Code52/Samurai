@@ -104,7 +104,7 @@ namespace SamuraiServer.Areas.Api.Controllers
         [Api]
         public ActionResult GetOpenGames()
         {
-            return View(new { games = _gameStateProvider.ListOpenGames() });
+            return View(new { ok = true, games = _gameStateProvider.ListOpenGames() });
         }
     }
 }

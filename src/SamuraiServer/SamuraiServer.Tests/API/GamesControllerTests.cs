@@ -39,39 +39,6 @@ namespace SamuraiServer.Tests.API
             _controller = new GamesController(_gameStateProvider, _playersProvider);
         }
 
-        // ReSharper disable PossibleNullReferenceException
-        [Fact]
-        public void CreateGame_AnyNameAnyUser_CallsProvider()
-        {
-            //arrange
-            var gameName = "someName";
-
-            //act
-            var viewResult = _controller.CreateGame(gameName) as ViewResult;
-
-            // assert
-            Assert.NotNull(viewResult.Model);
-            var model = viewResult.Model.AsDynamic();
-
-            Assert.NotNull(model.game);
-            Assert.Equal(_dummyGameState, model.game);
-            _gameStateProvider.Received().CreateGame(gameName);
-        }
-
-        [Fact]
-        public void CreateGame_WhenExceptionOccurs_ReturnsFalse()
-        {
-            //arrange
-            var gameName = "someName";
-            SetupGameStateProviderException();
-
-            //act
-            var viewResult = _controller.CreateGame(gameName) as ViewResult;
-
-            //assert
-            TestForViewOkFalse(viewResult);
-        }
-
         [Fact]
         public void CreateGameAndJoin_AnyNameAnyUser_CallsProvider()
         {

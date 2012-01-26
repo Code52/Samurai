@@ -12,7 +12,12 @@
 	<MSBuild Projects="./src/SamuraiServer/SamuraiServer.sln" Properties="Configuration=$(Configuration)" />
   </Target>
 
-  <Target Name="Compile" DependsOnTargets="CompileService;CompileClient">
+  <Target Name="CompileConsole">
+  	<Message Text=" ===========Building Console client===========" Importance="High" />
+	<MSBuild Projects="./src/Samurai.Client.Console/Samurai.Client.Console.sln" Properties="Configuration=$(Configuration)" />
+  </Target>
+  
+  <Target Name="Compile" DependsOnTargets="CompileService;CompileClient;CompileConsole">
 
   </Target>
 
