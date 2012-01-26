@@ -12,5 +12,10 @@ namespace SamuraiServer.Data.Tiles
         public override bool CanMoveOn { get { return false; } }
 
         public override bool CanShootOver { get { return false; } }
+
+        public override string StringRepresentation
+        {
+            get { return "T"; }
+        }
     }
 }

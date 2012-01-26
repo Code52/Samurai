@@ -59,7 +59,7 @@ namespace SamuraiServer.Data
 
             var id = Guid.NewGuid();
             
-            var gameState = new GameState { Id = id, Name = name, Map = _mapProvider.GetRandomMap() };
+            var gameState = new GameState { Id = id, Name = name, MapId = _mapProvider.GetRandomMap().Id };
             
             _repo.Add(gameState);
             _repo.Save();
@@ -108,6 +108,19 @@ namespace SamuraiServer.Data
             this.Save(currentGame);
 
             return ValidationResult.Success;
+        }
+
+        public ValidationResult<string[][]> GetMap(Guid mapId)
+        {
+            try
+            {
+                var map = _mapProvider.Get(mapId);
+                return ValidationResult<string[][]>.Success.WithData(map.GetStringRepresentation());
+            }
+            catch
+            {
+                return ValidationResult<string[][]>.Failure("Invalid Map Id");
+            }
         }
     }
 }
