@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using IdeaStrike.Tests;
+using NSubstitute;
 using SamuraiServer.Areas.Api.Controllers;
+using SamuraiServer.Data;
 using Xunit;
 
 namespace SamuraiServer.Tests.API
@@ -13,7 +15,8 @@ namespace SamuraiServer.Tests.API
         {
             public override MatchController Given()
             {
-                return new MatchController();
+                IGameStateRepository repo = Substitute.For<IGameStateRepository>();
+                return new MatchController(repo);
             }
 
             private Guid gameId;

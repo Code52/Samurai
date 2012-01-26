@@ -2,13 +2,21 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using MvcApi;
+using SamuraiServer.Data;
+using SamuraiServer.Data.Providers;
 
 namespace SamuraiServer.Areas.Api.Controllers
 {
     public class MatchController : Controller
     {
+        private readonly IGameStateRepository repo;
         //
         // GET: /Api/Match/
+
+        public MatchController(IGameStateRepository repo)
+        {
+            this.repo = repo;
+        }
 
         /// <summary>
         /// Indicate that the players associated with a game are ready to start
@@ -49,13 +57,29 @@ namespace SamuraiServer.Areas.Api.Controllers
         }
 
         /// <summary>
-        /// Apply a move to a current game
+        /// 
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="gameId"></param>
+        /// <param name="player"></param>
+        /// <param name="commands"></param>
         /// <returns></returns>
-        public ActionResult SendCommand(Guid matchId, string userName, IEnumerable<dynamic> commands) 
+        [Api]
+        [HttpPost]
+        public ActionResult SendCommand(Guid gameId, string player, IEnumerable<dynamic> commands) 
         {
-            return View(new { status = true }); // return details around the success/failure of the move
+            var game = repo.Get(gameId);
+            if (game == null)
+                return View(new { status = false, error = "Game could not be found" });
+
+            var processor = new CommandProcessor(game);
+
+            var result = processor.Process(commands);
+
+            // TODO: save game
+            // TODO: need an endpoint for others to query 
+            // TODO: error message format isn't right - needs command and message
+
+            return View(new { status = true, data = new { gameId, player, units = result.Units, errors = result.Errors  } }); // return details around the success/failure of the move
         }
     }
 }
