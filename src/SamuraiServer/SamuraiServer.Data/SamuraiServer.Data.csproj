@@ -67,6 +67,7 @@
     <Compile Include="Providers\MapProvider.cs" />
     <Compile Include="Providers\PlayersProvider.cs" />
     <Compile Include="Providers\MatchReferee.cs" />
+    <Compile Include="Providers\Point.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Models\ClassDiagram.cd" />

@@ -21,6 +21,13 @@ namespace SamuraiServer.Data.Providers
                 if (!IsCurrentPlayer(foundUnit))
                     return null;
 
+                var newCoordinates = new Point(x, y);
+                var currentCoordinates = new Point(foundUnit.X, foundUnit.Y);
+                var distance = newCoordinates.DistanceFrom(currentCoordinates);
+
+                if (distance > foundUnit.Range)
+                    return null;
+                
                 // TODO: we need to check that the move is valid
                 // TODO: how do we specify the "range" of a unit's movement?
                 // TODO: how do we specify the destination of a move is valid?
@@ -30,6 +37,14 @@ namespace SamuraiServer.Data.Providers
             }
 
             return foundUnit;
+        }
+
+        public void Attack(Guid id, Guid targetId)
+        {
+            // TODO: get units associated with ids
+            // TODO: check target is within range of attacker
+            // TODO: execute damage on target
+            // TODO: 
         }
 
         private bool IsCurrentPlayer(Unit foundUnit)
@@ -42,3 +57,4 @@ namespace SamuraiServer.Data.Providers
         }
     }
 }
+

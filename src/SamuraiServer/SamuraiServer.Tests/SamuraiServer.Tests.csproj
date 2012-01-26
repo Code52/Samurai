@@ -54,8 +54,8 @@
     <Compile Include="API\MatchControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\GameStateProviderTests.cs" />
+    <Compile Include="Providers\MatchRefereeTests.cs" />
     <Compile Include="Providers\PlayersProviderTests.cs" />
-    <Compile Include="Providers\UmpireTests.cs" />
     <Compile Include="SamuraiContextBase.cs" />
   </ItemGroup>
   <ItemGroup>
