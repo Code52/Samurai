@@ -36,21 +36,6 @@ namespace SamuraiServer.Areas.Api.Controllers
 
         [Api]
         [HttpPost]
-        public ActionResult CreateGame(string name)
-        {
-            try
-            {
-                var gameState = _gameStateProvider.CreateGame(name);
-                return View(new { ok = true, game = gameState });
-            }
-            catch
-            {
-                return View(new { ok = false });
-            }
-        }
-
-        [Api]
-        [HttpPost]
         public ActionResult JoinGame(Guid gameId, Guid playerId)
         {
             try
