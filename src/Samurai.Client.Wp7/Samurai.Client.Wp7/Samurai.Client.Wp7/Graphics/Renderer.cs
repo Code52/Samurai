@@ -31,8 +31,8 @@ namespace Samurai.Client.Wp7.Graphics
 
             int xStart = xOffset % CellWidth;
             int yStart = yOffset % CellWidth;
-            int width = Math.Min((xOffset / CellWidth) + (device.Viewport.Width / CellWidth), map.Tiles.Length);
-            int height = Math.Min((yOffset / CellWidth) + (device.Viewport.Height / CellWidth), map.Tiles[0].Length); // All columns are of equal height
+            int width = Math.Min((xOffset / CellWidth) + (device.Viewport.Width / CellWidth) + 1, map.Tiles.Length);
+            int height = Math.Min((yOffset / CellWidth) + (device.Viewport.Height / CellWidth) + 1, map.Tiles[0].Length); // All columns are of equal height
 
             drawRect.X = -xStart;
             for (int xIndex = xOffset / CellWidth; xIndex < width && xIndex >= 0; ++xIndex)
@@ -47,6 +47,13 @@ namespace Samurai.Client.Wp7.Graphics
                 }
                 drawRect.X += CellWidth;
             }
+        }
+
+        public Point GetMapSize(Map map)
+        {
+            var x = map.Tiles.Length;
+            var y = map.Tiles[0].Length;
+            return new Point(x * CellWidth, y * CellWidth);
         }
 
         protected Texture2D GetTex(TileType cell)

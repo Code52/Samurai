@@ -43,11 +43,11 @@ namespace Samurai.Client.Wp7.Screens
 
                     // TESTING
                     fakemap = new Map();
-                    fakemap.Tiles = new TileType[2][];
-                    for (int x = 0; x < 2; x++)
+                    fakemap.Tiles = new TileType[50][];
+                    for (int x = 0; x < fakemap.Tiles.Length; x++)
                     {
-                        fakemap.Tiles[x] = new TileType[2];
-                        for (int y = 0; y < 2; y++)
+                        fakemap.Tiles[x] = new TileType[50];
+                        for (int y = 0; y < fakemap.Tiles[x].Length; y++)
                         {
                             fakemap.Tiles[x][y] = new Grass();
                         }
@@ -77,6 +77,7 @@ namespace Samurai.Client.Wp7.Screens
             var touches = TouchPanel.GetState();
             if (touches.Count > 0)
             {
+                var mapSize = renderer.GetMapSize(fakemap);
                 if (touches[0].State == TouchLocationState.Pressed)
                     prevPos = touches[0].Position;
                 else if (touches[0].State == TouchLocationState.Moved)
@@ -84,9 +85,14 @@ namespace Samurai.Client.Wp7.Screens
                     xOffset -= (int)(touches[0].Position.X - prevPos.X);
                     if (xOffset < 0)
                         xOffset = 0;
+                    else if (xOffset >= (mapSize.X - Manager.GraphicsDevice.Viewport.Width))
+                        xOffset = mapSize.X - Manager.GraphicsDevice.Viewport.Width;
+
                     yOffset -= (int)(touches[0].Position.Y - prevPos.Y);
                     if (yOffset < 0)
                         yOffset = 0;
+                    else if (yOffset >= (mapSize.Y - Manager.GraphicsDevice.Viewport.Height))
+                        yOffset = mapSize.Y - Manager.GraphicsDevice.Viewport.Height;
                     prevPos = touches[0].Position;
                 }
             }
