@@ -80,29 +80,36 @@ namespace Samurai.Client.Wp7.Api
                 request.Method = "POST";
                 request.Accept = "application/json";
                 request.ContentType = "application/x-www-form-urlencoded";
-                request.BeginGetResponse(_ =>
-                {
-                    try
+                request.BeginGetRequestStream(iar =>
                     {
-                        var response = request.EndGetResponse(_) as HttpWebResponse;
-                        if (response.StatusCode != HttpStatusCode.OK) callback(default(T), new Exception("Unexpected server response " + response.StatusCode));
-
-                        string json;
-                        using (var reader = new StreamReader(response.GetResponseStream()))
+                        using (var stream = request.EndGetRequestStream(iar))
                         {
-                            json = reader.ReadToEnd();
-                            reader.BaseStream.Close();
+                            stream.Write(bytes, 0, bytes.Length);
                         }
-                        response.Close();
+                        request.BeginGetResponse(_ =>
+                        {
+                            try
+                            {
+                                var response = request.EndGetResponse(_) as HttpWebResponse;
+                                if (response.StatusCode != HttpStatusCode.OK) callback(default(T), new Exception("Unexpected server response " + response.StatusCode));
 
-                        T convertedData = JsonConvert.DeserializeObject<T>(json);
-                        callback(convertedData, null);
-                    }
-                    catch (Exception e)
-                    {
-                        callback(default(T), e);
-                    }
-                }, null);
+                                string json;
+                                using (var reader = new StreamReader(response.GetResponseStream()))
+                                {
+                                    json = reader.ReadToEnd();
+                                    reader.BaseStream.Close();
+                                }
+                                response.Close();
+
+                                T convertedData = JsonConvert.DeserializeObject<T>(json);
+                                callback(convertedData, null);
+                            }
+                            catch (Exception e)
+                            {
+                                callback(default(T), e);
+                            }
+                        }, null);
+                    }, null);
             }
             catch (Exception e)
             {

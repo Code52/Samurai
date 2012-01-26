@@ -53,6 +53,7 @@ namespace Samurai.Client.Wp7.Screens
                 if (curScreen != null)
                     curScreen.OnNavigatedFrom();
                 curScreen = nextScreen;
+                nextScreen = null;
                 curScreen.OnNavigatedTo();
             }
 

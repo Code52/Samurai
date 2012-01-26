@@ -8,7 +8,7 @@ namespace Samurai.Client.Wp7.Screens
 {
     public class LobbyScreen : BaseScreen
     {
-        private ServerApi api = new ServerApi("http://localhost");
+        private ServerApi api = new ServerApi("http://samuraitest.apphb.com/");
         private Player player;
 
         public override void LoadContent()
@@ -35,10 +35,15 @@ namespace Samurai.Client.Wp7.Screens
                         {
                             api.CreatePlayer(name, new Action<CreatePlayerResponse, Exception>((r, e) =>
                                 {
-                                    if (r.Ok)
+                                    if (e == null)
                                     {
-                                        player = r.Player;
-                                        Guide.BeginShowKeyboardInput(PlayerIndex.One, "", "Please enter a game name.", "game", Callback, "game");
+                                        if (r.Ok)
+                                        {
+                                            player = r.Player;
+                                            Guide.BeginShowKeyboardInput(PlayerIndex.One, "", "Please enter a game name.", "game", Callback, "game");
+                                        }
+                                        else
+                                            Manager.ExitGame();
                                     }
                                     else
                                     {
@@ -58,11 +63,16 @@ namespace Samurai.Client.Wp7.Screens
                         {
                             api.CreateGameAndJoin(game, player.Id, new Action<CreateGameAndJoinResponse, Exception>((r, e) =>
                             {
-                                if (r.Ok)
+                                if (e == null)
                                 {
-                                    var scr = Manager.GetOrCreateScreen<GameScreen>();
-                                    scr.Init(api, player, r.Game);
-                                    Manager.TransitionTo<GameScreen>();
+                                    if (r.Ok)
+                                    {
+                                        var scr = Manager.GetOrCreateScreen<GameScreen>();
+                                        scr.Init(api, player, r.Game);
+                                        Manager.TransitionTo<GameScreen>();
+                                    }
+                                    else
+                                        Manager.ExitGame();
                                 }
                                 else
                                 {
