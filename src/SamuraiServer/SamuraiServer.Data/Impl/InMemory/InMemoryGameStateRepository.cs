@@ -24,6 +24,11 @@ namespace SamuraiServer.Data.Impl
             return _state[id];
         }
 
+        public GameState GetByName(string name)
+        {
+            return _state.Values.FirstOrDefault(gs => gs.Name == name);
+        }
+
         public void Add(GameState entity)
         {
             _state.Add(entity.Id, entity);

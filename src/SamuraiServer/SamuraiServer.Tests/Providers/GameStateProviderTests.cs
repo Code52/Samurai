@@ -48,7 +48,8 @@ namespace SamuraiServer.Tests.Providers
             var game = _gameStateProvider.CreateGame("foobar");
 
             Assert.NotNull(game);
-            Assert.NotNull(game.Map);
+            Assert.True(game.IsValid.Value);
+            Assert.NotNull(game.Data.Map);
             _mapProvider.Received().GetRandomMap();
         }
 

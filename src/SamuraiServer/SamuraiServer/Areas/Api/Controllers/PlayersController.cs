@@ -28,9 +28,10 @@ namespace SamuraiServer.Areas.Api.Controllers
         [HttpPost]
         public ActionResult CreatePlayer(string name)
         {
-            var resultPlayer = _prov.Create(name);
+            var result = _prov.Create(name);
+            if (result.IsValid == false) return View(new { ok = false, message = result.Message });
 
-            return View(new { ok = true, player = resultPlayer });
+            return View(new { ok = true, player = result.Data });
         }
     }
 }

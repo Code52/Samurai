@@ -24,9 +24,13 @@ namespace SamuraiServer.Areas.Api.Controllers
         {
             try
             {
-                var gameState = _gameStateProvider.CreateGame(name);
-                gameState = _gameStateProvider.JoinGame(gameState.Id, playerId);
-                return View(new {ok = true, game = gameState});
+                var result = _gameStateProvider.CreateGame(name);
+                if (result.IsValid == false) return View(new {ok = false, message = result.Message});
+
+                var gameState = _gameStateProvider.JoinGame(result.Data.Id, playerId);
+                if (gameState.IsValid == false) return View(new { ok = false, message = gameState.Message });
+
+                return View(new {ok = true, game = gameState.Data});
             }
             catch
             {
@@ -36,12 +40,29 @@ namespace SamuraiServer.Areas.Api.Controllers
 
         [Api]
         [HttpPost]
+        public ActionResult CreateGame(string name)
+        {
+            try
+            {
+                var gameState = _gameStateProvider.CreateGame(name);
+                return View(new { ok = true, game = gameState.Data });
+            }
+            catch
+            {
+                return View(new { ok = false });
+            }
+        }
+
+        [Api]
+        [HttpPost]
         public ActionResult JoinGame(Guid gameId, Guid playerId)
         {
             try
             {
-                var game = _gameStateProvider.JoinGame(gameId, playerId);
-                return View(new {ok = true, game});
+                var result = _gameStateProvider.JoinGame(gameId, playerId);
+                if (result.IsValid == false) return View(new { ok = false, message = result.Message });
+
+                return View(new {ok = true, game = result.Data});
             }
             catch
             {
@@ -53,20 +74,8 @@ namespace SamuraiServer.Areas.Api.Controllers
         [HttpPost]
         public ActionResult LeaveGame(Guid gameId, string userName)
         {
-            var currentGame = _gameStateProvider.ListCurrentGames(userName).FirstOrDefault(g => g.Id == gameId);
-
-            if (currentGame == null)
-                return View(new { ok = false, message = "Game does not exist" });
-
-            var player = currentGame.Players.FirstOrDefault(f => f.Player.Name == userName);
-
-            if (player == null)
-                return View(new {ok = false, message = "Player is not in this game"});
-                
-            currentGame.Players.Remove(player);
-
-            _gameStateProvider.Save(currentGame);
-            
+            var result = _gameStateProvider.LeaveGame(gameId, userName);
+            if (result.IsValid == false) return View(new { ok = false, message = result.Message });
 
             return View(new { ok = true });
         }
