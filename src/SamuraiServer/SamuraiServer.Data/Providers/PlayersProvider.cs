@@ -45,6 +45,23 @@ namespace SamuraiServer.Data
             return ValidationResult<Player>.Success.WithData(player);
         }
 
+        public ValidationResult<Player> Login(string name, string apiKey)
+        {
+            Player player = _repo.GetByName(name);
+
+            // See if player 1) wasn't found or 2) ApiKey doesn't match
+            if (player == null || string.CompareOrdinal(apiKey, player.ApiKey) != 0)
+                return ValidationResult<Player>.Failure("User with specified key wasn't found.");
+
+            // Don't login more than once
+            if (player.IsOnline == true)
+                return ValidationResult<Player>.Failure("You are already logged in.");
+
+            player.IsOnline = true;
+
+            return ValidationResult<Player>.Success.WithData(player);
+        }
+
         public Player Get(Guid id)
         {
             return _repo.Get(id);
