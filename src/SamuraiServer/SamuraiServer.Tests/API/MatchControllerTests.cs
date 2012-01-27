@@ -27,7 +27,7 @@ namespace SamuraiServer.Tests.API
 
             public override void When()
             {
-                var result = Subject.SendCommands(gameId, userName, commands) as JsonResult;
+                var result = Subject.SendCommands(gameId, userName, null) as JsonResult;
                 model = result.Data.AsDynamic();
             }
 

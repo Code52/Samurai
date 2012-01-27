@@ -31,7 +31,10 @@ namespace SamuraiServer.Data.Impl
 
         public GameState Get(Guid id)
         {
-            return State[id];
+            if(State.ContainsKey(id))
+                return State[id];
+
+            return null;
         }
 
         public GameState GetByName(string name)

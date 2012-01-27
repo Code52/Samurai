@@ -62,6 +62,9 @@
     <Reference Include="MvcApiActionFilter">
       <HintPath>..\..\Libraries\MvcApiActionFilter.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.0.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Nustache.Core">
       <HintPath>..\packages\Nustache.1.0.0.20110812\Net40\Nustache.Core.dll</HintPath>
     </Reference>
@@ -124,6 +127,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DynamicJsonAttribute.cs" />
+    <Compile Include="Models\DynamicJsonBinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -167,10 +172,11 @@
     <Folder Include="Areas\Api\Views\Games\" />
     <Folder Include="Areas\Api\Views\Players\" />
     <Folder Include="Areas\Api\Views\Shared\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />

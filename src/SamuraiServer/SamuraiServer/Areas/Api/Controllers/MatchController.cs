@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using MvcApi;
 using SamuraiServer.Data;
 using SamuraiServer.Data.Providers;
+using SamuraiServer.Models;
 
 namespace SamuraiServer.Areas.Api.Controllers
 {
@@ -26,7 +26,7 @@ namespace SamuraiServer.Areas.Api.Controllers
         /// <param name="commands"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult SendCommands(Guid gameId, string player, IEnumerable<dynamic> commands) 
+        public ActionResult SendCommands(Guid gameId, string player, [DynamicJson] IEnumerable<dynamic> commands) 
         {
             var game = repo.Get(gameId);
             if (game == null)
@@ -37,10 +37,9 @@ namespace SamuraiServer.Areas.Api.Controllers
             var result = processor.Process(commands);
 
             // TODO: save game
-            // TODO: need an endpoint for others to query 
             // TODO: error message format isn't right - needs command and message
 
-            return Json(new { status = true, data = new { gameId, player, units = result.Units, errors = result.Errors } }); // return details around the success/failure of the move
+            return Json(new { status = true, data = new { gameId, player, units = result.Units, errors = result.Errors } });
         }
     }
 }
