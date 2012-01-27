@@ -18,7 +18,7 @@ namespace Samurai.Client.Wp7.Graphics
             textures.Clear();
             textures.Add(content.Load<Texture2D>("Textures\\grass"));
             textures.Add(content.Load<Texture2D>("Textures\\rock"));
-            textures.Add(content.Load<Texture2D>("Textures\\tree"));
+            textures.Add(content.Load<Texture2D>("Textures\\trees"));
             textures.Add(content.Load<Texture2D>("Textures\\water"));
         }
 
@@ -56,15 +56,15 @@ namespace Samurai.Client.Wp7.Graphics
 
         protected Texture2D GetTex(TileType cell)
         {
-            switch (cell.Name)
+            switch (cell.StringRepresentation)
             {
-                case "Grass":
+                case '.':
                     return textures[0];
-                case "Rock":
+                case '@':
                     return textures[1];
-                case "Tree":
+                case 'T':
                     return textures[2];
-                case "Water":
+                case '~':
                     return textures[3];
 
                 default:

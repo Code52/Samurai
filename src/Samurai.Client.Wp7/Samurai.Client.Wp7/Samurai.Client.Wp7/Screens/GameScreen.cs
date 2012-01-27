@@ -21,6 +21,8 @@ namespace Samurai.Client.Wp7.Screens
         private Vector2 prevPos = Vector2.Zero;
 
         private Map map;
+        private Player player;
+        private GameState game;
         private ServerApi api;
 
         public GameScreen()
@@ -29,10 +31,12 @@ namespace Samurai.Client.Wp7.Screens
             renderer = new Renderer();
         }
 
-        public void Init(ServerApi api, Player player, GameState game)
+        public void Init(ServerApi api, Player player, GameState game, Map map)
         {
             this.api = api;
-            this.map = game.Map;
+            this.player = player;
+            this.game = game;
+            this.map = map;
         }
 
         public override void LoadContent()

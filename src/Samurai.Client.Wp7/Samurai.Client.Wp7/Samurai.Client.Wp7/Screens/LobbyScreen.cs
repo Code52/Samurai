@@ -67,9 +67,24 @@ namespace Samurai.Client.Wp7.Screens
                                 {
                                     if (r.Ok)
                                     {
-                                        var scr = Manager.GetOrCreateScreen<GameScreen>();
-                                        scr.Init(api, player, r.Game);
-                                        Manager.TransitionTo<GameScreen>();
+                                        api.GetMap(r.Game.MapId, new Action<GetMapResponse, Exception>((mr, me) =>
+                                        {
+                                            if (me == null)
+                                            {
+                                                if (r.Ok)
+                                                {
+                                                    var scr = Manager.GetOrCreateScreen<GameScreen>();
+                                                    Map m = Map.FromStringRepresentation(r.Game.MapId, mr.Map);
+
+                                                    scr.Init(api, player, r.Game, m);
+                                                    Manager.TransitionTo<GameScreen>();
+                                                }
+                                                else
+                                                    Manager.ExitGame();
+                                            }
+                                            else
+                                                Guide.BeginShowMessageBox("Error", me.Message, new string[] { "ok" }, 0, MessageBoxIcon.Error, Callback, "error");
+                                        }));
                                     }
                                     else
                                         Manager.ExitGame();
