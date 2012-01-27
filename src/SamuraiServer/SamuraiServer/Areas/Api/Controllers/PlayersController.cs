@@ -49,7 +49,7 @@ namespace SamuraiServer.Areas.Api.Controllers
             else
             {
                 // Login ok, send the player-object back
-                return View(new { ok = true, message = result.Message });
+                return View(new { ok = true, player = result.Data });
             }
         }
     }

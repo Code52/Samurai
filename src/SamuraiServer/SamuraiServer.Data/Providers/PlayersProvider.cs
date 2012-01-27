@@ -53,10 +53,6 @@ namespace SamuraiServer.Data
             if (player == null || string.CompareOrdinal(apiKey, player.ApiKey) != 0)
                 return ValidationResult<Player>.Failure("User with specified key wasn't found.");
 
-            // Don't login more than once
-            if (player.IsOnline == true)
-                return ValidationResult<Player>.Failure("You are already logged in.");
-
             player.IsOnline = true;
 
             return ValidationResult<Player>.Success.WithData(player);
