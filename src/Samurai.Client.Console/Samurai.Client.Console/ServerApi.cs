@@ -137,6 +137,6 @@ namespace Samurai.Client.Api
 
     public class GetMapResponse : ServerResponse
     {
-        public string[][] Map { get; set; }
+        public string[] Map { get; set; }
     }
 }

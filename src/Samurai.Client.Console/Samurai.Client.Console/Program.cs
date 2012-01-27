@@ -13,7 +13,7 @@ namespace Samurai.Client.ConsoleClient
 
         static Player CurrentPlayer = null;
         static Dictionary<Guid, GameState> CurrentGames = new Dictionary<Guid, GameState>();
-        static Dictionary<Guid, string[][]> CurrentMaps = new Dictionary<Guid, string[][]>();
+        static Dictionary<Guid, string[]> CurrentMaps = new Dictionary<Guid, string[]>();
         static GameState CurrentGame = null;
 
         private static void Main(string[] args)

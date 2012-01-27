@@ -110,16 +110,16 @@ namespace SamuraiServer.Data
             return ValidationResult.Success;
         }
 
-        public ValidationResult<string[][]> GetMap(Guid mapId)
+        public ValidationResult<string[]> GetMap(Guid mapId)
         {
             try
             {
                 var map = _mapProvider.Get(mapId);
-                return ValidationResult<string[][]>.Success.WithData(map.GetStringRepresentation());
+                return ValidationResult<string[]>.Success.WithData(map.GetStringRepresentation());
             }
             catch
             {
-                return ValidationResult<string[][]>.Failure("Invalid Map Id");
+                return ValidationResult<string[]>.Failure("Invalid Map Id");
             }
         }
     }

@@ -18,9 +18,9 @@ namespace SamuraiServer.Data
 
         public TileType[][] Tiles { get; set; }
 
-        public string[][] GetStringRepresentation()
+        public string[] GetStringRepresentation()
         {
-            return Tiles.Select(t => t.Select(t2 => t2.StringRepresentation).ToArray()).ToArray();
+            return Tiles.Select(t => new string(t.Select(t2 => t2.StringRepresentation).ToArray())).ToArray();
         }
     }
 }

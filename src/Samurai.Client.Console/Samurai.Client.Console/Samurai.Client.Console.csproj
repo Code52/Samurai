@@ -72,7 +72,6 @@
     <Compile Include="..\..\SamuraiServer\SamuraiServer.Data\Models\Unit.cs">
       <Link>Models\Unit.cs</Link>
     </Compile>
-    <Compile Include="Models\TileType2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerApi.cs" />
