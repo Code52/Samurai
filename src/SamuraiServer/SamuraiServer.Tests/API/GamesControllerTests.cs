@@ -15,28 +15,21 @@ namespace SamuraiServer.Tests.API
     public class GamesControllerTests
     {
         private readonly IGameStateProvider _gameStateProvider;
-        private readonly IPlayersProvider _playersProvider;
         private readonly GamesController _controller;
 
         private GameState _dummyGameState;
         private Player _dummyPlayer;
-        private Map _dummyMap;
 
         public GamesControllerTests()
         {
             _dummyGameState = GetDummyGameState();
             _dummyPlayer = GetDummyPlayer();
-            _dummyMap = GetDummyMap();
 
             _gameStateProvider = Substitute.For<IGameStateProvider>();
             _gameStateProvider.CreateGame(Arg.Any<string>()).ReturnsForAnyArgs(ValidationResult<GameState>.Success.WithData(_dummyGameState));
             _gameStateProvider.JoinGame(Arg.Any<Guid>(), Arg.Any<Guid>()).ReturnsForAnyArgs(ValidationResult<GameState>.Success.WithData(_dummyGameState));
 
-            _playersProvider = Substitute.For<IPlayersProvider>();
-            _playersProvider.Create(Arg.Any<string>()).ReturnsForAnyArgs(ValidationResult<Player>.Success.WithData(_dummyPlayer));
-
-
-            _controller = new GamesController(_gameStateProvider, _playersProvider);
+            _controller = new GamesController(_gameStateProvider);
         }
 
         [Fact]
@@ -46,11 +39,11 @@ namespace SamuraiServer.Tests.API
             var gameName = "someName";
 
             //act
-            var viewResult = _controller.CreateGameAndJoin(gameName, _dummyPlayer.Id) as ViewResult;
+            var viewResult = _controller.CreateGameAndJoin(gameName, _dummyPlayer.Id) as JsonResult;
 
             // assert
-            Assert.NotNull(viewResult.Model);
-            var model = viewResult.Model.AsDynamic();
+            Assert.NotNull(viewResult.Data);
+            var model = viewResult.Data.AsDynamic();
 
             Assert.NotNull(model.game);
             Assert.Equal(_dummyGameState, model.game);
@@ -66,7 +59,7 @@ namespace SamuraiServer.Tests.API
             SetupGameStateProviderException();
 
             //act
-            var viewResult = _controller.CreateGameAndJoin(gameName, _dummyPlayer.Id) as ViewResult;
+            var viewResult = _controller.CreateGameAndJoin(gameName, _dummyPlayer.Id) as JsonResult;
 
             //assert
             TestForViewOkFalse(viewResult);
@@ -80,11 +73,11 @@ namespace SamuraiServer.Tests.API
             var gameId = _dummyGameState.Id;
 
             //act
-            var viewResult = _controller.JoinGame(gameId, _dummyPlayer.Id) as ViewResult;
+            var viewResult = _controller.JoinGame(gameId, _dummyPlayer.Id) as JsonResult;
 
             //assert
-            Assert.NotNull(viewResult.Model);
-            var model = viewResult.Model.AsDynamic();
+            Assert.NotNull(viewResult.Data);
+            var model = viewResult.Data.AsDynamic();
 
             Assert.NotNull(model.game);
             _gameStateProvider.Received().JoinGame(_dummyGameState.Id, _dummyPlayer.Id);
@@ -99,7 +92,7 @@ namespace SamuraiServer.Tests.API
             SetupPlayerProviderException();
 
             //act
-            var viewResult = _controller.JoinGame(gameId, _dummyPlayer.Id) as ViewResult;
+            var viewResult = _controller.JoinGame(gameId, _dummyPlayer.Id) as JsonResult;
 
             //assert
             TestForViewOkFalse(viewResult);
@@ -109,10 +102,10 @@ namespace SamuraiServer.Tests.API
         public void GetGames_WithUnknownUser_ReturnsErrorCode()
         {
             // act
-            var game = _controller.GetGames("") as ViewResult;
+            var game = _controller.GetGames("") as JsonResult;
 
             // assert
-            dynamic model = game.Model.AsDynamic();
+            dynamic model = game.Data.AsDynamic();
             Assert.False(model.ok);
         }
 
@@ -123,10 +116,10 @@ namespace SamuraiServer.Tests.API
             SetupGameStateProviderException();
 
             // act
-            var game = _controller.GetGames("something") as ViewResult;
+            var game = _controller.GetGames("something") as JsonResult;
 
             // assert
-            dynamic model = game.Model.AsDynamic();
+            dynamic model = game.Data.AsDynamic();
             Assert.False(model.ok);
         }
 
@@ -139,10 +132,10 @@ namespace SamuraiServer.Tests.API
 
             _gameStateProvider.LeaveGame(Arg.Any<Guid>(), Arg.Any<string>()).Returns(ValidationResult<GameState>.Failure("Game does not exist"));
             // act
-            var game = _controller.LeaveGame(gameId, "someUser") as ViewResult;
+            var game = _controller.LeaveGame(gameId, "someUser") as JsonResult;
 
             // assert
-            var model = game.Model.AsDynamic();
+            var model = game.Data.AsDynamic();
             Assert.False(model.ok);
             Assert.Equal(model.message, "Game does not exist");
         }
@@ -161,10 +154,10 @@ namespace SamuraiServer.Tests.API
             _gameStateProvider.LeaveGame(Arg.Any<Guid>(), Arg.Any<string>()).Returns(ValidationResult<GameState>.Failure("Player is not in this game"));
 
             // act
-            var game = _controller.LeaveGame(gameId, userName) as ViewResult;
+            var game = _controller.LeaveGame(gameId, userName) as JsonResult;
 
             // assert
-            var model = game.Model.AsDynamic();
+            var model = game.Data.AsDynamic();
 
             Assert.False(model.ok);
             Assert.Equal(model.message, "Player is not in this game");
@@ -214,15 +207,6 @@ namespace SamuraiServer.Tests.API
             };
         }
 
-        private static Map GetDummyMap()
-        {
-            return new Map
-            {
-                ImageResource = "Swashbucklin.jpg",
-                Name = "Booty",
-            };
-        }
-
         private void SetupGameStateProviderException()
         {
             _gameStateProvider.When(g => g.CreateGame(Arg.Any<string>())).Do(c =>
@@ -244,11 +228,11 @@ namespace SamuraiServer.Tests.API
             });
         }
 
-        private static void TestForViewOkFalse(ViewResult viewResult)
+        private static void TestForViewOkFalse(JsonResult viewResult)
         {
-            Assert.NotNull(viewResult.Model);
+            Assert.NotNull(viewResult.Data);
 
-            var model = viewResult.Model.AsDynamic();
+            var model = viewResult.Data.AsDynamic();
             Assert.False(model.ok);
         }
     }
