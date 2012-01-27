@@ -53,9 +53,8 @@ namespace Samurai.Client.Wp7.Screens
                 playBtn.Triggered +=
                     (b) =>
                     {
-                        var game = Manager.GetOrCreateScreen<GameScreen>();
-                        // TODO: Replace with lobby - TESTING
-                        Manager.TransitionTo<GameScreen>();
+                        Manager.GetOrCreateScreen<LobbyScreen>();
+                        Manager.TransitionTo<LobbyScreen>();
                     };
             }
         }
