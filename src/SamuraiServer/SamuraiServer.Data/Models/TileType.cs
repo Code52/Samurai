@@ -5,14 +5,14 @@ using System.Text;
 
 namespace SamuraiServer.Data
 {
-    public class TileType
+    public abstract class TileType
     {
-        public string Name { get; set; }
+        public abstract string Name { get; }
 
-        public bool CanMoveOn { get; set; }
+        public abstract bool CanMoveOn { get; }
 
-        public bool CanShootOver { get; set; }
+        public abstract bool CanShootOver { get; }
 
-        public char StringRepresentation { get; set; }
+        public abstract char StringRepresentation { get; }
     }
 }

@@ -56,15 +56,15 @@ namespace Samurai.Client.Wp7.Graphics
 
         protected Texture2D GetTex(TileType cell)
         {
-            switch (cell.StringRepresentation)
+            switch (cell.Name)
             {
-                case '.':
+                case "Grass":
                     return textures[0];
-                case '@':
+                case "Rock":
                     return textures[1];
-                case 'T':
+                case "Tree":
                     return textures[2];
-                case '~':
+                case "Water":
                     return textures[3];
 
                 default:
