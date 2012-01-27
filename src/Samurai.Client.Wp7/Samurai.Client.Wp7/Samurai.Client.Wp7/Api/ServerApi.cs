@@ -6,6 +6,9 @@ using System.Net;
 using Newtonsoft.Json;
 using System.IO;
 using SamuraiServer.Data;
+#if MONO
+using MonoTouch.Foundation;
+#endif
 
 namespace Samurai.Client.Wp7.Api
 {
@@ -23,7 +26,8 @@ namespace Samurai.Client.Wp7.Api
 
         private void Get<T>(string url, Action<T, Exception> callback) {
             try {
-                var request = HttpWebRequest.CreateHttp(Uri(url));
+				// A simple Create should be ok? Mono doesn't support CreateHttp
+                var request = HttpWebRequest.Create(Uri(url));
                 request.BeginGetResponse(_ => {
                     try {
                         var response = request.EndGetResponse(_) as HttpWebResponse;
