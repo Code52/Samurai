@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace SamuraiServer.Data.Impl
 {
@@ -11,6 +10,11 @@ namespace SamuraiServer.Data.Impl
         private static List<Player> _players = new List<Player>();
         
         public dynamic Context { get { return _players; } }
+
+        public InMemoryPlayerRepository()
+        {
+            _players.Add(new Player { Name = "shiftkey", Id = Guid.NewGuid(), IsOnline= true });
+        }
 
         public IQueryable<Player> GetAll()
         {
