@@ -24,6 +24,9 @@ namespace SamuraiServer.Data.Providers
             var units = new List<Unit>();
             var errors = new List<ValidationResult>();
 
+            if(commands == null)
+                return new CommandResult { Units = units, Errors = errors };
+
             foreach (var c in commands)
             {
                 if (c.action == "move")

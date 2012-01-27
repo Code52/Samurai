@@ -13,20 +13,22 @@ namespace SamuraiServer.Tests.API
     {
         public class When_User_Sends_No_Command_For_Match : SpecificationFor<MatchController>
         {
+            Guid gameId = Guid.NewGuid();
+
             public override MatchController Given()
             {
-                IGameStateRepository repo = Substitute.For<IGameStateRepository>();
+                var repo = Substitute.For<IGameStateRepository>();
+                repo.Get(gameId).Returns(new GameState());
                 return new MatchController(repo);
             }
 
-            private Guid gameId;
             private string userName;
             private IEnumerable<dynamic> commands;
 
             public override void When()
             {
-                var result = Subject.SendCommand(gameId, userName, commands) as ViewResult;
-                model = result.Model.AsDynamic();
+                var result = Subject.SendCommands(gameId, userName, commands) as JsonResult;
+                model = result.Data.AsDynamic();
             }
 
             private dynamic model;
