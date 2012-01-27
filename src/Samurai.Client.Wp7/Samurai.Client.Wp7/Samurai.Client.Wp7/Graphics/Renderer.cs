@@ -15,14 +15,11 @@ namespace Samurai.Client.Wp7.Graphics
 
         public void LoadContent(ContentManager content)
         {
-            // TODO: Uncomment when other tile type images added
-
             textures.Clear();
             textures.Add(content.Load<Texture2D>("Textures\\grass"));
             textures.Add(content.Load<Texture2D>("Textures\\rock"));
-
-            //textures.Add(content.Load<Texture2D>("Textures\\tree"));
-            //textures.Add(content.Load<Texture2D>("Textures\\water"));
+            textures.Add(content.Load<Texture2D>("Textures\\tree"));
+            textures.Add(content.Load<Texture2D>("Textures\\water"));
         }
 
         public void DrawMap(GraphicsDevice device, SpriteBatch sb, Map map, int xOffset, int yOffset)
@@ -65,6 +62,10 @@ namespace Samurai.Client.Wp7.Graphics
                     return textures[0];
                 case "Rock":
                     return textures[1];
+                case "Tree":
+                    return textures[2];
+                case "Water":
+                    return textures[3];
 
                 default:
                     return null;
