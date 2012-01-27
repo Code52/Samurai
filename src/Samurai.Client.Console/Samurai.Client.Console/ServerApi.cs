@@ -23,6 +23,11 @@ namespace Samurai.Client.Api
             Post("/Api/Players/CreatePlayer", "name=" + System.Uri.EscapeDataString(name), callback);
         }
 
+        public void Login(string name, string key, Action<CreatePlayerResponse, Exception> callback)
+        {
+            Post("/Api/Players/Login", "name=" + System.Uri.EscapeDataString(name) + "&token=" + System.Uri.EscapeDataString(key), callback);
+        }
+
         public void GetOpenGames(Action<GetOpenGamesResponse, Exception> callback)
         {
             Get("/Api/Games/GetOpenGames", callback);
@@ -131,6 +136,11 @@ namespace Samurai.Client.Api
     }
 
     public class CreatePlayerResponse : ServerResponse
+    {
+        public Player Player { get; set; }
+    }
+
+    public class LoginResponse : ServerResponse
     {
         public Player Player { get; set; }
     }
