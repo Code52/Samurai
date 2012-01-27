@@ -1,9 +1,14 @@
-﻿using SamuraiServer.Data.Tiles;
+﻿using System;
+using System.Collections.Generic;
+using SamuraiServer.Data.Tiles;
 namespace SamuraiServer.Data.Providers
 {
     public class MapProvider : IMapProvider
     {
-        public Map GetRandomMap() {
+        private static Dictionary<Guid, Map> _maps = new Dictionary<Guid, Map>();
+
+        static MapProvider()
+        {
             // Replace with random generation / importing from a string in format
             // """"~"""""
             // """"~"""""
@@ -12,7 +17,8 @@ namespace SamuraiServer.Data.Providers
             // ""~""""""T
             // "~"@""""""
             // ~""""""T""
-            var map = new Map {
+            var map = new Map
+            {
                 Tiles = new[] {
                     new TileType[] { G(), G(), G(), W(), G(), G(), G(), G(), G(), G()},
                     new TileType[] { G(), G(), G(), W(), G(), G(), G(), G(), G(), G()},
@@ -26,8 +32,21 @@ namespace SamuraiServer.Data.Providers
                     new TileType[] { G(), G(), G(), G(), G(), G(), T(), G(), G(), G()}
                 }
             };
-            return map;
+
+
+            _maps.Add(map.Id, map);
         }
+
+        public Map GetRandomMap()
+        {
+            return _maps.RandomElement().Value;
+        }
+
+        public Map Get(Guid id)
+        {
+            return _maps[id];
+        }
+
         public static Grass G() { return new Grass(); }
 
         public static Rock R() { return new Rock(); }
@@ -35,5 +54,8 @@ namespace SamuraiServer.Data.Providers
         public static Tree T() { return new Tree(); }
 
         public static Water W() { return new Water(); }
+
+
+        
     }
 }
