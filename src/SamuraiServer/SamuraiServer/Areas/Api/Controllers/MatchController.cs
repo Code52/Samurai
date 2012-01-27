@@ -1,27 +1,23 @@
 ﻿using System;
 using System.Web.Mvc;
-using MvcApi;
 
 namespace SamuraiServer.Areas.Api.Controllers
 {
     public class MatchController : Controller
     {
-        //
-        // GET: /Api/Match/
-
         /// <summary>
         /// Indicate that the players associated with a game are ready to start
         /// </summary>
         /// <param name="matchId"></param>
         /// <returns></returns>
-        [Api]
+        [HttpPost]
         public ActionResult Start(Guid matchId)
         {
             // check if a game exists
             // check if it is not started
             // check if there is more than 1 participant available
 
-            return View(new { status = true });
+            return Json(new { status = false });
         }
 
 
@@ -30,10 +26,9 @@ namespace SamuraiServer.Areas.Api.Controllers
         /// </summary>
         /// <param name="matchId"></param>
         /// <returns></returns>
-        [Api]
         public ActionResult GetMovesSince(Guid matchId)
         {
-            return View(); // list of moves and their associated players
+            return Json(new { ok = false }, JsonRequestBehavior.AllowGet); // list of moves and their associated players
         }
 
         /// <summary>
@@ -44,7 +39,7 @@ namespace SamuraiServer.Areas.Api.Controllers
         /// <returns></returns>
         public ActionResult GetAvailableMoves(Guid matchId, string userName)
         {
-            return View(); // get list of available moves for the specific user
+            return Json(new { ok = false }, JsonRequestBehavior.AllowGet); // get list of available moves for the specific user
         }
 
         /// <summary>
@@ -54,7 +49,7 @@ namespace SamuraiServer.Areas.Api.Controllers
         /// <returns></returns>
         public ActionResult SendCommand(int user) // TODO: model to map values to
         {
-            return View(); // return details around the success/failure of the move
+            return Json(new { ok = false }, JsonRequestBehavior.AllowGet); // return details around the success/failure of the move
         }
     }
 }
