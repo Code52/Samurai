@@ -129,7 +129,7 @@ namespace SamuraiServer.Data
 
             var list = new List<GamePlayer>(game.Players);
 
-            for (int i = 1; i <= game.Players.Count; i++)
+            for (int i = 0; i < game.Players.Count; i++)
             {
                 var random = new Random();
 
@@ -140,7 +140,7 @@ namespace SamuraiServer.Data
                 list.Remove(item);
             }
 
-            game.Turn = 1;
+            game.Turn = 0;
             game.Started = true;
 
             _repo.Save();
