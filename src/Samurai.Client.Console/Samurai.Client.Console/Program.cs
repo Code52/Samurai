@@ -66,6 +66,8 @@ namespace Samurai.Client.ConsoleClient
                 }
 
                 CurrentPlayer = data.Player;
+                Console.WriteLine("Your generated key: {0}", CurrentPlayer.ApiKey);
+                Console.ReadKey();
                 Welcome();
             });
         }
