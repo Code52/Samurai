@@ -43,7 +43,7 @@ namespace SamuraiServer.Data.Impl
         {
             var gameState = _state[entity.Id];
 
-            gameState.Map = entity.Map;
+            gameState.MapId = entity.MapId;
             gameState.Name = entity.Name;
             gameState.Players = entity.Players;
             gameState.Turn = entity.Turn;

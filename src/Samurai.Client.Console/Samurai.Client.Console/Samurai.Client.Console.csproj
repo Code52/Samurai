@@ -66,10 +66,12 @@
     <Compile Include="..\..\SamuraiServer\SamuraiServer.Data\Models\Player.cs">
       <Link>Models\Player.cs</Link>
     </Compile>
+    <Compile Include="..\..\SamuraiServer\SamuraiServer.Data\Models\TileType.cs">
+      <Link>Models\TileType.cs</Link>
+    </Compile>
     <Compile Include="..\..\SamuraiServer\SamuraiServer.Data\Models\Unit.cs">
       <Link>Models\Unit.cs</Link>
     </Compile>
-    <Compile Include="Models\TileType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerApi.cs" />
