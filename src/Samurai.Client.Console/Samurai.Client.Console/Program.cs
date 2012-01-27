@@ -36,10 +36,12 @@ namespace Samurai.Client.ConsoleClient
             }
             Console.WriteLine("----");
             Console.WriteLine("[C] Create user");
+            Console.WriteLine("[O] Login");
             Console.WriteLine("[L] List games");
             Console.WriteLine("[X] Exit");
             Choose(new Dictionary<char, Action> {
                 { 'C', CreateUser },
+                { 'O', Login },
                 { 'L', ListGames },
                 { 'X', Exit }
             });
@@ -52,6 +54,32 @@ namespace Samurai.Client.ConsoleClient
             Console.Clear();
             var name = GetText("Please enter your username", s => !String.IsNullOrWhiteSpace(s));
             api.CreatePlayer(name, (data, e) =>
+            {
+                if (e != null)
+                {
+                    Error(e);
+                    return;
+                }
+
+                if (!data.Ok)
+                {
+                    BadResponse();
+                    return;
+                }
+
+                CurrentPlayer = data.Player;
+                Console.WriteLine("Your generated key: {0}", CurrentPlayer.ApiKey);
+                Console.ReadKey();
+                Welcome();
+            });
+        }
+
+        private static void Login()
+        {
+            var name = GetText("Please enter your username", s => !String.IsNullOrWhiteSpace(s));
+            var key = GetText("Please enter your key", s => !String.IsNullOrWhiteSpace(s));
+
+            api.Login(name, key, (data, e) =>
             {
                 if (e != null)
                 {
