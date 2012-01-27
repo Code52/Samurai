@@ -12,5 +12,7 @@ namespace SamuraiServer.Data
         public abstract bool CanMoveOn { get; }
 
         public abstract bool CanShootOver { get; }
+
+        public abstract char StringRepresentation{ get; }
     }
 }
