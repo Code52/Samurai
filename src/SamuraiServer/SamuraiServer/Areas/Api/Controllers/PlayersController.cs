@@ -33,5 +33,24 @@ namespace SamuraiServer.Areas.Api.Controllers
 
             return View(new { ok = true, player = result.Data });
         }
+
+        [Api]
+        [HttpPost]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        public ActionResult Login(string name, string token)
+        {
+            var result = _prov.Login(name, token);
+
+            if (result.IsValid == false)
+            {
+                // Login didn't go through
+                return View(new { ok = false, message = result.Message });
+            }
+            else
+            {
+                // Login ok, send the player-object back
+                return View(new { ok = true, message = result.Message });
+            }
+        }
     }
 }
