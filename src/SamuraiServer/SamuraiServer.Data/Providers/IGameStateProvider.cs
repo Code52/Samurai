@@ -15,5 +15,6 @@ namespace SamuraiServer.Data
         ValidationResult<GameState> JoinGame(Guid gameId, Guid playerId);
         ValidationResult LeaveGame(Guid gameId, string userName);
         ValidationResult<string[]> GetMap(Guid mapId);
+        ValidationResult<GameState> StartGame(Guid gameId);
     }
 }
