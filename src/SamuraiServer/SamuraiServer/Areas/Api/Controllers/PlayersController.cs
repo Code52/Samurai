@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc;
 using SamuraiServer.Data;
-using MvcApi;
 
 namespace SamuraiServer.Areas.Api.Controllers
 {
