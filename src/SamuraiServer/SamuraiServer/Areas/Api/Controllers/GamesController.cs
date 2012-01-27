@@ -1,91 +1,86 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using SamuraiServer.Data;
-using MvcApi;
 
 namespace SamuraiServer.Areas.Api.Controllers
 {
     public class GamesController : Controller
     {
         private readonly IGameStateProvider _gameStateProvider;
-        private readonly IPlayersProvider _playersProvider;
 
-        public GamesController(IGameStateProvider prov, IPlayersProvider playersProvider)
+        public GamesController(IGameStateProvider prov)
         {
             _gameStateProvider = prov;
-            _playersProvider = playersProvider;
         }
 
-        [Api]
         [HttpPost]
         public ActionResult CreateGameAndJoin(string name, Guid playerId)
         {
             try
             {
                 var result = _gameStateProvider.CreateGame(name);
-                if (result.IsValid == false) return View(new { ok = false, message = result.Message });
+                if (result.IsValid == false)
+                    return Json(new { ok = false, message = result.Message });
 
                 var gameState = _gameStateProvider.JoinGame(result.Data.Id, playerId);
-                if (gameState.IsValid == false) return View(new { ok = false, message = gameState.Message });
+                if (gameState.IsValid == false)
+                    return Json(new { ok = false, message = gameState.Message });
 
-                return View(new { ok = true, game = gameState.Data });
+                return Json(new { ok = true, game = gameState.Data });
             }
             catch
             {
-                return View(new { ok = false });
+                return Json(new { ok = false });
             }
         }
 
-        [Api]
         [HttpPost]
         public ActionResult CreateGame(string name)
         {
             try
             {
                 var gameState = _gameStateProvider.CreateGame(name);
-                return View(new { ok = true, game = gameState.Data });
+                return Json(new { ok = true, game = gameState.Data });
             }
             catch
             {
-                return View(new { ok = false });
+                return Json(new { ok = false });
             }
         }
 
-        [Api]
         [HttpPost]
         public ActionResult JoinGame(Guid gameId, Guid playerId)
         {
             try
             {
                 var result = _gameStateProvider.JoinGame(gameId, playerId);
-                if (result.IsValid == false) return View(new { ok = false, message = result.Message });
+                if (result.IsValid == false)
+                    return Json(new { ok = false, message = result.Message });
 
-                return View(new { ok = true, game = result.Data });
+                return Json(new { ok = true, game = result.Data });
             }
             catch
             {
-                return View(new { ok = false });
+                return Json(new { ok = false });
             }
         }
 
-        [Api]
         [HttpPost]
         public ActionResult LeaveGame(Guid gameId, string userName)
         {
             var result = _gameStateProvider.LeaveGame(gameId, userName);
-            if (result.IsValid == false) return View(new { ok = false, message = result.Message });
+            if (result.IsValid == false)
+                return Json(new { ok = false, message = result.Message });
 
-            return View(new { ok = true });
+            return Json(new { ok = true });
         }
 
-        [Api]
         [HttpPost]
         public ActionResult GetGames(string userName)
         {
             if (string.IsNullOrWhiteSpace(userName))
-                return View(new { ok = false });
+                return Json(new { ok = false });
 
             IEnumerable<GameState> currentGames;
 
@@ -95,16 +90,15 @@ namespace SamuraiServer.Areas.Api.Controllers
             }
             catch (Exception)
             {
-                return View(new { ok = false });
+                return Json(new { ok = false });
 
             }
-            return View(new { ok = true, games = currentGames });
+            return Json(new { ok = true, games = currentGames });
         }
 
-        [Api]
         public ActionResult GetOpenGames()
         {
-            return View(new { ok = true, games = _gameStateProvider.ListOpenGames() });
+            return Json(new { ok = true, games = _gameStateProvider.ListOpenGames() }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -113,19 +107,20 @@ namespace SamuraiServer.Areas.Api.Controllers
             var result = _gameStateProvider.GetMap(mapId);
             if(!result.IsValid ?? false)
             {
-                return View(new {ok = false});
+                return Json(new {ok = false});
             }
 
-            return View(new {ok = true, map = result.Data});
+            return Json(new {ok = true, map = result.Data});
         }
 		
         public ActionResult StartGame(Guid gameId)
         {
             var result = _gameStateProvider.StartGame(gameId);
 
-            if (result.IsValid == false) return View(new { ok = false, message = result.Message });
+            if (result.IsValid == false) 
+                return Json(new { ok = false, message = result.Message }, JsonRequestBehavior.AllowGet);
 
-            return View(new { ok = true, game = result.Data });
+            return Json(new { ok = true, game = result.Data }, JsonRequestBehavior.AllowGet);
         }
     }
 }
