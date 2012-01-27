@@ -13,8 +13,6 @@ namespace SamuraiServer.Areas.Api.Controllers
             _prov = prov;
         }
 
-        // api/players/leaderboard
-
         [Api]
         public ActionResult Leaderboard()
         {

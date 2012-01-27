@@ -46,7 +46,7 @@ namespace SamuraiServer.Tests.Providers
 
             Assert.NotNull(game);
             Assert.True(game.IsValid.Value);
-            Assert.NotNull(game.Data.Map);
+            Assert.NotEqual(game.Data.MapId, Guid.Empty);
             _mapProvider.Received().GetRandomMap();
         }
 

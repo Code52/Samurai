@@ -25,16 +25,16 @@ namespace SamuraiServer.Areas.Api.Controllers
             try
             {
                 var result = _gameStateProvider.CreateGame(name);
-                if (result.IsValid == false) return View(new {ok = false, message = result.Message});
+                if (result.IsValid == false) return View(new { ok = false, message = result.Message });
 
                 var gameState = _gameStateProvider.JoinGame(result.Data.Id, playerId);
                 if (gameState.IsValid == false) return View(new { ok = false, message = gameState.Message });
 
-                return View(new {ok = true, game = gameState.Data});
+                return View(new { ok = true, game = gameState.Data });
             }
             catch
             {
-                return View(new {ok = false});
+                return View(new { ok = false });
             }
         }
 
@@ -62,11 +62,11 @@ namespace SamuraiServer.Areas.Api.Controllers
                 var result = _gameStateProvider.JoinGame(gameId, playerId);
                 if (result.IsValid == false) return View(new { ok = false, message = result.Message });
 
-                return View(new {ok = true, game = result.Data});
+                return View(new { ok = true, game = result.Data });
             }
             catch
             {
-                return View(new {ok = false});
+                return View(new { ok = false });
             }
         }
 
@@ -95,7 +95,7 @@ namespace SamuraiServer.Areas.Api.Controllers
             }
             catch (Exception)
             {
-                return View(new {ok = false});
+                return View(new { ok = false });
 
             }
             return View(new { ok = true, games = currentGames });
@@ -105,6 +105,19 @@ namespace SamuraiServer.Areas.Api.Controllers
         public ActionResult GetOpenGames()
         {
             return View(new { ok = true, games = _gameStateProvider.ListOpenGames() });
+        }
+
+        [Api]
+        [HttpPost]
+        public ActionResult GetMap(Guid mapId)
+        {
+            var result = _gameStateProvider.GetMap(mapId);
+            if(!result.IsValid ?? false)
+            {
+                return View(new {ok = false});
+            }
+
+            return View(new {ok = true, map = result.Data});
         }
     }
 }

@@ -13,9 +13,10 @@ namespace SamuraiServer.Data
 
         public int Turn { get; set; }
 
-        public Map Map { get; set; }
+        public Guid MapId { get; set; }
 
-        public GameState() {
+        public GameState()
+        {
             Players = new List<GamePlayer>();
         }
     }
