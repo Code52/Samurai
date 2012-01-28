@@ -47,8 +47,52 @@ namespace SamuraiServer.Tests.Providers
             [Fact]
             public void The_Unit_Received_Is_The_Original_Unit()
             {
+                var unit = result.Units.First();
                 Assert.Equal(1, result.Units.Count());
+                Assert.Equal(activeUnitId, unit.Id);
+            }
+
+            [Fact]
+            public void The_Target_Unit_Has_Taken_Damage()
+            {
+                Assert.True(targetUnit.HitPoints < 1.0);
             }
         }
+
+
+        public class When_Client_Attempts_To_Attack_Location_Without_Target : TwoPlayerGame
+        {
+            Pirate activeUnit;
+            Guid activeUnitId;
+
+            public override CommandProcessor Given()
+            {
+                activeUnitId = Guid.NewGuid();
+                
+                activeUnit = new Pirate { Id = activeUnitId, X = 10, Y = 4, Range = 1 };
+                
+                FirstPlayer.Units.Add(activeUnit);
+                
+                return new CommandProcessor(State);
+            }
+
+            CommandResult result;
+
+            public override void When()
+            {
+                var json = String.Format(attackCommandTemplate, activeUnitId);
+                var obj = JsonConvert.DeserializeObject<IEnumerable<dynamic>>(json);
+                result = Subject.Process(obj);
+            }
+
+            [Fact]
+            public void An_Error_Is_Received_About_No_Location()
+            {
+                Assert.Equal(1, result.Errors.Count());
+                var error = result.Errors.First();
+                Assert.Equal("No unit found at this location", error.Message);
+            }
+        }
+
     }
 }

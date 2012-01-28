@@ -24,32 +24,34 @@ namespace SamuraiServer.Data.Providers
             var units = new List<Unit>();
             var errors = new List<ValidationResult>();
 
-            if(commands == null)
+            if (commands == null)
                 return new CommandResult { Units = units, Errors = errors };
+
+            ValidationResult<Unit> result;
 
             foreach (var c in commands)
             {
                 if (c.action == "move")
                 {
-                    var result = ProcessMove(c);
-                    if (result != null)
-                        units.Add(result);
+                    result = ProcessMove(c);
+                    if (result.IsValid == true)
+                        units.Add(result.Data);
                     else
                     {
                         // TODO: more specific error messages?
-                        errors.Add(new ValidationResult { IsValid = false, Message = string.Format("Could not move unit '{0}'", c.unitId) });
+                        errors.Add(new ValidationResult { IsValid = false, Message = result.Message });
                     }
                 }
 
                 if (c.action == "attack")
                 {
-                    var result = ProcessAttack(c);
-                    if (result != null)
-                        units.Add(result);
+                    result = ProcessAttack(c);
+                    if (result.IsValid == true)
+                        units.Add(result.Data);
                     else
                     {
                         // TODO: more specific error messages?
-                        errors.Add(new ValidationResult { IsValid = false, Message = string.Format("Could not move unit '{0}'", c.unitId) });
+                        errors.Add(new ValidationResult { IsValid = false, Message = result.Message });
                     }
                 }
                 //if (c.type == "create")
@@ -61,7 +63,7 @@ namespace SamuraiServer.Data.Providers
             return new CommandResult { Units = units, Errors = errors };
         }
 
-        private Unit ProcessAttack(dynamic command)
+        private ValidationResult<Unit> ProcessAttack(dynamic command)
         {
             string unitId = command.unitId.ToString();
             Guid id;
@@ -74,7 +76,7 @@ namespace SamuraiServer.Data.Providers
             return AttackUnit(id, x, y);
         }
 
-        private Unit ProcessMove(dynamic o)
+        private ValidationResult<Unit> ProcessMove(dynamic o)
         {
             string unitId = o.unitId.ToString();
             Guid id;
@@ -87,48 +89,51 @@ namespace SamuraiServer.Data.Providers
             return MoveUnit(id, x, y);
         }
 
-        private Unit MoveUnit(Guid id, int x, int y)
+        private ValidationResult<Unit> MoveUnit(Guid id, int x, int y)
         {
             var foundUnit = _match.Players.SelectMany(c => c.Units).FirstOrDefault(g => g.Id == id);
 
             if (foundUnit != null)
             {
                 if (!IsCurrentPlayer(foundUnit))
-                    return null;
+                    return ValidationResult<Unit>.Failure("This player does not have the right to move");
 
                 var newCoordinates = new Point(x, y);
                 var currentCoordinates = new Point(foundUnit.X, foundUnit.Y);
                 var distance = newCoordinates.DistanceFrom(currentCoordinates);
 
                 if (distance > foundUnit.Range)
-                    return null;
+                    return ValidationResult<Unit>.Failure("Unit cannot move that distance");
 
                 foundUnit.X = x;
                 foundUnit.Y = y;
             }
 
-            return foundUnit;
+            return ValidationResult<Unit>.Success.WithData(foundUnit);
         }
 
-        private Unit AttackUnit(Guid id, int x, int y)
+        private ValidationResult<Unit> AttackUnit(Guid id, int x, int y)
         {
             var allUnits = _match.Players.SelectMany(p => p.Units).ToList();
 
             var attackUnit = allUnits.FirstOrDefault(u => u.Id == id);
             var targetUnit = allUnits.FirstOrDefault(u => u.X == x && u.Y == y);
 
-            if (attackUnit == null || targetUnit == null)
-                return null;
+            if (attackUnit == null)
+                return ValidationResult<Unit>.Failure("Could not find attack unit");
+
+            if (targetUnit == null)
+                return ValidationResult<Unit>.Failure("No unit found at this location");
 
             // TODO: check target is within range of attacker
             // TODO: execute damage on target
 
-            return attackUnit;
+            return ValidationResult<Unit>.Success.WithData(attackUnit);
         }
 
         public void Attack(Guid id, Guid targetId)
         {
-        
+
         }
 
         private bool IsCurrentPlayer(Unit foundUnit)
