@@ -143,6 +143,7 @@ namespace Samurai.Client.Wp7.Api
     public class ServerResponse
     {
         public bool Ok { get; set; }
+        public string Message { get; set; }
     }
 
     public class GetOpenGamesResponse : ServerResponse

@@ -144,6 +144,9 @@ namespace Samurai.Client.Wp7.Screens
 
         private void LoadPlayer()
         {
+            if (Player != null)
+                return;
+
             using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 if (iso.FileExists("player.dat"))
@@ -163,7 +166,11 @@ namespace Samurai.Client.Wp7.Screens
 
         private void Login()
         {
-            // TODO: Login method
+        //    api.Login(Player.Name, Player.ApiKey, new Action<PlayerResponse, Exception>(
+        //        (p, e) =>
+        //        {
+        //            return;
+        //        }));
         }
 
         private void UpdateButtons()
