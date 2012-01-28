@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SamuraiServer.Data.Tiles;
 
 namespace SamuraiServer.Data
 {
@@ -21,6 +22,45 @@ namespace SamuraiServer.Data
         public string[] GetStringRepresentation()
         {
             return Tiles.Select(t => new string(t.Select(t2 => t2.StringRepresentation).ToArray())).ToArray();
+        }
+
+        public static Map FromStringRepresentation(Guid id, string[] rows)
+        {
+            Map m = new Map();
+            m.Id = id;
+            m.Tiles = new TileType[rows[0].Length][];
+            for (int x = 0; x < m.Tiles.Length; x++)
+            {
+                m.Tiles[x] = new TileType[rows.Length];
+                for (int y = 0; y < rows.Length; y++)
+                {
+                    TileType t;
+                    switch (rows[y][x])
+                    {
+
+                        case '.':
+                            t = new Grass();
+                            break;
+
+                        case '@':
+                            t = new Rock();
+                            break;
+
+                        case 'T':
+                            t = new Tree();
+                            break;
+
+                        case '~':
+                            t = new Water();
+                            break;
+
+                        default:
+                            continue;
+                    }
+                    m.Tiles[x][y] = t;
+                }
+            }
+            return m;
         }
     }
 }
