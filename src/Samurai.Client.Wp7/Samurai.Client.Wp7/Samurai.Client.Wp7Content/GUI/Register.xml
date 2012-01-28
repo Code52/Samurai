@@ -4,9 +4,6 @@
     <TextBlock Font="MenuFont.spritefont" Color="#FFFFFF" Text="Username" />
     <TextBlock Name="txtUsername" Font="MenuFont.spritefont" Color="#FFFFFF" Text="Tap here to enter your Username" />
 
-    <TextBlock Font="MenuFont.spritefont" Color="#FFFFFF" Text="Password" />
-    <TextBlock Name="txtPassword" Font="MenuFont.spritefont" Color="#FFFFFF" Text="Tap here to enter your password" />
-
     <Button Name="btnRegister" Text="Register">
       <TextBlock Font="MenuFont.spritefont" Color="#FFFFFF" Format="{parenttext}" />
     </Button>

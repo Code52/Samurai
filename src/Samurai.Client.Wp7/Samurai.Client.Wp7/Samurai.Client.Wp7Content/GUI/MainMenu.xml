@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Window Size="100%">
   <StackPanel Align="Center" VAlign="Middle">
-    <Button Name="btnLogin" Text="Login" Visibility="Enabled">
-      <TextBlock Format="{parenttext}" Font="MenuFont.spritefont" Color="#FFFFFF" />
-    </Button>
-    <Button Name="btnLogout" Text="Change User" Visibility="Enabled">
-      <TextBlock Format="{parenttext}" Font="MenuFont.spritefont" Color="#FFFFFF" />
-    </Button>
     <Button Name="btnRegister" Text="Register" Visibility="Enabled">
       <TextBlock Format="{parenttext}" Font="MenuFont.spritefont" Color="#FFFFFF" />
     </Button>

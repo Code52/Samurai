@@ -86,13 +86,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GUI\Login.xml">
-      <Name>Login</Name>
-      <Importer>XNIImporter</Importer>
-      <Processor>XNIProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="GUI\Register.xml">
       <Name>Register</Name>
       <Importer>XNIImporter</Importer>
