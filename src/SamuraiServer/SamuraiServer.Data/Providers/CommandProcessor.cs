@@ -18,10 +18,12 @@ namespace SamuraiServer.Data.Providers
 
     public class CommandProcessor
     {
+        private readonly ICombatCalculator calculator;
         private readonly GameState _match;
 
-        public CommandProcessor(GameState match)
+        public CommandProcessor(ICombatCalculator calculator, GameState match)
         {
+            this.calculator = calculator;
             _match = match;
         }
 
@@ -143,7 +145,7 @@ namespace SamuraiServer.Data.Providers
             }
 
             // TODO: check target is within range of attacker
-            targetUnit.CurrentHitPoints = ApplyDamage(attackUnit, targetUnit);
+            targetUnit.CurrentHitPoints = calculator.CalculateDamage(attackUnit, targetUnit);
 
             // TODO: execute damage on target
 

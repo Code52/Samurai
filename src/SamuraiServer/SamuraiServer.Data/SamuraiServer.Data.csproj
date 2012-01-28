@@ -63,6 +63,7 @@
     <Compile Include="Models\TileType.cs" />
     <Compile Include="Models\Unit.cs" />
     <Compile Include="Providers\CombatCalculator.cs" />
+    <Compile Include="Providers\ICombatCalculator.cs" />
     <Compile Include="Providers\IGameStateProvider.cs" />
     <Compile Include="Providers\GameStateProvider.cs" />
     <Compile Include="Providers\IMapProvider.cs" />

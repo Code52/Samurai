@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using NSubstitute;
 using SamuraiServer.Areas.Api.Controllers;
 using SamuraiServer.Data;
+using SamuraiServer.Data.Providers;
 using Xunit;
 
 namespace SamuraiServer.Tests.API
@@ -17,8 +18,9 @@ namespace SamuraiServer.Tests.API
             public override MatchController Given()
             {
                 var repo = Substitute.For<IGameStateRepository>();
+                var calculator = Substitute.For<ICombatCalculator>();
                 repo.Get(gameId).Returns(new GameState());
-                return new MatchController(repo);
+                return new MatchController(repo, calculator);
             }
 
             private string userName;

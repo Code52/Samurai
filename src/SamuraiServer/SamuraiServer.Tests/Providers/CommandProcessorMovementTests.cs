@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NSubstitute;
 using Newtonsoft.Json;
 using SamuraiServer.Data;
 using SamuraiServer.Data.Providers;
@@ -27,7 +28,7 @@ namespace SamuraiServer.Tests.Providers
 
                 FirstPlayer.Units.Add(activeUnit);
 
-                return new CommandProcessor(State);
+                return new CommandProcessor(Calculator, State);
             }
 
             CommandResult result;
@@ -79,7 +80,7 @@ namespace SamuraiServer.Tests.Providers
 
                 State.Turn = State.Players.IndexOf(SecondPlayer); // not first player's turn
 
-                return new CommandProcessor(State);
+                return new CommandProcessor(Calculator, State);
             }
 
             public override void When()
@@ -111,7 +112,7 @@ namespace SamuraiServer.Tests.Providers
 
                 FirstPlayer.Units.Add(activeUnit);
 
-                return new CommandProcessor(State);
+                return new CommandProcessor(Calculator, State);
             }
 
             public override void When()

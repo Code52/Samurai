@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NSubstitute;
 using Newtonsoft.Json;
 using SamuraiServer.Data;
 using SamuraiServer.Data.Providers;
@@ -16,23 +17,27 @@ namespace SamuraiServer.Tests.Providers
 
         public class When_Client_Sends_Attack_Command : TwoPlayerGame
         {
-            Pirate activeUnit;
+            Pirate attackUnit;
             Pirate targetUnit;
             Guid activeUnitId;
             Guid targetUnitId;
+
+            double expectedDamage = 0.9;
 
             public override CommandProcessor Given()
             {
                 activeUnitId = Guid.NewGuid();
                 targetUnitId = Guid.NewGuid();
 
-                activeUnit = new Pirate { Id = activeUnitId, X = 10, Y = 4, Range = 1, HitPoints = 1.0, CurrentHitPoints = 1.0 };
+                attackUnit = new Pirate { Id = activeUnitId, X = 10, Y = 4, Range = 1, HitPoints = 1.0, CurrentHitPoints = 1.0 };
                 targetUnit = new Pirate { Id = targetUnitId, X = 10, Y = 5, Range = 1, HitPoints = 1.0, CurrentHitPoints = 1.0 };
 
-                FirstPlayer.Units.Add(activeUnit);
+                FirstPlayer.Units.Add(attackUnit);
                 SecondPlayer.Units.Add(targetUnit);
 
-                return new CommandProcessor(State);
+                Calculator.CalculateDamage(attackUnit, targetUnit).Returns(expectedDamage);
+
+                return new CommandProcessor(Calculator, State);
             }
 
             CommandResult result;
@@ -55,7 +60,7 @@ namespace SamuraiServer.Tests.Providers
             [Fact]
             public void The_Target_Unit_Has_Taken_Damage()
             {
-                Assert.True(targetUnit.CurrentHitPoints < 1.0);
+                Assert.Equal(expectedDamage, targetUnit.CurrentHitPoints);
             }
         }
 
@@ -72,7 +77,7 @@ namespace SamuraiServer.Tests.Providers
 
                 FirstPlayer.Units.Add(activeUnit);
 
-                return new CommandProcessor(State);
+                return new CommandProcessor(Calculator, State);
             }
 
             CommandResult result;
