@@ -1,17 +1,16 @@
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 using SamuraiServer.Data;
 
-namespace Samurai.Client.Api
+namespace Samurai.Client.Console
 {
     public class ServerApi
     {
-        private string serverUrl;
+        private readonly string serverUrl;
 
         public ServerApi(string serverUrl)
         {
@@ -101,11 +100,11 @@ namespace Samurai.Client.Api
                 response.Close();
 
                 var responseData = JsonConvert.DeserializeObject<T>(json);
-                System.Diagnostics.Debug.WriteLine(String.Format("Request: {0} at {1}", url, DateTime.Now));
-                System.Diagnostics.Debug.WriteLine(String.Format("Data: {0}", data));
-                System.Diagnostics.Debug.WriteLine("Response:");
-                System.Diagnostics.Debug.WriteLine(json);
-                System.Diagnostics.Debug.WriteLine("=========================================================");
+                Debug.WriteLine(String.Format("Request: {0} at {1}", url, DateTime.Now));
+                Debug.WriteLine(String.Format("Data: {0}", data));
+                Debug.WriteLine("Response:");
+                Debug.WriteLine(json);
+                Debug.WriteLine("=========================================================");
                 callback(responseData, null);
             }
             catch (Exception e)
