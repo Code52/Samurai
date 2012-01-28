@@ -1,21 +1,19 @@
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Samurai.Client.Wp7.Api;
 using XNInterface.Controls;
 using XNInterface.Input;
 
 namespace Samurai.Client.Wp7.Screens
 {
-    public class LobbyScreen : BaseScreen
+    public class CreateGameScreen : BaseScreen
     {
-        public ServerApi API;
-
         private ContentManager content;
         private SpriteBatch sb;
         private Window gui;
         private WP7Touch touch;
+
+        public ServerApi API;
 
         public override void LoadContent()
         {
@@ -27,7 +25,7 @@ namespace Samurai.Client.Wp7.Screens
                 {
                     content = new ContentManager(Manager.Game.Services, "Content");
                     sb = new SpriteBatch(Manager.GraphicsDevice);
-                    gui = content.Load<Window>("GUI\\Lobby");
+                    gui = content.Load<Window>("GUI\\CreateGame");
                     gui.Initialise(null);
                     gui.LoadGraphics(Manager.GraphicsDevice, content);
                     touch = new WP7Touch(gui);
@@ -36,30 +34,15 @@ namespace Samurai.Client.Wp7.Screens
 
                     IsReady = true;
                 });
-
             base.LoadContent();
         }
 
         private void BindInput()
         {
-            var btnCreateGame = gui.GetChild<Button>("btnCreateGame");
-
-            if (btnCreateGame != null)
-            {
-                btnCreateGame.Triggered +=
-                    (b) =>
-                    {
-                        Manager.GetOrCreateScreen<CreateGameScreen>().API = API;
-                        Manager.TransitionTo<CreateGameScreen>();
-                    };
-            }
         }
 
         public override void Update(double elapsedSeconds)
         {
-            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back))
-                Manager.TransitionTo<MainMenuScreen>();
-
             touch.HandleGestures();
             gui.PerformLayout(Manager.GraphicsDevice.Viewport.Width, Manager.GraphicsDevice.Viewport.Height);
             gui.Update(elapsedSeconds);
@@ -72,8 +55,13 @@ namespace Samurai.Client.Wp7.Screens
             sb.Begin();
             gui.Draw(device, sb, elapsedSeconds);
             sb.End();
-
             base.Draw(elapsedSeconds, device);
+        }
+
+        public override void OnNavigatedTo()
+        {
+            // TODO: Reset all fields
+            base.OnNavigatedTo();
         }
     }
 }
