@@ -16,3 +16,10 @@ post-build*
 _ReSharper.*
 deploy-to-ec2*
 *.cachefile
+
+#OS junk files
+[Tt]humbs.db
+*.DS_Store
+
+#Monotouch garbage
+*.pidb 
