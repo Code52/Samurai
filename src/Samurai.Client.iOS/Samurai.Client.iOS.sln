@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samurai.Client.iOS", "Samurai.Client.iOS.csproj", "{63F86A4E-CF92-497C-9E5B-032B8FC56813}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SamuraiServer.Data.iOS", "..\SamuraiServer\SamuraiServer.Data\SamuraiServer.Data.iOS.csproj", "{6326B397-5C8F-4CC0-B5A1-8A08A993D820}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+		Release|iPhone = Release|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6326B397-5C8F-4CC0-B5A1-8A08A993D820}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{6326B397-5C8F-4CC0-B5A1-8A08A993D820}.Debug|iPhone.Build.0 = Debug|iPhone
+		{6326B397-5C8F-4CC0-B5A1-8A08A993D820}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{6326B397-5C8F-4CC0-B5A1-8A08A993D820}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{6326B397-5C8F-4CC0-B5A1-8A08A993D820}.Release|iPhone.ActiveCfg = Release|iPhone
+		{6326B397-5C8F-4CC0-B5A1-8A08A993D820}.Release|iPhone.Build.0 = Release|iPhone
+		{6326B397-5C8F-4CC0-B5A1-8A08A993D820}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{6326B397-5C8F-4CC0-B5A1-8A08A993D820}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{63F86A4E-CF92-497C-9E5B-032B8FC56813}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{63F86A4E-CF92-497C-9E5B-032B8FC56813}.Debug|iPhone.Build.0 = Debug|iPhone
+		{63F86A4E-CF92-497C-9E5B-032B8FC56813}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{63F86A4E-CF92-497C-9E5B-032B8FC56813}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{63F86A4E-CF92-497C-9E5B-032B8FC56813}.Release|iPhone.ActiveCfg = Release|iPhone
+		{63F86A4E-CF92-497C-9E5B-032B8FC56813}.Release|iPhone.Build.0 = Release|iPhone
+		{63F86A4E-CF92-497C-9E5B-032B8FC56813}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{63F86A4E-CF92-497C-9E5B-032B8FC56813}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Samurai.Client.iOS.csproj
+	EndGlobalSection
+EndGlobal

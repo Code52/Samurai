@@ -72,6 +72,18 @@
     <Compile Include="..\..\SamuraiServer\SamuraiServer.Data\Models\Unit.cs">
       <Link>Models\Unit.cs</Link>
     </Compile>
+    <Compile Include="..\..\SamuraiServer\SamuraiServer.Data\Tiles\Grass.cs">
+      <Link>Tiles\Grass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\SamuraiServer\SamuraiServer.Data\Tiles\Rock.cs">
+      <Link>Tiles\Rock.cs</Link>
+    </Compile>
+    <Compile Include="..\..\SamuraiServer\SamuraiServer.Data\Tiles\Tree.cs">
+      <Link>Tiles\Tree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\SamuraiServer\SamuraiServer.Data\Tiles\Water.cs">
+      <Link>Tiles\Water.cs</Link>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerApi.cs" />

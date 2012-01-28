@@ -4,6 +4,9 @@ using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 using SamuraiServer.Data;
+#if MONO
+using MonoTouch.Foundation;
+#endif
 
 namespace Samurai.Client.Wp7.Api
 {
@@ -50,7 +53,11 @@ namespace Samurai.Client.Wp7.Api
         {
             try
             {
+#if MONO
+                var request = HttpWebRequest.Create(Uri(url));
+#else
                 var request = HttpWebRequest.CreateHttp(Uri(url));
+#endif
                 request.BeginGetResponse(_ =>
                 {
                     try

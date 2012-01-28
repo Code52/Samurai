@@ -1,0 +1,33 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../Samurai.Client.Wp7/Samurai.Client.Wp7/Samurai.Client.Wp7/SamuraiGame.cs">
+    <Files>
+      <File FileName="../Samurai.Client.Wp7/Samurai.Client.Wp7/Samurai.Client.Wp7/Screens/GameScreen.cs" Line="1" Column="1" />
+      <File FileName="../Samurai.Client.Wp7/Samurai.Client.Wp7/Samurai.Client.Wp7/Screens/MainMenuScreen.cs" Line="41" Column="1" />
+      <File FileName="../Samurai.Client.Wp7/Samurai.Client.Wp7/Samurai.Client.Wp7/Screens/ScreenManager.cs" Line="1" Column="1" />
+      <File FileName="../Samurai.Client.Wp7/Samurai.Client.Wp7/Samurai.Client.Wp7/SamuraiGame.cs" Line="50" Column="40" />
+      <File FileName="Screens/MainMenuScreen.cs" Line="37" Column="40" />
+      <File FileName="../Samurai.Client.Wp7/Samurai.Client.Wp7/Samurai.Client.Wp7/Api/ServerApi.cs" Line="29" Column="69" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Samurai.Client.iOS" expanded="True">
+            <Node name="Api" expanded="True" />
+            <Node name="Screens" expanded="True" />
+            <Node name="SamuraiGame.cs" selected="True" />
+          </Node>
+          <Node name="SamuraiServer.Data.iOS" expanded="True">
+            <Option id="ShowVersionControlOverlays" value="True" />
+            <Option id="ShowAllFiles" value="False" />
+            <Node name="References" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
