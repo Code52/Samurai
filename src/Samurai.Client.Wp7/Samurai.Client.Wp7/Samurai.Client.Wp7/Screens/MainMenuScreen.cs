@@ -99,10 +99,11 @@ namespace Samurai.Client.Wp7.Screens
 
         public override void OnNavigatedTo()
         {
-            bool isLoggedIn = true;
+            bool isLoggedIn = false;
 
             var playBtn = window.GetChild<Button>("btnPlay");
             var loginBtn = window.GetChild<Button>("btnLogin");
+            var logoutBtn = window.GetChild<Button>("btnLogout");
             var registerBtn = window.GetChild<Button>("btnRegister");
 
             if (playBtn != null)
@@ -110,6 +111,9 @@ namespace Samurai.Client.Wp7.Screens
 
             if (loginBtn != null)
                 loginBtn.Enabled = !isLoggedIn;
+
+            if (logoutBtn != null)
+                logoutBtn.Enabled = isLoggedIn;
 
             if (registerBtn != null)
                 registerBtn.Enabled = !isLoggedIn;
