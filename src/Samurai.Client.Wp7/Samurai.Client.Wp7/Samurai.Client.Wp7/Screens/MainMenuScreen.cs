@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.IO.IsolatedStorage;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -113,14 +116,54 @@ namespace Samurai.Client.Wp7.Screens
 
         public override void OnNavigatedFrom()
         {
+            SavePlayer();
             base.OnNavigatedFrom();
         }
 
         public override void OnNavigatedTo()
         {
+            LoadPlayer();
             UpdateButtons();
-
             base.OnNavigatedTo();
+        }
+
+        private void SavePlayer()
+        {
+            if (Player == null)
+                return;
+
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            using (var file = iso.OpenFile("player.dat", FileMode.Create, FileAccess.Write))
+            using (var bw = new BinaryWriter(file))
+            {
+                bw.Write(Player.Id.ToString());
+                bw.Write(Player.Name);
+                bw.Write(Player.ApiKey);
+            }
+        }
+
+        private void LoadPlayer()
+        {
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (iso.FileExists("player.dat"))
+                {
+                    using (var file = iso.OpenFile("player.dat", FileMode.Open, FileAccess.Read))
+                    using (var br = new BinaryReader(file))
+                    {
+                        Player = new Player();
+                        Player.Id = Guid.Parse(br.ReadString());
+                        Player.Name = br.ReadString();
+                        Player.ApiKey = br.ReadString();
+                        Login();
+                    }
+                }
+            }
+        }
+
+        private void Login()
+        {
+            // TODO: Login method
         }
 
         private void UpdateButtons()
