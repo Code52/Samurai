@@ -4,10 +4,16 @@ using System.Linq;
 
 namespace SamuraiServer.Data.Providers
 {
+    public class ErrorMessage
+    {
+        public Guid UnitId { get; set; }
+        public string Message { get; set; }
+    }
+
     public class CommandResult
     {
         public IEnumerable<Unit> Units { get; set; }
-        public IEnumerable<ValidationResult> Errors { get; set; }
+        public IEnumerable<ErrorMessage> Errors { get; set; }
     }
 
     public class CommandProcessor
@@ -22,7 +28,7 @@ namespace SamuraiServer.Data.Providers
         public CommandResult Process(IEnumerable<dynamic> commands)
         {
             var units = new List<Unit>();
-            var errors = new List<ValidationResult>();
+            var errors = new List<ErrorMessage>();
 
             if (commands == null)
                 return new CommandResult { Units = units, Errors = errors };
@@ -31,6 +37,11 @@ namespace SamuraiServer.Data.Providers
 
             foreach (var c in commands)
             {
+                string unitId = c.unitId.ToString();
+                Guid id;
+                if (!Guid.TryParse(unitId, out id))
+                    continue; // cannot parse command
+
                 if (c.action == "move")
                 {
                     result = ProcessMove(c);
@@ -38,8 +49,7 @@ namespace SamuraiServer.Data.Providers
                         units.Add(result.Data);
                     else
                     {
-                        // TODO: more specific error messages?
-                        errors.Add(new ValidationResult { IsValid = false, Message = result.Message });
+                        errors.Add(new ErrorMessage { UnitId = id, Message = result.Message });
                     }
                 }
 
@@ -50,8 +60,7 @@ namespace SamuraiServer.Data.Providers
                         units.Add(result.Data);
                     else
                     {
-                        // TODO: more specific error messages?
-                        errors.Add(new ValidationResult { IsValid = false, Message = result.Message });
+                        errors.Add(new ErrorMessage { UnitId = id, Message = result.Message });
                     }
                 }
                 //if (c.type == "create")
@@ -93,21 +102,27 @@ namespace SamuraiServer.Data.Providers
         {
             var foundUnit = _match.Players.SelectMany(c => c.Units).FirstOrDefault(g => g.Id == id);
 
-            if (foundUnit != null)
+            if (foundUnit == null)
             {
-                if (!IsCurrentPlayer(foundUnit))
-                    return ValidationResult<Unit>.Failure("This player does not have the right to move");
-
-                var newCoordinates = new Point(x, y);
-                var currentCoordinates = new Point(foundUnit.X, foundUnit.Y);
-                var distance = newCoordinates.DistanceFrom(currentCoordinates);
-
-                if (distance > foundUnit.Range)
-                    return ValidationResult<Unit>.Failure("Unit cannot move that distance");
-
-                foundUnit.X = x;
-                foundUnit.Y = y;
+                return ValidationResult<Unit>.Failure("Could not find unit '{0}'", id);
             }
+
+            if (!IsCurrentPlayer(foundUnit))
+            {
+                return ValidationResult<Unit>.Failure("This player does not have the right to move");
+            }
+
+            var newCoordinates = new Point(x, y);
+            var currentCoordinates = new Point(foundUnit.X, foundUnit.Y);
+            var distance = newCoordinates.DistanceFrom(currentCoordinates);
+
+            if (distance > foundUnit.Range)
+            {
+                return ValidationResult<Unit>.Failure("Unit cannot move that distance").WithData(foundUnit);
+            }
+
+            foundUnit.X = x;
+            foundUnit.Y = y;
 
             return ValidationResult<Unit>.Success.WithData(foundUnit);
         }
@@ -120,20 +135,24 @@ namespace SamuraiServer.Data.Providers
             var targetUnit = allUnits.FirstOrDefault(u => u.X == x && u.Y == y);
 
             if (attackUnit == null)
-                return ValidationResult<Unit>.Failure("Could not find attack unit");
+                    return ValidationResult<Unit>.Failure("Could not find attack unit");
 
             if (targetUnit == null)
-                return ValidationResult<Unit>.Failure("No unit found at this location");
+            {
+                return ValidationResult<Unit>.Failure(string.Format("No unit found at this location [{0},{1}]", x, y));
+            }
 
             // TODO: check target is within range of attacker
+            targetUnit.CurrentHitPoints = ApplyDamage(attackUnit, targetUnit);
+
             // TODO: execute damage on target
 
             return ValidationResult<Unit>.Success.WithData(attackUnit);
         }
 
-        public void Attack(Guid id, Guid targetId)
+        private double ApplyDamage(Unit attackUnit, Unit targetUnit)
         {
-
+            return targetUnit.CurrentHitPoints - 0.1;
         }
 
         private bool IsCurrentPlayer(Unit foundUnit)

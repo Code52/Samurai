@@ -26,8 +26,8 @@ namespace SamuraiServer.Tests.Providers
                 activeUnitId = Guid.NewGuid();
                 targetUnitId = Guid.NewGuid();
 
-                activeUnit = new Pirate { Id = activeUnitId, X = 10, Y = 4, Range = 1 };
-                targetUnit = new Pirate { Id = targetUnitId, X = 10, Y = 5, Range = 1 };
+                activeUnit = new Pirate { Id = activeUnitId, X = 10, Y = 4, Range = 1, HitPoints = 1.0, CurrentHitPoints = 1.0 };
+                targetUnit = new Pirate { Id = targetUnitId, X = 10, Y = 5, Range = 1, HitPoints = 1.0, CurrentHitPoints = 1.0 };
 
                 FirstPlayer.Units.Add(activeUnit);
                 SecondPlayer.Units.Add(targetUnit);
@@ -55,10 +55,9 @@ namespace SamuraiServer.Tests.Providers
             [Fact]
             public void The_Target_Unit_Has_Taken_Damage()
             {
-                Assert.True(targetUnit.HitPoints < 1.0);
+                Assert.True(targetUnit.CurrentHitPoints < 1.0);
             }
         }
-
 
         public class When_Client_Attempts_To_Attack_Location_Without_Target : TwoPlayerGame
         {
@@ -68,11 +67,11 @@ namespace SamuraiServer.Tests.Providers
             public override CommandProcessor Given()
             {
                 activeUnitId = Guid.NewGuid();
-                
+
                 activeUnit = new Pirate { Id = activeUnitId, X = 10, Y = 4, Range = 1 };
-                
+
                 FirstPlayer.Units.Add(activeUnit);
-                
+
                 return new CommandProcessor(State);
             }
 
@@ -90,9 +89,8 @@ namespace SamuraiServer.Tests.Providers
             {
                 Assert.Equal(1, result.Errors.Count());
                 var error = result.Errors.First();
-                Assert.Equal("No unit found at this location", error.Message);
+                Assert.Equal("No unit found at this location [10,5]", error.Message);
             }
         }
-
     }
 }

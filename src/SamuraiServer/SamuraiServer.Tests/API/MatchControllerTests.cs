@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using IdeaStrike.Tests;
 using NSubstitute;
 using SamuraiServer.Areas.Api.Controllers;
 using SamuraiServer.Data;
