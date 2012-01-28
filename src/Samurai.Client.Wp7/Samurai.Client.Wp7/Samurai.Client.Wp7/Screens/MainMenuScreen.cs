@@ -65,7 +65,7 @@ namespace Samurai.Client.Wp7.Screens
                 playBtn.Triggered +=
                     (b) =>
                     {
-                        Manager.GetOrCreateScreen<LobbyScreen>().SetApi(api);
+                        Manager.GetOrCreateScreen<LobbyScreen>().API = api;
                         Manager.TransitionTo<LobbyScreen>();
                     };
             }

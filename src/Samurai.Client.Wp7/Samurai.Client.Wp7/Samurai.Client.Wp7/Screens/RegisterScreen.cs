@@ -129,9 +129,9 @@ namespace Samurai.Client.Wp7.Screens
                 Manager.TransitionTo<MainMenuScreen>();
 
             touch.HandleGestures();
-
             gui.PerformLayout(Manager.GraphicsDevice.Viewport.Width, Manager.GraphicsDevice.Viewport.Height);
             gui.Update(elapsedSeconds);
+
             base.Update(elapsedSeconds);
         }
 
@@ -140,6 +140,7 @@ namespace Samurai.Client.Wp7.Screens
             sb.Begin();
             gui.Draw(device, sb, elapsedSeconds);
             sb.End();
+
             base.Draw(elapsedSeconds, device);
         }
     }
