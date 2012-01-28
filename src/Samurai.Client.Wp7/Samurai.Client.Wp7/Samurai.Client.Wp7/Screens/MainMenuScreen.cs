@@ -2,6 +2,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Samurai.Client.Wp7.Api;
+using SamuraiServer.Data;
 using XNInterface.Controls;
 using XNInterface.Input;
 
@@ -13,6 +15,9 @@ namespace Samurai.Client.Wp7.Screens
         private ContentManager content;
         private SpriteBatch sb;
         private WP7Touch touchInput;
+
+        private ServerApi api = new ServerApi("http://samuraitest.apphb.com");
+        public Player Player;
 
         public MainMenuScreen()
             : base()
@@ -57,7 +62,7 @@ namespace Samurai.Client.Wp7.Screens
                 playBtn.Triggered +=
                     (b) =>
                     {
-                        Manager.GetOrCreateScreen<LobbyScreen>();
+                        Manager.GetOrCreateScreen<LobbyScreen>().SetApi(api);
                         Manager.TransitionTo<LobbyScreen>();
                     };
             }
@@ -67,7 +72,7 @@ namespace Samurai.Client.Wp7.Screens
                 registerBtn.Triggered +=
                     (b) =>
                     {
-                        Manager.GetOrCreateScreen<RegisterScreen>();
+                        Manager.GetOrCreateScreen<RegisterScreen>().API = api;
                         Manager.TransitionTo<RegisterScreen>();
                     };
             }
@@ -120,7 +125,7 @@ namespace Samurai.Client.Wp7.Screens
 
         private void UpdateButtons()
         {
-            bool isLoggedIn = false;
+            bool isLoggedIn = Player != null;
 
             var playBtn = window.GetChild<Button>("btnPlay");
             var registerBtn = window.GetChild<Button>("btnRegister");

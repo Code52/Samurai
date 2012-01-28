@@ -1,8 +1,4 @@
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.GamerServices;
 using Samurai.Client.Wp7.Api;
-using SamuraiServer.Data;
 
 namespace Samurai.Client.Wp7.Screens
 {
@@ -12,6 +8,11 @@ namespace Samurai.Client.Wp7.Screens
         {
             IsReady = true;
             base.LoadContent();
+        }
+
+        public void SetApi(ServerApi api)
+        {
+
         }
     }
 }

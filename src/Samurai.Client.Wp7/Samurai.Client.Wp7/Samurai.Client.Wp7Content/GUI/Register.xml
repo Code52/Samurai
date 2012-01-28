@@ -7,5 +7,6 @@
     <Button Name="btnRegister" Text="Register">
       <TextBlock Font="MenuFont.spritefont" Color="#FFFFFF" Format="{parenttext}" />
     </Button>
+    <TextBlock Name="busyMessage" Font="MenuFont.spritefont" Color="#FFFFFF" Text="Registering..." Visibility="Enabled" />
   </StackPanel>
 </Window>
