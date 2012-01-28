@@ -1,5 +1,4 @@
 ﻿using System;
-using IdeaStrike.Tests;
 using NSubstitute;
 using SamuraiServer.Data;
 using Xunit;

@@ -10,21 +10,14 @@ namespace SamuraiServer.Areas.Api.Controllers
     public class MatchController : Controller
     {
         private readonly IGameStateRepository repo;
-        //
-        // GET: /Api/Match/
-
-        public MatchController(IGameStateRepository repo)
+        private readonly ICombatCalculator calculator;
+        
+        public MatchController(IGameStateRepository repo, ICombatCalculator calculator)
         {
             this.repo = repo;
+            this.calculator = calculator;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="gameId"></param>
-        /// <param name="player"></param>
-        /// <param name="commands"></param>
-        /// <returns></returns>
         [HttpPost]
         public ActionResult SendCommands(Guid gameId, string player, [DynamicJson] IEnumerable<dynamic> commands) 
         {
@@ -32,7 +25,7 @@ namespace SamuraiServer.Areas.Api.Controllers
             if (game == null)
                 return Json(new { status = false, error = "Game could not be found" });
 
-            var processor = new CommandProcessor(game);
+            var processor = new CommandProcessor(calculator, game);
 
             var result = processor.Process(commands);
 

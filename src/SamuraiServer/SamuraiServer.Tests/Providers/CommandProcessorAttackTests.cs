@@ -1,0 +1,101 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NSubstitute;
+using Newtonsoft.Json;
+using SamuraiServer.Data;
+using SamuraiServer.Data.Providers;
+using Xunit;
+
+namespace SamuraiServer.Tests.Providers
+{
+    public class CommandProcessorAttackTests
+    {
+        public class Pirate : Unit { }
+
+        private const string attackCommandTemplate = "[ {{ \"unitId\": \"{0}\", \"action\":\"attack\", \"X\":10, \"Y\":5 }}]";
+
+        public class When_Client_Sends_Attack_Command : TwoPlayerGame
+        {
+            Pirate attackUnit;
+            Pirate targetUnit;
+            Guid activeUnitId;
+            Guid targetUnitId;
+
+            double expectedDamage = 0.9;
+
+            public override CommandProcessor Given()
+            {
+                activeUnitId = Guid.NewGuid();
+                targetUnitId = Guid.NewGuid();
+
+                attackUnit = new Pirate { Id = activeUnitId, X = 10, Y = 4, Range = 1, HitPoints = 1.0, CurrentHitPoints = 1.0 };
+                targetUnit = new Pirate { Id = targetUnitId, X = 10, Y = 5, Range = 1, HitPoints = 1.0, CurrentHitPoints = 1.0 };
+
+                FirstPlayer.Units.Add(attackUnit);
+                SecondPlayer.Units.Add(targetUnit);
+
+                Calculator.CalculateDamage(attackUnit, targetUnit).Returns(expectedDamage);
+
+                return new CommandProcessor(Calculator, State);
+            }
+
+            CommandResult result;
+
+            public override void When()
+            {
+                var json = String.Format(attackCommandTemplate, activeUnitId);
+                var obj = JsonConvert.DeserializeObject<IEnumerable<dynamic>>(json);
+                result = Subject.Process(obj);
+            }
+
+            [Fact]
+            public void The_Unit_Received_Is_The_Original_Unit()
+            {
+                var unit = result.Units.First();
+                Assert.Equal(1, result.Units.Count());
+                Assert.Equal(activeUnitId, unit.Id);
+            }
+
+            [Fact]
+            public void The_Target_Unit_Has_Taken_Damage()
+            {
+                Assert.Equal(expectedDamage, targetUnit.CurrentHitPoints);
+            }
+        }
+
+        public class When_Client_Attempts_To_Attack_Location_Without_Target : TwoPlayerGame
+        {
+            Pirate activeUnit;
+            Guid activeUnitId;
+
+            public override CommandProcessor Given()
+            {
+                activeUnitId = Guid.NewGuid();
+
+                activeUnit = new Pirate { Id = activeUnitId, X = 10, Y = 4, Range = 1 };
+
+                FirstPlayer.Units.Add(activeUnit);
+
+                return new CommandProcessor(Calculator, State);
+            }
+
+            CommandResult result;
+
+            public override void When()
+            {
+                var json = String.Format(attackCommandTemplate, activeUnitId);
+                var obj = JsonConvert.DeserializeObject<IEnumerable<dynamic>>(json);
+                result = Subject.Process(obj);
+            }
+
+            [Fact]
+            public void An_Error_Is_Received_About_No_Location()
+            {
+                Assert.Equal(1, result.Errors.Count());
+                var error = result.Errors.First();
+                Assert.Equal("No unit found at this location [10,5]", error.Message);
+            }
+        }
+    }
+}

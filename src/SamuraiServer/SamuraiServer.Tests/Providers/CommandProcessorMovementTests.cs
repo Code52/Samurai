@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NSubstitute;
 using Newtonsoft.Json;
 using SamuraiServer.Data;
 using SamuraiServer.Data.Providers;
@@ -14,7 +15,7 @@ namespace SamuraiServer.Tests.Providers
 
         const string moveCommandTemplate = " [{{\"unitId\": \"{0}\",\"action\":\"move\",\"X\":1,\"Y\":0}}] ";
 
-        public class Client_Sends_Message_To_Move_A_Unit : TwoPlayerGame
+        public class When_Client_Moves_Unit : TwoPlayerGame
         {
             Ninja activeUnit;
             Guid id;
@@ -27,7 +28,7 @@ namespace SamuraiServer.Tests.Providers
 
                 FirstPlayer.Units.Add(activeUnit);
 
-                return new CommandProcessor(State);
+                return new CommandProcessor(Calculator, State);
             }
 
             CommandResult result;
@@ -61,7 +62,7 @@ namespace SamuraiServer.Tests.Providers
             }
         }
 
-        public class Client_Attempts_To_Move_Unit_When_Not_Permitted : TwoPlayerGame
+        public class When_Client_Moves_Unit_When_Not_Permitted : TwoPlayerGame
         {
             Guid id;
             Ninja activeUnit;
@@ -79,7 +80,7 @@ namespace SamuraiServer.Tests.Providers
 
                 State.Turn = State.Players.IndexOf(SecondPlayer); // not first player's turn
 
-                return new CommandProcessor(State);
+                return new CommandProcessor(Calculator, State);
             }
 
             public override void When()
@@ -96,7 +97,7 @@ namespace SamuraiServer.Tests.Providers
             }
         }
 
-        public class When_A_Unit_Moves_More_Than_Its_Allowed_Range : TwoPlayerGame
+        public class When_Client_Moves_Unit_More_Than_Its_Allowed_Range : TwoPlayerGame
         {
             const string moveCommandTemplate = " [{{\"unitId\": \"{0}\",\"action\":\"move\",\"X\":1,\"Y\":1}}] ";
 
@@ -111,7 +112,7 @@ namespace SamuraiServer.Tests.Providers
 
                 FirstPlayer.Units.Add(activeUnit);
 
-                return new CommandProcessor(State);
+                return new CommandProcessor(Calculator, State);
             }
 
             public override void When()
