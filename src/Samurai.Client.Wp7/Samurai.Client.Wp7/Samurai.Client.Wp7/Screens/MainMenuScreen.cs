@@ -48,6 +48,10 @@ namespace Samurai.Client.Wp7.Screens
         private void BindMenuItems()
         {
             var playBtn = window.GetChild<Button>("btnPlay");
+            var loginBtn = window.GetChild<Button>("btnLogin");
+            var logoutBtn = window.GetChild<Button>("btnLogout");
+            var registerBtn = window.GetChild<Button>("btnRegister");
+
             if (playBtn != null)
             {
                 playBtn.Triggered +=
@@ -56,6 +60,32 @@ namespace Samurai.Client.Wp7.Screens
                         Manager.GetOrCreateScreen<LobbyScreen>();
                         Manager.TransitionTo<LobbyScreen>();
                     };
+            }
+
+            if (loginBtn != null)
+            {
+                loginBtn.Triggered +=
+                    (b) =>
+                    {
+                        Manager.GetOrCreateScreen<LoginScreen>();
+                        Manager.TransitionTo<LoginScreen>();
+                    };
+            }
+
+            if (registerBtn != null)
+            {
+                registerBtn.Triggered +=
+                    (b) =>
+                    {
+                        Manager.GetOrCreateScreen<RegisterScreen>();
+                        Manager.TransitionTo<RegisterScreen>();
+                    };
+            }
+
+            if (logoutBtn != null)
+            {
+                // TODO: Do logout things
+                UpdateButtons();
             }
 
             var exitBtn = window.GetChild<Button>("btnExit");
@@ -99,6 +129,13 @@ namespace Samurai.Client.Wp7.Screens
 
         public override void OnNavigatedTo()
         {
+            UpdateButtons();
+
+            base.OnNavigatedTo();
+        }
+
+        private void UpdateButtons()
+        {
             bool isLoggedIn = false;
 
             var playBtn = window.GetChild<Button>("btnPlay");
@@ -117,8 +154,6 @@ namespace Samurai.Client.Wp7.Screens
 
             if (registerBtn != null)
                 registerBtn.Enabled = !isLoggedIn;
-
-            base.OnNavigatedTo();
         }
     }
 }
