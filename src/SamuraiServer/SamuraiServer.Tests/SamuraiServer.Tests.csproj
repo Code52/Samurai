@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.0.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NSubstitute">
       <HintPath>..\packages\NSubstitute.1.3.0.0\lib\NET40\NSubstitute.dll</HintPath>
     </Reference>
@@ -51,8 +54,13 @@
   <ItemGroup>
     <Compile Include="API\Extensions.cs" />
     <Compile Include="API\GamesControllerTests.cs" />
+    <Compile Include="API\MatchControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\CommandProcessorMovementTests.cs" />
     <Compile Include="Providers\GameStateProviderTests.cs" />
+    <Compile Include="Providers\PlayersProviderTests.cs" />
+    <Compile Include="Providers\TwoPlayerGame.cs" />
+    <Compile Include="SamuraiContextBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
