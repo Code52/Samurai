@@ -16,7 +16,7 @@ namespace Samurai.Client.Wp7.Api
             this.serverUrl = serverUrl;
         }
 
-        public void CreatePlayer(string name, Action<CreatePlayerResponse, Exception> callback)
+        public void CreatePlayer(string name, Action<PlayerResponse, Exception> callback)
         {
             Post("/Api/Players/CreatePlayer", "name=" + System.Uri.EscapeDataString(name), callback);
         }
@@ -39,6 +39,11 @@ namespace Samurai.Client.Wp7.Api
         public void GetMap(Guid mapId, Action<GetMapResponse, Exception> callback)
         {
             Post("/Api/Games/GetMap", "mapid=" + mapId, callback);
+        }
+
+        public void Login(string name, string apiKey, Action<PlayerResponse, Exception> callback)
+        {
+            Post("/Api/Players/Login", "name=" + System.Uri.EscapeDataString(name) + "&apiKey=" + System.Uri.EscapeDataString(apiKey), callback);
         }
 
         private void Get<T>(string url, Action<T, Exception> callback)
@@ -148,7 +153,7 @@ namespace Samurai.Client.Wp7.Api
         public GameState Game { get; set; }
     }
 
-    public class CreatePlayerResponse : ServerResponse
+    public class PlayerResponse : ServerResponse
     {
         public Player Player { get; set; }
     }
