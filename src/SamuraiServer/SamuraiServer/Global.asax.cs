@@ -9,6 +9,7 @@ using Autofac;
 using Autofac.Integration.Mvc;
 using SamuraiServer.Data;
 using SamuraiServer.Data.Impl;
+using SamuraiServer.Data.Providers;
 
 namespace SamuraiServer
 {
@@ -55,7 +56,9 @@ namespace SamuraiServer
                    .AsImplementedInterfaces()
                    .InstancePerHttpRequest();
 
-            builder.RegisterControllers(Assembly.GetExecutingAssembly()); 
+            builder.RegisterControllers(Assembly.GetExecutingAssembly());
+
+            builder.RegisterType<CombatCalculator>().AsImplementedInterfaces().SingleInstance();
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
