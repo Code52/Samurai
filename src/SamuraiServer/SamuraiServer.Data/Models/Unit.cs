@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SamuraiServer.Data
 {
@@ -13,8 +10,8 @@ namespace SamuraiServer.Data
         public string ImageSpriteResource { get; set; }
 
         public int Size { get; set; }
-        public double Strength { get; set; }
-        public double Armor { get; set; }
+        public double Attack { get; set; }
+        public double Defence { get; set; }
         public double Range { get; set; }
 
         public double HitPoints { get; set; }

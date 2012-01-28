@@ -1,4 +1,4 @@
-namespace IdeaStrike.Tests
+namespace SamuraiServer.Tests
 {
     public abstract class SpecificationFor<T>
     {

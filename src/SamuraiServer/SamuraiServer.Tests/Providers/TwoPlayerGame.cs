@@ -1,4 +1,4 @@
-using IdeaStrike.Tests;
+using NSubstitute;
 using SamuraiServer.Data;
 using SamuraiServer.Data.Providers;
 
@@ -8,6 +8,8 @@ namespace SamuraiServer.Tests.Providers
     {
         public override void SetUp()
         {
+            Calculator = Substitute.For<ICombatCalculator>();
+
             FirstPlayer = new GamePlayer();
             SecondPlayer = new GamePlayer();
             State = new GameState();
@@ -15,6 +17,8 @@ namespace SamuraiServer.Tests.Providers
             State.Players.Add(FirstPlayer);
             State.Players.Add(SecondPlayer);
         }
+
+        public ICombatCalculator Calculator { get; private set; }
 
         protected GameState State { get; private set; }
 
