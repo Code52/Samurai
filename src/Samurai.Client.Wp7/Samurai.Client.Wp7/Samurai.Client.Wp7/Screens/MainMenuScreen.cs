@@ -57,6 +57,10 @@ namespace Samurai.Client.Wp7.Screens
                         Manager.TransitionTo<LobbyScreen>();
                     };
             }
+
+            var exitBtn = window.GetChild<Button>("btnExit");
+            if (exitBtn != null)
+                exitBtn.Triggered += (b) => Manager.ExitGame();
         }
 
         public override void UnloadContent()
@@ -95,6 +99,21 @@ namespace Samurai.Client.Wp7.Screens
 
         public override void OnNavigatedTo()
         {
+            bool isLoggedIn = true;
+
+            var playBtn = window.GetChild<Button>("btnPlay");
+            var loginBtn = window.GetChild<Button>("btnLogin");
+            var registerBtn = window.GetChild<Button>("btnRegister");
+
+            if (playBtn != null)
+                playBtn.Enabled = isLoggedIn;
+
+            if (loginBtn != null)
+                loginBtn.Enabled = !isLoggedIn;
+
+            if (registerBtn != null)
+                registerBtn.Enabled = !isLoggedIn;
+
             base.OnNavigatedTo();
         }
     }

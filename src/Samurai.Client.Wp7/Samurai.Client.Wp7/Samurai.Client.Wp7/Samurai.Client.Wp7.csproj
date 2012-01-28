@@ -116,7 +116,9 @@
     <Compile Include="Screens\BaseScreen.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Screens\LobbyScreen.cs" />
+    <Compile Include="Screens\LoginScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
+    <Compile Include="Screens\RegisterScreen.cs" />
     <Compile Include="Screens\ScreenManager.cs" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml">
