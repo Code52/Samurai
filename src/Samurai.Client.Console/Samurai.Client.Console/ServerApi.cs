@@ -6,7 +6,7 @@ using System.Text;
 using Newtonsoft.Json;
 using SamuraiServer.Data;
 
-namespace Samurai.Client.Console
+namespace Samurai.Client.ConsoleClient
 {
     public class ServerApi
     {
