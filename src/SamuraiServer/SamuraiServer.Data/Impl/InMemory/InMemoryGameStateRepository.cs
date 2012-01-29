@@ -11,12 +11,21 @@ namespace SamuraiServer.Data.Impl
 
         public InMemoryGameStateRepository()
         {
-            State.Add(Guid.NewGuid(), new GameState { Id = Guid.NewGuid(), Players = new List<GamePlayer>(), Turn = 0 });
-            State.Add(Guid.NewGuid(), new GameState { Id = Guid.NewGuid(), Players = new List<GamePlayer>(), Turn = 0 });
-            State.Add(Guid.NewGuid(), new GameState { Id = Guid.NewGuid(), Players = new List<GamePlayer>(), Turn = 0 });
-            State.Add(Guid.NewGuid(), new GameState { Id = Guid.NewGuid(), Players = new List<GamePlayer>(), Turn = 0 });
-            State.Add(Guid.NewGuid(), new GameState { Id = Guid.NewGuid(), Players = new List<GamePlayer>(), Turn = 0 });
-            State.Add(Guid.NewGuid(), new GameState { Id = Guid.NewGuid(), Players = new List<GamePlayer>(), Turn = 0 });
+            if (State.Count == 0)
+            {
+                Guid id = Guid.NewGuid();
+                State.Add(id, new GameState { Id = id, Players = new List<GamePlayer>(), Turn = 0, Name = "Game 1" });
+                id = Guid.NewGuid();
+                State.Add(id, new GameState { Id = id, Players = new List<GamePlayer>(), Turn = 0, Name = "Game 2" });
+                id = Guid.NewGuid();
+                State.Add(id, new GameState { Id = id, Players = new List<GamePlayer>(), Turn = 0, Name = "Game 3" });
+                id = Guid.NewGuid();
+                State.Add(id, new GameState { Id = id, Players = new List<GamePlayer>(), Turn = 0, Name = "Game 4" });
+                id = Guid.NewGuid();
+                State.Add(id, new GameState { Id = id, Players = new List<GamePlayer>(), Turn = 0, Name = "Game 5" });
+                id = Guid.NewGuid();
+                State.Add(id, new GameState { Id = id, Players = new List<GamePlayer>(), Turn = 0, Name = "Game 6" });
+            }
         }
 
         public IQueryable<GameState> GetAll()
