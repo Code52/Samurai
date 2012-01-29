@@ -59,6 +59,7 @@
     <Compile Include="Providers\CombatCalculatorTests.cs" />
     <Compile Include="Providers\CommandProcessorAttackTests.cs" />
     <Compile Include="Providers\CommandProcessorMovementTests.cs" />
+    <Compile Include="Providers\CommandProcessorNotificationTests.cs" />
     <Compile Include="Providers\GameStateProviderTests.cs" />
     <Compile Include="Providers\PlayersProviderTests.cs" />
     <Compile Include="Providers\TwoPlayerGame.cs" />

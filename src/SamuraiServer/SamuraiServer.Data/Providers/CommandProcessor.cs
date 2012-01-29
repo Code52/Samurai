@@ -4,6 +4,12 @@ using System.Linq;
 
 namespace SamuraiServer.Data.Providers
 {
+    public class AttackResult
+    {
+        public Unit Source { get; set; }
+        public Unit Target { get; set; }
+    }
+
     public class ErrorMessage
     {
         public Guid UnitId { get; set; }
@@ -14,6 +20,7 @@ namespace SamuraiServer.Data.Providers
     {
         public IEnumerable<Unit> Units { get; set; }
         public IEnumerable<ErrorMessage> Errors { get; set; }
+        public IEnumerable<string> Notifications { get; set; }
     }
 
     public class CommandProcessor
@@ -31,11 +38,10 @@ namespace SamuraiServer.Data.Providers
         {
             var units = new List<Unit>();
             var errors = new List<ErrorMessage>();
+            IEnumerable<string> notifications = new List<string>();
 
             if (commands == null)
-                return new CommandResult { Units = units, Errors = errors };
-
-            ValidationResult<Unit> result;
+                return new CommandResult { Units = units, Errors = errors, Notifications = notifications };
 
             foreach (var c in commands)
             {
@@ -46,7 +52,7 @@ namespace SamuraiServer.Data.Providers
 
                 if (c.action == "move")
                 {
-                    result = ProcessMove(c);
+                    ValidationResult<Unit> result = ProcessMove(c);
                     if (result.IsValid == true)
                         units.Add(result.Data);
                     else
@@ -57,9 +63,12 @@ namespace SamuraiServer.Data.Providers
 
                 if (c.action == "attack")
                 {
-                    result = ProcessAttack(c);
+                    ValidationResult<AttackResult> result = ProcessAttack(c);
                     if (result.IsValid == true)
-                        units.Add(result.Data);
+                    {
+                        units.Add(result.Data.Source);
+                        units.Add(result.Data.Target);
+                    }
                     else
                     {
                         errors.Add(new ErrorMessage { UnitId = id, Message = result.Message });
@@ -71,10 +80,33 @@ namespace SamuraiServer.Data.Providers
                 //}
             }
 
-            return new CommandResult { Units = units, Errors = errors };
+            notifications = GetPostRoundEvents();
+
+            return new CommandResult { Units = units, Errors = errors, Notifications = notifications };
         }
 
-        private ValidationResult<Unit> ProcessAttack(dynamic command)
+        private IEnumerable<string> GetPostRoundEvents()
+        {
+            var events = new List<string>();
+
+            var playersWithoutUnits = _match.Players.Where(c => c.Units.All(u => u.CurrentHitPoints == 0.0)).ToList();
+
+            foreach (var player in playersWithoutUnits)
+            {
+                if (player.Player != null)
+                {
+                    events.Add(string.Format("{0} has been eliminated", player.Player.Name));    
+                }
+
+
+
+                _match.Players.Remove(player);
+            }
+
+            return events;
+        }
+
+        private ValidationResult<AttackResult> ProcessAttack(dynamic command)
         {
             string unitId = command.unitId.ToString();
             Guid id;
@@ -129,7 +161,7 @@ namespace SamuraiServer.Data.Providers
             return ValidationResult<Unit>.Success.WithData(foundUnit);
         }
 
-        private ValidationResult<Unit> AttackUnit(Guid id, int x, int y)
+        private ValidationResult<AttackResult> AttackUnit(Guid id, int x, int y)
         {
             var allUnits = _match.Players.SelectMany(p => p.Units).ToList();
 
@@ -137,24 +169,21 @@ namespace SamuraiServer.Data.Providers
             var targetUnit = allUnits.FirstOrDefault(u => u.X == x && u.Y == y);
 
             if (attackUnit == null)
-                    return ValidationResult<Unit>.Failure("Could not find attack unit");
+                return ValidationResult<AttackResult>.Failure("Could not find attack unit");
 
             if (targetUnit == null)
             {
-                return ValidationResult<Unit>.Failure(string.Format("No unit found at this location [{0},{1}]", x, y));
+                return ValidationResult<AttackResult>.Failure(string.Format("No unit found at this location [{0},{1}]", x, y));
             }
 
             // TODO: check target is within range of attacker
-            targetUnit.CurrentHitPoints = calculator.CalculateDamage(attackUnit, targetUnit);
 
-            // TODO: execute damage on target
+            targetUnit.CurrentHitPoints -= calculator.CalculateDamage(attackUnit, targetUnit);
+            if (targetUnit.CurrentHitPoints < 0) targetUnit.CurrentHitPoints = 0;
 
-            return ValidationResult<Unit>.Success.WithData(attackUnit);
-        }
+            var result = new AttackResult { Source = attackUnit, Target = targetUnit };
 
-        private double ApplyDamage(Unit attackUnit, Unit targetUnit)
-        {
-            return targetUnit.CurrentHitPoints - 0.1;
+            return ValidationResult<AttackResult>.Success.WithData(result);
         }
 
         private bool IsCurrentPlayer(Unit foundUnit)
