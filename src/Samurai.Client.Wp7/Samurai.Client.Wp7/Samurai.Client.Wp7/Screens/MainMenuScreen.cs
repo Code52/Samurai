@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Samurai.Client.Wp7.Api;
@@ -169,7 +170,15 @@ namespace Samurai.Client.Wp7.Screens
             api.Login(Player.Name, Player.ApiKey, new Action<PlayerResponse, Exception>(
                 (p, e) =>
                 {
-                    return;
+                    if (e == null)
+                    {
+                        if (p.Ok)
+                        {
+                            Player = p.Player;
+                            return;
+                        }
+                    }
+                    Guide.BeginShowMessageBox("Error", "Failed to login.", new string[] { "Ok" }, 0, MessageBoxIcon.Error, null, null);
                 }));
         }
 
