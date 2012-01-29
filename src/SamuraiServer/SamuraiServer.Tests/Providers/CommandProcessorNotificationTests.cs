@@ -22,7 +22,6 @@ namespace SamuraiServer.Tests.Providers
             Guid activeUnitId;
             Guid targetUnitId;
 
-
             private const double expectedDamage = 1.0;
 
             public override CommandProcessor Given()
@@ -58,13 +57,13 @@ namespace SamuraiServer.Tests.Providers
             [Fact]
             public void An_Event_Containing_The_Second_Player_Is_Received()
             {
-                Assert.Equal(1, result.Events.Count());
+                Assert.Equal(1, result.Notifications.Count());
             }
 
             [Fact]
             public void The_Event_Is_Formatted_In_A_Certain_Way()
             {
-                Assert.Equal("aeoth has been eliminated", result.Events.First());
+                Assert.Equal("aeoth has been eliminated", result.Notifications.First());
             }
 
             [Fact]

@@ -20,7 +20,7 @@ namespace SamuraiServer.Data.Providers
     {
         public IEnumerable<Unit> Units { get; set; }
         public IEnumerable<ErrorMessage> Errors { get; set; }
-        public IEnumerable<string> Events { get; set; }
+        public IEnumerable<string> Notifications { get; set; }
     }
 
     public class CommandProcessor
@@ -38,10 +38,10 @@ namespace SamuraiServer.Data.Providers
         {
             var units = new List<Unit>();
             var errors = new List<ErrorMessage>();
-
+            IEnumerable<string> notifications = new List<string>();
 
             if (commands == null)
-                return new CommandResult { Units = units, Errors = errors };
+                return new CommandResult { Units = units, Errors = errors, Notifications = notifications };
 
             foreach (var c in commands)
             {
@@ -79,10 +79,10 @@ namespace SamuraiServer.Data.Providers
                 //    ProcessCreate(c);
                 //}
             }
-            
-            var events = GetPostRoundEvents();
 
-            return new CommandResult { Units = units, Errors = errors, Events = events };
+            notifications = GetPostRoundEvents();
+
+            return new CommandResult { Units = units, Errors = errors, Notifications = notifications };
         }
 
         private IEnumerable<string> GetPostRoundEvents()
@@ -102,6 +102,7 @@ namespace SamuraiServer.Data.Providers
 
                 _match.Players.Remove(player);
             }
+
             return events;
         }
 

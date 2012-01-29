@@ -32,7 +32,7 @@ namespace SamuraiServer.Areas.Api.Controllers
             // TODO: save game
             // TODO: error message format isn't right - needs command and message
 
-            return Json(new { status = true, data = new { gameId, player, units = result.Units, errors = result.Errors } });
+            return Json(new { status = true, data = new { gameId, player, units = result.Units, errors = result.Errors, notifications = result.Notifications } });
         }
     }
 }
