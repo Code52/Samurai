@@ -1,7 +1,12 @@
+using System;
+using System.IO;
+using System.IO.IsolatedStorage;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Samurai.Client.Wp7.Api;
+using SamuraiServer.Data;
 using XNInterface.Controls;
 using XNInterface.Input;
 
@@ -13,6 +18,9 @@ namespace Samurai.Client.Wp7.Screens
         private ContentManager content;
         private SpriteBatch sb;
         private WP7Touch touchInput;
+
+        private ServerApi api = new ServerApi("http://samuraitest.apphb.com");
+        public Player Player;
 
         public MainMenuScreen()
             : base()
@@ -48,15 +56,33 @@ namespace Samurai.Client.Wp7.Screens
         private void BindMenuItems()
         {
             var playBtn = window.GetChild<Button>("btnPlay");
+            var loginBtn = window.GetChild<Button>("btnLogin");
+            var logoutBtn = window.GetChild<Button>("btnLogout");
+            var registerBtn = window.GetChild<Button>("btnRegister");
+
             if (playBtn != null)
             {
                 playBtn.Triggered +=
                     (b) =>
                     {
-                        Manager.GetOrCreateScreen<LobbyScreen>();
+                        Manager.GetOrCreateScreen<LobbyScreen>().API = api;
                         Manager.TransitionTo<LobbyScreen>();
                     };
             }
+
+            if (registerBtn != null)
+            {
+                registerBtn.Triggered +=
+                    (b) =>
+                    {
+                        Manager.GetOrCreateScreen<RegisterScreen>().API = api;
+                        Manager.TransitionTo<RegisterScreen>();
+                    };
+            }
+
+            var exitBtn = window.GetChild<Button>("btnExit");
+            if (exitBtn != null)
+                exitBtn.Triggered += (b) => Manager.ExitGame();
         }
 
         public override void UnloadContent()
@@ -90,12 +116,75 @@ namespace Samurai.Client.Wp7.Screens
 
         public override void OnNavigatedFrom()
         {
+            SavePlayer();
             base.OnNavigatedFrom();
         }
 
         public override void OnNavigatedTo()
         {
+            LoadPlayer();
+            UpdateButtons();
             base.OnNavigatedTo();
+        }
+
+        private void SavePlayer()
+        {
+            if (Player == null)
+                return;
+
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            using (var file = iso.OpenFile("player.dat", FileMode.Create, FileAccess.Write))
+            using (var bw = new BinaryWriter(file))
+            {
+                bw.Write(Player.Id.ToString());
+                bw.Write(Player.Name);
+                bw.Write(Player.ApiKey);
+            }
+        }
+
+        private void LoadPlayer()
+        {
+            if (Player != null)
+                return;
+
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (iso.FileExists("player.dat"))
+                {
+                    using (var file = iso.OpenFile("player.dat", FileMode.Open, FileAccess.Read))
+                    using (var br = new BinaryReader(file))
+                    {
+                        Player = new Player();
+                        Player.Id = Guid.Parse(br.ReadString());
+                        Player.Name = br.ReadString();
+                        Player.ApiKey = br.ReadString();
+                        Login();
+                    }
+                }
+            }
+        }
+
+        private void Login()
+        {
+            api.Login(Player.Name, Player.ApiKey, new Action<PlayerResponse, Exception>(
+                (p, e) =>
+                {
+                    return;
+                }));
+        }
+
+        private void UpdateButtons()
+        {
+            bool isLoggedIn = Player != null;
+
+            var playBtn = window.GetChild<Button>("btnPlay");
+            var registerBtn = window.GetChild<Button>("btnRegister");
+
+            if (playBtn != null)
+                playBtn.Enabled = isLoggedIn;
+
+            if (registerBtn != null)
+                registerBtn.Enabled = !isLoggedIn;
         }
     }
 }

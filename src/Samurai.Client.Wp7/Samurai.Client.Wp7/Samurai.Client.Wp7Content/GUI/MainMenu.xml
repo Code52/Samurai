@@ -1,6 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Window Size="100%">
-  <Button Name="btnPlay" Align="Center" VAlign="Middle" Text="Play">
-    <TextBlock Format="{parenttext}" Font="MenuFont.spritefont" Color="#FFFFFF" />
-  </Button>
+  <StackPanel Align="Center" VAlign="Middle">
+    <Button Name="btnRegister" Text="Register" Visibility="Enabled">
+      <TextBlock Format="{parenttext}" Font="MenuFont.spritefont" Color="#FFFFFF" />
+    </Button>
+    <Button Name="btnPlay" Text="Play" Visibility="Enabled">
+      <TextBlock Format="{parenttext}" Font="MenuFont.spritefont" Color="#FFFFFF" />
+    </Button>
+    <Button Name="btnExit" Text="Exit Game">
+      <TextBlock Format="{parenttext}" Font="MenuFont.spritefont" Color="#FFFFFF" />
+    </Button>
+  </StackPanel>
 </Window>
