@@ -265,7 +265,14 @@ namespace Samurai.Client.ConsoleClient
 
         private static void Refresh()
         {
-            ViewGame(CurrentGame.Id);
+            api.GetGame(CurrentGame.Id, (data, e) =>
+            {
+                if (e != null) { Error(e); return; }
+                if (!data.Ok) { Welcome(data.Message); return; }
+
+                UpdateGame(data.Game);
+                ViewGame(CurrentGame.Id);
+            });
         }
 
         private static void StartGame() {

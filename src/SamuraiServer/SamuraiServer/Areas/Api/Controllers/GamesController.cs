@@ -112,7 +112,7 @@ namespace SamuraiServer.Areas.Api.Controllers
 
             return Json(new {ok = true, map = result.Data});
         }
-		
+
         public ActionResult StartGame(Guid gameId)
         {
             var result = _gameStateProvider.StartGame(gameId);
@@ -121,6 +121,16 @@ namespace SamuraiServer.Areas.Api.Controllers
                 return Json(new { ok = false, message = result.Message }, JsonRequestBehavior.AllowGet);
 
             return Json(new { ok = true, game = result.Data }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetGame(Guid gameId)
+        {
+            var result = _gameStateProvider.Load(gameId);
+            if (result == null)
+            {
+                return Json(new { ok = false, message = "Game not found" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { ok = true, game = result }, JsonRequestBehavior.AllowGet);
         }
     }
 }
