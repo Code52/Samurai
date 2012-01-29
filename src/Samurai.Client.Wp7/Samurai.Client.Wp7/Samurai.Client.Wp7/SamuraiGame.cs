@@ -22,14 +22,26 @@ namespace Samurai.Client.Wp7
 #if WINDOWS_PHONE
             // Frame rate is 30 fps by default for Windows Phone.
             TargetElapsedTime = TimeSpan.FromTicks(333333);
-			
+
 #if !MONO
             // Extend battery life under lock.
             InactiveSleepTime = TimeSpan.FromSeconds(1);
 #endif
-			
+
             graphics.IsFullScreen = true;
 #endif
+        }
+
+        protected override void OnExiting(object sender, EventArgs args)
+        {
+            _screens.Tombstone();
+            base.OnExiting(sender, args);
+        }
+
+        protected override void OnDeactivated(object sender, EventArgs args)
+        {
+            _screens.Tombstone();
+            base.OnDeactivated(sender, args);
         }
 
         /// <summary>

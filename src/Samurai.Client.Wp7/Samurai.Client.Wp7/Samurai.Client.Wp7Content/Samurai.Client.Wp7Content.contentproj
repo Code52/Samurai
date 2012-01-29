@@ -85,6 +85,20 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GUI\Register.xml">
+      <Name>Register</Name>
+      <Importer>XNIImporter</Importer>
+      <Processor>XNIProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GUI\Lobby.xml">
+      <Name>Lobby</Name>
+      <Importer>XNIImporter</Importer>
+      <Processor>XNIProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

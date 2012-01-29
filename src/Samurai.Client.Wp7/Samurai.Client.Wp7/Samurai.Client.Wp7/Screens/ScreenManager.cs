@@ -102,6 +102,12 @@ namespace Samurai.Client.Wp7.Screens
             }
         }
 
+        public void Tombstone()
+        {
+            if (curScreen != null)
+                curScreen.OnNavigatedFrom();
+        }
+
         public void ExitGame()
         {
             Game.Exit();

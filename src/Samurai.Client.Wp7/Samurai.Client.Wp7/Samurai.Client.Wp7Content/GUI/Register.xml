@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Window Size="100%">
+  <StackPanel>
+    <TextBlock Font="MenuFont.spritefont" Color="#FFFFFF" Text="Username" />
+    <TextBlock Name="txtUsername" Font="MenuFont.spritefont" Color="#FFFFFF" Text="Tap here to enter your Username" />
+
+    <Button Name="btnRegister" Text="Register">
+      <TextBlock Font="MenuFont.spritefont" Color="#FFFFFF" Format="{parenttext}" />
+    </Button>
+    <TextBlock Name="busyMessage" Font="MenuFont.spritefont" Color="#FFFFFF" Text="Registering..." Visibility="Enabled" />
+  </StackPanel>
+</Window>
