@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SamuraiServer.Data.Tiles;
 
@@ -14,6 +15,10 @@ namespace SamuraiServer.Data
         public Guid Id { get; private set; }
         public string Name { get; set; }
         public string ImageResource { get; set; }
+
+        public int MinPlayers { get; set; }
+        public int MaxPlayers { get; set; }
+        public Dictionary<int, List<Unit>> StartingUnits { get; set; }
 
         public TileType[][] Tiles { get; set; }
 

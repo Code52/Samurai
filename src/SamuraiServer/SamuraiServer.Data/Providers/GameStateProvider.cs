@@ -86,6 +86,10 @@ namespace SamuraiServer.Data
             if (player == null) return ValidationResult<GameState>.Failure("Could not find Player");
             if (game == null) return ValidationResult<GameState>.Failure("Could not find Game");
 
+            var map = _mapProvider.Get(game.MapId);
+            if (game.Players.Count >= map.MaxPlayers)
+                return ValidationResult<GameState>.Failure("Game is already full");
+
             if (game.Players.Any(p => p.Player.Id == player.Id))
                 return ValidationResult<GameState>.Failure("Player is already a member of that game");
 
@@ -139,6 +143,11 @@ namespace SamuraiServer.Data
 
             if(game.Players.Count < 2)
                 return ValidationResult<GameState>.Failure("Game must have at least 2 players to start");
+
+            var map = _mapProvider.Get(game.MapId);
+
+            if (game.Players.Count < map.MinPlayers)
+                return ValidationResult<GameState>.Failure("Game requires more players to begin");
 
             if (game.Started == false)  // Multiple users may try to start a game, return success but don't do anything to the game state
             {
