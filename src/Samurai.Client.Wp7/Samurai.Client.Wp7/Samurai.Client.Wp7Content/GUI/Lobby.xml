@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Window Size="100%">
+  <Image src="Textures\samurai_background_notext.png" Size="100%" />
   <Button Name="btnCreateGame" Text="Create Game">
-    <TextBlock Font="MenuFont.spritefont" Color="#FFFFFF" Format="{parenttext}" />
+    <TextBlock Font="MenuFont.spritefont" Color="#000000" Format="{parenttext}" />
   </Button>
 </Window>
