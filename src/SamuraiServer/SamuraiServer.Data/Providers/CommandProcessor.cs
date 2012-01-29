@@ -95,7 +95,7 @@ namespace SamuraiServer.Data.Providers
             {
                 if (player.Player != null)
                 {
-                    events.Add(string.Format("Player {0} has been eliminated", player.Player.Name));    
+                    events.Add(string.Format("{0} has been eliminated", player.Player.Name));    
                 }
 
 
