@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Autofac;
 using Autofac.Integration.Mvc;
-using SamuraiServer.Data;
-using SamuraiServer.Data.Impl;
-using SamuraiServer.Data.Providers;
 
 namespace SamuraiServer
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
 
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters) {
             filters.Add(new HandleErrorAttribute());
@@ -46,27 +38,5 @@ namespace SamuraiServer
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
         }
-
-        //private static void RegisterContainer()
-        //{
-        //    var builder = new ContainerBuilder();
-        //    builder.RegisterAssemblyTypes(typeof(Player).Assembly)
-        //           .Where(t => t.Name.EndsWith("Repository"))
-        //           .Where(t => t.Name.StartsWith("InMemory"))
-        //           .AsImplementedInterfaces()
-        //           .InstancePerHttpRequest();
-
-        //    builder.RegisterAssemblyTypes(typeof(Player).Assembly)
-        //           .Where(t => t.Name.EndsWith("Provider"))
-        //           .AsImplementedInterfaces()
-        //           .InstancePerHttpRequest();
-
-        //    builder.RegisterControllers(Assembly.GetExecutingAssembly());
-
-        //    builder.RegisterType<CombatCalculator>().AsImplementedInterfaces().SingleInstance();
-
-        //    var container = builder.Build();
-        //    DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
-        //}
     }
 }
