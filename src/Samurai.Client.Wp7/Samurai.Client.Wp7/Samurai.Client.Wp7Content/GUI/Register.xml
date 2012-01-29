@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Window Size="100%">
   <Image src="Textures\samurai_background_notext.png" Size="100%" />
-  <StackPanel>
-    <TextBlock Font="MenuFont.spritefont" Color="#000000" Text="Username" />
-    <TextBlock Name="txtUsername" Font="MenuFont.spritefont" Color="#000000" Text="Tap here to enter your Username" />
+  <StackPanel Position="15%" Size="85%">
+    <TextBlock Font="MenuFont.spritefont" Color="#000000" Text="Enter your Username:" />
+    <TextBlock Name="txtUsername" Font="MenuFont.spritefont" Color="#000000" Text="Tap here" />
 
     <Button Name="btnRegister" Text="Register">
       <TextBlock Font="MenuFont.spritefont" Color="#000000" Format="{parenttext}" />
