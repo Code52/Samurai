@@ -10,30 +10,19 @@ using SamuraiServer.Migrations;
 
 namespace SamuraiServer
 {
-    public class IdeastrikeBootstrapper
+    public class SamuraiBootstrapper
     {
         private const string SqlClient = "System.Data.SqlClient";
 
-        public IContainer ConfigureApplicationContainer(ILifetimeScope existingContainer)
+        public IContainer CreateContainer()
         {
             var builder = new ContainerBuilder();
 
-            if (ConfigurationManager.ConnectionStrings.Count > 0 && ConfigurationManager.ConnectionStrings["Ideastrike"] != null)
-                builder.RegisterType<SamuraiContext>()
-                    .WithParameter(new NamedParameter("nameOrConnectionString", ConfigurationManager.ConnectionStrings["Ideastrike"].ConnectionString + ";MultipleActiveResultSets=true"))
-                    .AsSelf()
-                    .InstancePerLifetimeScope();
-
-            else
-                builder.RegisterType<SamuraiContext>()
-                .AsSelf()
-                .InstancePerLifetimeScope();
-
-            builder.RegisterAssemblyTypes(typeof(Player).Assembly)
-                   .Where(t => t.Name.EndsWith("Repository"))
-                   .Where(t => t.Name.StartsWith("InMemory"))
-                   .AsImplementedInterfaces()
-                   .InstancePerHttpRequest();
+#if DEBUG
+            RegisterInMemorySource(builder);
+#else
+            RegisterRemoteSource(builder);
+#endif
 
             builder.RegisterAssemblyTypes(typeof(Player).Assembly)
                    .Where(t => t.Name.EndsWith("Provider"))
@@ -43,38 +32,44 @@ namespace SamuraiServer
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
 
             builder.RegisterType<CombatCalculator>().AsImplementedInterfaces().SingleInstance();
+
             return builder.Build();
         }
 
-        private static void DoMigrations()
+        private static void RegisterRemoteSource(ContainerBuilder builder)
+        {
+            if (ConfigurationManager.ConnectionStrings.Count > 0 && ConfigurationManager.ConnectionStrings["Samurai"] != null)
+                builder.RegisterType<SamuraiContext>()
+                    .WithParameter(new NamedParameter("nameOrConnectionString", ConfigurationManager.ConnectionStrings["Samurai"].ConnectionString + ";MultipleActiveResultSets=true"))
+                    .AsSelf()
+                    .InstancePerLifetimeScope();
+
+            else
+                builder.RegisterType<SamuraiContext>()
+                .AsSelf()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterAssemblyTypes(typeof(Player).Assembly)
+               .Where(t => t.Name.EndsWith("Repository"))
+               .Where(t => t.Name.StartsWith("Sql"))
+               .AsImplementedInterfaces()
+               .InstancePerHttpRequest();
+        }
+
+        private static void RegisterInMemorySource(ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(typeof (Player).Assembly)
+                .Where(t => t.Name.EndsWith("Repository"))
+                .Where(t => t.Name.StartsWith("InMemory"))
+                .AsImplementedInterfaces()
+                .InstancePerHttpRequest();
+        }
+
+        public static void DoMigrations()
         {
             var settings = new SamuraiDbConfiguration();
             var migrator = new DbMigrator(settings);
             migrator.Update();
         }
-
-        //protected override void RequestStartup(ILifetimeScope container, IPipelines pipelines)
-        //{
-        //    var formsAuthConfiguration =
-        //        new FormsAuthenticationConfiguration
-        //            {
-        //                RedirectUrl = "~/login",
-        //                UserMapper = container.Resolve<IUserRepository>(),
-        //            };
-
-        //    FormsAuthentication.Enable(pipelines, formsAuthConfiguration);
-        //}
-
-        //protected override void ApplicationStartup(ILifetimeScope container, IPipelines pipelines)
-        //{
-        //    pipelines.OnError.AddItemToEndOfPipeline((context, exception) =>
-        //                                                 {
-        //                                                     var message = string.Format("Exception: {0}", exception);
-        //                                                     new ElmahErrorHandler.LogEvent(message).Raise();
-        //                                                     return null;
-        //                                                 });
-
-        //    DoMigrations();
-        //}
     }
 }
