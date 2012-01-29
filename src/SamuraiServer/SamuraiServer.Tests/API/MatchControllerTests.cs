@@ -53,16 +53,16 @@ namespace SamuraiServer.Tests.API
             }
 
             [Fact]
-<<<<<<< HEAD
             public void Repository_Saves_Game()
             {
                 repo.Received().Edit(state);
                 repo.Received().Save();
-=======
+            }
+
+            [Fact]
             public void Model_Contains_Empty_Notifications_Array()
             {
                 Assert.True(model.data.notifications.Count == 0);
->>>>>>> more tests for notifications
             }
         }
     }
