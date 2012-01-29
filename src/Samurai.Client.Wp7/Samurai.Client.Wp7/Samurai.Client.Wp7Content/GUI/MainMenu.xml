@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Window Size="100%">
   <StackPanel Align="Center" VAlign="Middle">
+    <TextBlock Name="status" Font="MenuFont.spritefont" Color="#FFFFFF" Format="{text}" Text="Logging in..." Visibility="Enabled" />
     <Button Name="btnRegister" Text="Register" Visibility="Enabled">
       <TextBlock Format="{parenttext}" Font="MenuFont.spritefont" Color="#FFFFFF" />
     </Button>

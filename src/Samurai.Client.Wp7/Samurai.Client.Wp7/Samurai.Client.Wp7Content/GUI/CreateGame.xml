@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Window Size="100%">
+  <StackPanel>
+    <TextBlock Font="MenuFont.spritefont" Color="#FFFFFF" Format="{text}" Text="Game Name" />
+    <TextBlock Name="txtGameName" Font="MenuFont.spritefont" Color="#FFFFFF" Format="{text}" Text="Tap here to enter game name" />
+    <Button Name="btnCreate" Text="Create Game">
+      <TextBlock Font="MenuFont.spritefont" Color="#FFFFFF" Format="{parenttext}" />
+    </Button>
+    <TextBlock Name="creatingMessage" Font="MenuFont.spritefont" Color="#FFFFFF" Format="{text}" Text="Creating Game..." Visibility="Enabled" />
+  </StackPanel>
+</Window>
