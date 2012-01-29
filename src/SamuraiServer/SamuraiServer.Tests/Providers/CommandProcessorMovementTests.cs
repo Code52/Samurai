@@ -11,7 +11,52 @@ namespace SamuraiServer.Tests.Providers
 {
     public class CommandProcessorMovementTests
     {
-        public class Ninja : Unit { }
+        public class Ninja : Unit
+        {
+            public Ninja()
+            {
+                Id = Guid.NewGuid();
+                Attack = 5;
+                Defence = 5;
+                Range = 1;
+                HitPoints = 1;
+                CurrentHitPoints = 1;
+            }
+
+            public override Guid Id { get; set; }
+
+            public override string Name
+            {
+                get { return "Ninja"; }
+            }
+
+            public override string ImageSpriteResource
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public override int Size
+            {
+                get { throw new NotImplementedException(); }
+                set { throw new NotImplementedException(); }
+            }
+
+            public override int Moves { get; set; }
+
+            public override double Attack { get; set; }
+
+            public override double Defence { get; set; }
+
+            public override double Range { get; set; }
+
+            public override double HitPoints { get; set; }
+
+            public override double CurrentHitPoints { get; set; }
+
+            public override int X { get; set; }
+
+            public override int Y { get; set; }
+        }
 
         const string moveCommandTemplate = " [{{\"unitId\": \"{0}\",\"action\":\"move\",\"X\":1,\"Y\":0}}] ";
 

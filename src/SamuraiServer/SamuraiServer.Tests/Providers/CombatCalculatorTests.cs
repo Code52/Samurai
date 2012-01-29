@@ -1,4 +1,5 @@
-﻿using SamuraiServer.Data;
+﻿using System;
+using SamuraiServer.Data;
 using SamuraiServer.Data.Providers;
 using Xunit;
 
@@ -6,7 +7,52 @@ namespace SamuraiServer.Tests.Providers
 {
     public class CombatCalculatorTests
     {
-        public class Robot : Unit { }
+        public class Robot : Unit {
+            
+            public Robot()
+            {
+                Id = Guid.NewGuid();
+                Attack = 5;
+                Defence = 5;
+                Range = 1;
+                HitPoints = 1;
+                CurrentHitPoints = 1;
+            }
+
+            public override Guid Id { get; set; }
+
+            public override string Name
+            {
+                get { return "Robot"; }
+            }
+
+            public override string ImageSpriteResource
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public override int Size
+            {
+                get { throw new NotImplementedException(); }
+                set { throw new NotImplementedException(); }
+            }
+
+            public override int Moves { get; set; }
+
+            public override double Attack { get; set; }
+
+            public override double Defence { get; set; }
+
+            public override double Range { get; set; }
+
+            public override double HitPoints { get; set; }
+
+            public override double CurrentHitPoints { get; set; }
+
+            public override int X { get; set; }
+
+            public override int Y { get; set; }
+        }
 
         public class When_A_Unit_Attacks_A_Similar_Unit : SpecificationFor<CombatCalculator>
         {
@@ -16,8 +62,8 @@ namespace SamuraiServer.Tests.Providers
 
             public override CombatCalculator Given()
             {
-                attackUnit = new Robot { HitPoints = 1.0, CurrentHitPoints = 1.0, Attack = 5, Defence = 5 };
-                targetUnit = new Robot { HitPoints = 1.0, CurrentHitPoints = 1.0, Attack = 5, Defence = 5 };
+                attackUnit = new Robot() { };
+                targetUnit = new Robot { };
 
                 return new CombatCalculator();
             }
@@ -42,9 +88,9 @@ namespace SamuraiServer.Tests.Providers
 
             public override CombatCalculator Given()
             {
-                attackUnit = new Robot { HitPoints = 1.0, CurrentHitPoints = 1.0, Attack = 5, Defence = 5 };
-                targetUnit = new Robot { HitPoints = 1.0, CurrentHitPoints = 1.0, Attack = 5, Defence = 5 };
-                weakerUnit = new Robot { HitPoints = 1.0, CurrentHitPoints = 1.0, Attack = 5, Defence = 2 };
+                attackUnit = new Robot { };
+                targetUnit = new Robot { };
+                weakerUnit = new Robot { Defence = 2};
 
                 return new CombatCalculator();
             }
@@ -73,9 +119,9 @@ namespace SamuraiServer.Tests.Providers
 
             public override CombatCalculator Given()
             {
-                attackUnit = new Robot { HitPoints = 1.0, CurrentHitPoints = 1.0, Attack = 5, Defence = 5 };
-                baselineUnit = new Robot { HitPoints = 1.0, CurrentHitPoints = 1.0, Attack = 5, Defence = 5 };
-                strongerUnit = new Robot { HitPoints = 1.0, CurrentHitPoints = 1.0, Attack = 5, Defence = 8 };
+                attackUnit = new Robot {  };
+                baselineUnit = new Robot {  };
+                strongerUnit = new Robot { Defence = 8 };
 
                 return new CombatCalculator();
             }
