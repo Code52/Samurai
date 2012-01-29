@@ -18,7 +18,7 @@ namespace Samurai.Client.Wp7.Screens
         private WP7Touch touch;
 
         private string userName = "";
-        private const string DefaultUsernameLabel = "Tap here to enter your Username";
+        private string defaultUsernameLabel = "";
 
         public ServerApi API;
 
@@ -54,6 +54,7 @@ namespace Samurai.Client.Wp7.Screens
 
             if (txtUsername != null)
             {
+                defaultUsernameLabel = txtUsername.Text;
                 txtUsername.Triggered +=
                     (b) =>
                     {
@@ -112,7 +113,7 @@ namespace Samurai.Client.Wp7.Screens
                 var txtUsername = gui.GetChild<TextBlock>("txtUsername");
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    txtUsername.Text = DefaultUsernameLabel;
+                    txtUsername.Text = defaultUsernameLabel;
                     userName = "";
                 }
                 else

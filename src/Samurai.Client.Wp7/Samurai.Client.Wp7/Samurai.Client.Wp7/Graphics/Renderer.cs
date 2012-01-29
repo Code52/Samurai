@@ -9,7 +9,7 @@ namespace Samurai.Client.Wp7.Graphics
 {
     public class Renderer
     {
-        private const int CellWidth = 32;
+        private const int CellWidth = 64;
         private readonly List<Texture2D> textures = new List<Texture2D>();
         private Rectangle drawRect = new Rectangle(0, 0, CellWidth, CellWidth);
 
@@ -29,8 +29,8 @@ namespace Samurai.Client.Wp7.Graphics
 
             int xStart = xOffset % CellWidth;
             int yStart = yOffset % CellWidth;
-            int width = Math.Min((xOffset / CellWidth) + (device.Viewport.Width / CellWidth) + 1, map.Tiles.Length);
-            int height = Math.Min((yOffset / CellWidth) + (device.Viewport.Height / CellWidth) + 1, map.Tiles[0].Length); // All columns are of equal height
+            int width = Math.Min((xOffset / CellWidth) + (device.Viewport.Width / CellWidth) + 2, map.Tiles.Length);
+            int height = Math.Min((yOffset / CellWidth) + (device.Viewport.Height / CellWidth) + 2, map.Tiles[0].Length); // All columns are of equal height
 
             drawRect.X = -xStart;
             for (int xIndex = xOffset / CellWidth; xIndex < width && xIndex >= 0; ++xIndex)
