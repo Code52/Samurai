@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 using NSubstitute;
 using SamuraiServer.Areas.Api.Controllers;
@@ -23,12 +22,9 @@ namespace SamuraiServer.Tests.API
                 return new MatchController(repo, calculator);
             }
 
-            private string userName = null;
-           // private IEnumerable<dynamic> commands;
-
             public override void When()
             {
-                var result = Subject.SendCommands(gameId, userName, null) as JsonResult;
+                var result = Subject.SendCommands(gameId, null, null) as JsonResult;
                 model = result.Data.AsDynamic();
             }
 

@@ -50,17 +50,18 @@ namespace SamuraiServer.Tests.Providers
             }
 
             [Fact]
-            public void The_Unit_Received_Is_The_Original_Unit()
+            public void Both_Units_Are_Sent_To_The_Client()
             {
-                var unit = result.Units.First();
-                Assert.Equal(1, result.Units.Count());
-                Assert.Equal(activeUnitId, unit.Id);
+                Assert.Equal(2, result.Units.Count());
+
+                Assert.Equal(activeUnitId, result.Units.First().Id);
+                Assert.Equal(targetUnitId, result.Units.Last().Id);
             }
 
             [Fact]
             public void The_Target_Unit_Has_Taken_Damage()
             {
-                Assert.Equal(expectedDamage, targetUnit.CurrentHitPoints);
+                Assert.Equal(0.1, targetUnit.CurrentHitPoints, 1);
             }
         }
 
