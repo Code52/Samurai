@@ -128,7 +128,7 @@ namespace Samurai.Client.Wp7.Screens
         public override void Update(double elapsedSeconds)
         {
             if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back))
-                Manager.TransitionTo<LobbyScreen>();
+                Manager.TransitionTo<MainMenuScreen>();
 
             touch.HandleGestures();
             gui.PerformLayout(Manager.GraphicsDevice.Viewport.Width, Manager.GraphicsDevice.Viewport.Height);

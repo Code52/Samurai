@@ -1,17 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Window Size="100%">
   <Image src="Textures\samurai_background_800x480.png" Size="100%" />
-  <StackPanel Position="50%, 50%" Size="50%, 50%">
-    <TextBlock Name="status" Font="MainMenuFont.spritefont" Color="#000000" Format="{text}" Text="Logging in..." Visibility="Enabled" />
+  <StackPanel Position="50%, 50%" Size="50%, 40%">
     <Button Name="btnRegister" Text="Register" Visibility="Enabled">
       <TextBlock Format="{parenttext}" Font="MainMenuFont.spritefont" Color="#000000" />
     </Button>
-    <Button Name="btnPlay" Text="Play" Visibility="Enabled">
+
+    <Button Name="btnPlay" Text="Create Game" Visibility="Enabled">
       <TextBlock Format="{parenttext}" Font="MainMenuFont.spritefont" Color="#000000" />
     </Button>
-    <TextBlock Text="About" Font="MainMenuFont.spritefont" Color="#000000" />
+
+    <!--<Button Text="Quickmatch" Visibility="Enabled">
+      <TextBlock Format="{parenttext}" Font="MainMenuFont.spritefont" Color="#000000" />
+    </Button>
+
+    <Button Text="Find Friend" Visibility="Enabled">
+      <TextBlock Format="{parenttext}" Font="MainMenuFont.spritefont" Color="#000000" />
+    </Button>
+
+    <TextBlock Text="About" Font="MainMenuFont.spritefont" Color="#000000" />-->
+
     <Button Name="btnExit" Text="Exit Game">
       <TextBlock Format="{parenttext}" Font="MainMenuFont.spritefont" Color="#000000" />
     </Button>
   </StackPanel>
+  <TextBlock Name="status" Position="5%, 90%" Font="MainMenuFont.spritefont" Color="#000000" Format="{text}" Text="Logging in..." Visibility="Enabled" />
 </Window>
