@@ -128,7 +128,7 @@ namespace SamuraiServer.Data
                 return ValidationResult<string[]>.Failure("Invalid Map Id");
             }
         }
-		
+
         public ValidationResult<GameState> StartGame(Guid gameId)
         {
             if (gameId == Guid.Empty) return ValidationResult<GameState>.Failure("gameId needs to be set");
@@ -138,25 +138,20 @@ namespace SamuraiServer.Data
             if (game == null) return ValidationResult<GameState>.Failure("Game could not be found");
 
             if(game.Players.Count < 2)
-                ValidationResult<GamePlayer>.Failure("Game must have at least 2 players to start");
+                return ValidationResult<GameState>.Failure("Game must have at least 2 players to start");
 
-            var list = new List<GamePlayer>(game.Players);
-
-            for (int i = 0; i < game.Players.Count; i++)
+            if (game.Started == false)  // Multiple users may try to start a game, return success but don't do anything to the game state
             {
+                    
+                // Sort players
                 var random = new Random();
+                game.PlayerOrder = game.Players.OrderBy(d => random.Next(0, 100)).Select(d => d.Id).ToList();
 
-                var item = list.ElementAt(random.Next(0, list.Count - 1));
+                game.Turn = 0;
+                game.Started = true;
 
-                game.PlayerOrder.Add(i, item.Id);
-
-                list.Remove(item);
+                _repo.Save();
             }
-
-            game.Turn = 0;
-            game.Started = true;
-
-            _repo.Save();
 
             return ValidationResult<GameState>.Success.WithData(game);
         }

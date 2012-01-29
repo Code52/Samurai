@@ -13,37 +13,50 @@ namespace SamuraiServer.Data.Impl
 
         public InMemoryPlayerRepository()
         {
-            _players.Add(new Player
+            if (_players.Count == 0)
             {
-                Id = Guid.NewGuid(),
-                IsActive = false,
-                IsOnline = true,
-                LastSeen = DateTime.Now.Subtract(TimeSpan.FromHours(24)),
-                Name = "shiftkey",
-                GamesPlayed = 20,
-                Wins = 10
-            });
-            _players.Add(new Player
-            {
-                Id = Guid.NewGuid(),
-                IsActive = true,
-                IsOnline = true,
-                LastSeen = DateTime.Now.Subtract(TimeSpan.FromHours(1)),
-                Name = "aeoth",
-                GamesPlayed = 50,
-                Wins = 40
-            });
-            _players.Add(new Player
-            {
-                Id = Guid.NewGuid(),
-                IsActive = true,
-                IsOnline = false,
-                LastSeen = DateTime.Now.Subtract(TimeSpan.FromHours(48)),
-                Name = "tobin",
-                GamesPlayed = 25,
-                Wins = 15
-            });
-
+                _players.Add(new Player
+                {
+                    Id = Guid.NewGuid(),
+                    IsActive = false,
+                    IsOnline = true,
+                    LastSeen = DateTime.Now.Subtract(TimeSpan.FromHours(24)),
+                    Name = "shiftkey",
+                    GamesPlayed = 20,
+                    Wins = 10
+                });
+                _players.Add(new Player
+                {
+                    Id = Guid.NewGuid(),
+                    IsActive = true,
+                    IsOnline = true,
+                    LastSeen = DateTime.Now.Subtract(TimeSpan.FromHours(1)),
+                    Name = "aeoth",
+                    GamesPlayed = 50,
+                    Wins = 40
+                });
+                _players.Add(new Player
+                {
+                    Id = Guid.NewGuid(),
+                    IsActive = true,
+                    IsOnline = false,
+                    LastSeen = DateTime.Now.Subtract(TimeSpan.FromHours(48)),
+                    Name = "tobin",
+                    GamesPlayed = 25,
+                    Wins = 15
+                });
+                _players.Add(new Player
+                {
+                    Id = Guid.NewGuid(),
+                    IsActive = true,
+                    IsOnline = false,
+                    LastSeen = DateTime.Now.Subtract(TimeSpan.FromHours(1)),
+                    Name = "csainty",
+                    GamesPlayed = 1,
+                    Wins = 0,
+                    ApiKey = "12345"
+                });
+            }
         }
 
         public IQueryable<Player> GetAll()

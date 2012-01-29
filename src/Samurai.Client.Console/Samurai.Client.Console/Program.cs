@@ -61,7 +61,7 @@ namespace Samurai.Client.ConsoleClient
 
                 if (!data.Ok)
                 {
-                    BadResponse();
+                    Welcome(data.Message);
                     return;
                 }
 
@@ -74,6 +74,7 @@ namespace Samurai.Client.ConsoleClient
 
         private static void Login()
         {
+            Console.Clear();
             var name = GetText("Please enter your username", s => !String.IsNullOrWhiteSpace(s));
             var key = GetText("Please enter your key", s => !String.IsNullOrWhiteSpace(s));
 
@@ -87,7 +88,7 @@ namespace Samurai.Client.ConsoleClient
 
                 if (!data.Ok)
                 {
-                    BadResponse();
+                    Welcome(data.Message);
                     return;
                 }
 
@@ -109,9 +110,9 @@ namespace Samurai.Client.ConsoleClient
                 if (e != null) { Error(e); return; }
                 if (!data.Ok) { BadResponse(); return; }
 
-                Dictionary<char, Action> actions = new Dictionary<char, Action>();
-                actions.Add('C', CreateGame);
-                actions.Add('X', () => Welcome());
+                Dictionary<string, Action> actions = new Dictionary<string, Action>();
+                actions.Add("C", CreateGame);
+                actions.Add("X", () => Welcome());
 
                 Console.Clear();
                 Console.WriteLine("Choose a game to join");
@@ -121,7 +122,7 @@ namespace Samurai.Client.ConsoleClient
                     UpdateGame(data.Games[i]);
                     Console.WriteLine(String.Format("[{0}] {1} - {2}", i + 1, data.Games[i].Name, data.Games[i].Id));
                     var id = data.Games[i].Id;  // This copy of the variable is for the lambda below. Passing a reference to [i] into it is broken by the loop.
-                    actions.Add((i + 1).ToString()[0], () => JoinGame(id));
+                    actions.Add((i + 1).ToString(), () => JoinGame(id));
                 }
                 Console.WriteLine("---");
                 Console.WriteLine("[C] Create a new game");
@@ -137,15 +138,19 @@ namespace Samurai.Client.ConsoleClient
             api.CreateGameAndJoin(name, CurrentPlayer.Id, (data, e) =>
             {
                 if (e != null) { Error(e); return; }
+                if (!data.Ok) { Welcome(data.Message); return; }
+                UpdateGame(data.Game);
+                ViewGame(data.Game.Id);
+            });
+        }
+
+        private static void GetMap(GameState game)
+        {
+            api.GetMap(game.MapId, (data, ex) =>
+            {
+                if (ex != null) { Error(ex); return; }
                 if (!data.Ok) { BadResponse(); return; }
-                api.GetMap(data.Game.MapId, (mapResponse, ex) =>
-                {
-                    if (ex != null) { Error(ex); return; }
-                    if (!mapResponse.Ok) { BadResponse(); return; }
-                    CurrentMaps[data.Game.MapId] = mapResponse.Map;
-                    UpdateGame(data.Game);
-                    ViewGame(data.Game.Id);
-                });
+                UpdateMap(game, data.Map);
             });
         }
 
@@ -161,12 +166,23 @@ namespace Samurai.Client.ConsoleClient
             }
         }
 
+        private static void UpdateMap(GameState game, string[] map) {
+            if (CurrentMaps.ContainsKey(game.Id))
+            {
+                CurrentMaps[game.MapId] = map;
+            }
+            else
+            {
+                CurrentMaps.Add(game.MapId, map);
+            }
+        }
+
         private static void JoinGame(Guid id)
         {
             Console.Clear();
             var game = CurrentGames[id];
 
-            if (game.Players.Any(d => d.Id == CurrentPlayer.Id))
+            if (game.Players.Any(d => d.Player.Id == CurrentPlayer.Id))
             {
                 ViewGame(id);
                 return;
@@ -175,7 +191,7 @@ namespace Samurai.Client.ConsoleClient
             api.JoinGame(id, CurrentPlayer.Id, (data, e) =>
             {
                 if (e != null) { Error(e); return; }
-                if (!data.Ok) { BadResponse(); return; }
+                if (!data.Ok) { Welcome(data.Message); return; }
 
                 UpdateGame(data.Game);
                 ViewGame(data.Game.Id);
@@ -186,6 +202,9 @@ namespace Samurai.Client.ConsoleClient
         {
             Console.Clear();
             CurrentGame = CurrentGames[id];
+
+            if (!CurrentMaps.ContainsKey(CurrentGame.MapId))
+                GetMap(CurrentGame);
 
             int col2Left = Console.WindowWidth - 20;
 
@@ -212,13 +231,19 @@ namespace Samurai.Client.ConsoleClient
             }
 
             Console.SetCursorPosition(0, Console.WindowHeight - 4);
+
+            var options = new Dictionary<char, Action> {
+                { 'R', Refresh },
+                { 'X', ListGames },
+            };
+            if (CurrentGame.Started == false) {
+                options.Add('S', StartGame);
+                Console.WriteLine("[S] Start");
+            }
             Console.WriteLine("[R] Refresh");
             Console.WriteLine("[X] Exit");
 
-            Choose(new Dictionary<char, Action> {
-                { 'R', Refresh },
-                { 'X', ListGames },
-            });
+            Choose(options);
         }
 
         private static string GetTileView(TileType tile)
@@ -240,7 +265,24 @@ namespace Samurai.Client.ConsoleClient
 
         private static void Refresh()
         {
-            ViewGame(CurrentGame.Id);
+            api.GetGame(CurrentGame.Id, (data, e) =>
+            {
+                if (e != null) { Error(e); return; }
+                if (!data.Ok) { Welcome(data.Message); return; }
+
+                UpdateGame(data.Game);
+                ViewGame(CurrentGame.Id);
+            });
+        }
+
+        private static void StartGame() {
+            api.StartGame(CurrentGame.Id, (data, e) => {
+                if (e != null) { Error(e); return; }
+                if (!data.Ok) { Welcome(data.Message); return; }
+
+                UpdateGame(data.Game);
+                ViewGame(CurrentGame.Id);
+            });
         }
 
         private static void Choose(Dictionary<char, Action> actions)
@@ -252,6 +294,17 @@ namespace Samurai.Client.ConsoleClient
                 c = Char.ToUpper(Console.ReadKey(true).KeyChar);
             }
             actions[c].Invoke();
+        }
+
+        private static void Choose(Dictionary<string, Action> actions)
+        {
+            Console.Write("?");
+            string s = "";
+            while (!actions.ContainsKey(s))
+            {
+                s = Console.ReadLine().ToUpper();
+            }
+            actions[s].Invoke();
         }
 
         private static string GetText(string message, Func<string, bool> valid)
