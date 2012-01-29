@@ -122,6 +122,7 @@ namespace Samurai.Client.ConsoleClient
     public class ServerResponse
     {
         public bool Ok { get; set; }
+        public string Message { get; set; }
     }
 
     public class GetOpenGamesResponse : ServerResponse
@@ -142,7 +143,6 @@ namespace Samurai.Client.ConsoleClient
     public class CreatePlayerResponse : ServerResponse
     {
         public Player Player { get; set; }
-        public string Message { get; set; }
     }
 
     public class LoginResponse : ServerResponse

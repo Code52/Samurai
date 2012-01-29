@@ -74,6 +74,7 @@ namespace Samurai.Client.ConsoleClient
 
         private static void Login()
         {
+            Console.Clear();
             var name = GetText("Please enter your username", s => !String.IsNullOrWhiteSpace(s));
             var key = GetText("Please enter your key", s => !String.IsNullOrWhiteSpace(s));
 
@@ -87,7 +88,7 @@ namespace Samurai.Client.ConsoleClient
 
                 if (!data.Ok)
                 {
-                    BadResponse();
+                    Welcome(data.Message);
                     return;
                 }
 
