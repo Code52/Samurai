@@ -30,6 +30,8 @@ namespace SamuraiServer.Areas.Api.Controllers
             var result = processor.Process(commands);
 
             // TODO: save game
+            repo.Edit(game);
+            repo.Save();
             // TODO: error message format isn't right - needs command and message
 
             return Json(new { status = true, data = new { gameId, player, units = result.Units, errors = result.Errors } });
