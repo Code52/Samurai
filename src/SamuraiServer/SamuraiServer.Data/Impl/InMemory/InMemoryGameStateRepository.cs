@@ -9,22 +9,22 @@ namespace SamuraiServer.Data.Impl
     {
         private static readonly Dictionary<Guid, GameState> State = new Dictionary<Guid, GameState>();
 
-        public InMemoryGameStateRepository()
+        public InMemoryGameStateRepository(IMapProvider maps)
         {
             if (State.Count == 0)
             {
                 Guid id = Guid.NewGuid();
-                State.Add(id, new GameState { Id = id, Players = new List<GamePlayer>(), Turn = 0, Name = "Game 1" });
+                State.Add(id, new GameState { Id = id, Turn = 0, Name = "Game 1", MapId = maps.GetRandomMap().Id });
                 id = Guid.NewGuid();
-                State.Add(id, new GameState { Id = id, Players = new List<GamePlayer>(), Turn = 0, Name = "Game 2" });
+                State.Add(id, new GameState { Id = id, Turn = 0, Name = "Game 2", MapId = maps.GetRandomMap().Id });
                 id = Guid.NewGuid();
-                State.Add(id, new GameState { Id = id, Players = new List<GamePlayer>(), Turn = 0, Name = "Game 3" });
+                State.Add(id, new GameState { Id = id, Turn = 0, Name = "Game 3", MapId = maps.GetRandomMap().Id });
                 id = Guid.NewGuid();
-                State.Add(id, new GameState { Id = id, Players = new List<GamePlayer>(), Turn = 0, Name = "Game 4" });
+                State.Add(id, new GameState { Id = id, Turn = 0, Name = "Game 4", MapId = maps.GetRandomMap().Id });
                 id = Guid.NewGuid();
-                State.Add(id, new GameState { Id = id, Players = new List<GamePlayer>(), Turn = 0, Name = "Game 5" });
+                State.Add(id, new GameState { Id = id, Turn = 0, Name = "Game 5", MapId = maps.GetRandomMap().Id });
                 id = Guid.NewGuid();
-                State.Add(id, new GameState { Id = id, Players = new List<GamePlayer>(), Turn = 0, Name = "Game 6" });
+                State.Add(id, new GameState { Id = id, Turn = 0, Name = "Game 6", MapId = maps.GetRandomMap().Id });
             }
         }
 
