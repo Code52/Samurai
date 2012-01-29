@@ -13,7 +13,7 @@ namespace SamuraiServer.Data.Impl.Sql
 
         public GameState GetByName(string name)
         {
-            return base.FindBy(c => c.Name == name).FirstOrDefault();
+            return FindBy(c => c.Name == name).FirstOrDefault();
         }
     }
 }

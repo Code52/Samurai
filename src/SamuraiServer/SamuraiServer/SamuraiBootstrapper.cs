@@ -1,7 +1,7 @@
+using System.Configuration;
 using System.Data.Entity.Migrations;
 using System.Reflection;
 using Autofac;
-using System.Configuration;
 using Autofac.Integration.Mvc;
 using SamuraiServer.Data;
 using SamuraiServer.Data.Impl.Sql;

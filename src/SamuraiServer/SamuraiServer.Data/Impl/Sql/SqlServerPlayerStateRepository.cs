@@ -4,7 +4,8 @@ namespace SamuraiServer.Data.Impl.Sql
 {
     public class SqlServerPlayerRepository : GenericRepository<SamuraiContext, Player>, IPlayerRepository
     {
-        public SqlServerPlayerRepository(SamuraiContext ctx) : base(ctx)
+        public SqlServerPlayerRepository(SamuraiContext ctx)
+            : base(ctx)
         {
         }
 
