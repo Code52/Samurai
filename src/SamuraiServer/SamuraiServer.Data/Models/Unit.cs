@@ -15,7 +15,6 @@ namespace SamuraiServer.Data
         public abstract string ImageSpriteResource { get; }
 
         public int Moves { get; set; }
-        public int Size { get; set; }
         public double Attack { get; set; }
         public double Defence { get; set; }
         public double Range { get; set; }

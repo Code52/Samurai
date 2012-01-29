@@ -38,8 +38,8 @@ namespace SamuraiServer.Tests.Providers
 
             public override CombatCalculator Given()
             {
-                attackUnit = new Robot() { };
-                targetUnit = new Robot { };
+                attackUnit = new Robot();
+                targetUnit = new Robot();
 
                 return new CombatCalculator();
             }
@@ -64,8 +64,8 @@ namespace SamuraiServer.Tests.Providers
 
             public override CombatCalculator Given()
             {
-                attackUnit = new Robot { };
-                targetUnit = new Robot { };
+                attackUnit = new Robot();
+                targetUnit = new Robot();
                 weakerUnit = new Robot { Defence = 2};
 
                 return new CombatCalculator();
@@ -95,8 +95,8 @@ namespace SamuraiServer.Tests.Providers
 
             public override CombatCalculator Given()
             {
-                attackUnit = new Robot {  };
-                baselineUnit = new Robot {  };
+                attackUnit = new Robot();
+                baselineUnit = new Robot();
                 strongerUnit = new Robot { Defence = 8 };
 
                 return new CombatCalculator();
