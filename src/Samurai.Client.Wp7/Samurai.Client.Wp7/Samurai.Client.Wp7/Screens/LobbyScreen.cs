@@ -5,12 +5,14 @@ using Microsoft.Xna.Framework.Input;
 using Samurai.Client.Wp7.Api;
 using XNInterface.Controls;
 using XNInterface.Input;
+using SamuraiServer.Data;
 
 namespace Samurai.Client.Wp7.Screens
 {
     public class LobbyScreen : BaseScreen
     {
         public ServerApi API;
+        public Player Player;
 
         private ContentManager content;
         private SpriteBatch sb;
@@ -49,7 +51,9 @@ namespace Samurai.Client.Wp7.Screens
                 btnCreateGame.Triggered +=
                     (b) =>
                     {
-                        Manager.GetOrCreateScreen<CreateGameScreen>().API = API;
+                        var scr = Manager.GetOrCreateScreen<CreateGameScreen>();
+                        scr.API = API;
+                        scr.Player = Player;
                         Manager.TransitionTo<CreateGameScreen>();
                     };
             }

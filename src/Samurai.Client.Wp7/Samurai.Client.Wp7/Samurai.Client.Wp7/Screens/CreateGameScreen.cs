@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Samurai.Client.Wp7.Api;
+using SamuraiServer.Data;
 using XNInterface.Controls;
 using XNInterface.Input;
 
@@ -18,6 +19,7 @@ namespace Samurai.Client.Wp7.Screens
         private WP7Touch touch;
 
         public ServerApi API;
+        public Player Player;
         private string gameName = "";
         private string defaultText;
 
@@ -47,11 +49,60 @@ namespace Samurai.Client.Wp7.Screens
         {
             var txtGameName = gui.GetChild<TextBlock>("txtGameName");
             var btnCreate = gui.GetChild<Button>("btnCreate");
+            var creatingMessage = gui.GetChild<TextBlock>("creatingMessage");
+
+            if (creatingMessage != null)
+                creatingMessage.Enabled = false;
 
             if (txtGameName != null)
             {
                 defaultText = txtGameName.Text;
                 txtGameName.Triggered += (b) => Guide.BeginShowKeyboardInput(PlayerIndex.One, "Game Name", "Enter the name for the game.", gameName, KBCallback, null);
+            }
+
+            if (btnCreate != null)
+            {
+                btnCreate.Triggered +=
+                    (b) =>
+                    {
+                        if (!string.IsNullOrWhiteSpace(gameName))
+                        {
+                            if (creatingMessage != null)
+                                creatingMessage.Enabled = true;
+                            btnCreate.Enabled = false;
+                            API.CreateGameAndJoin(gameName, Player.Id, new Action<CreateGameAndJoinResponse, Exception>(
+                                (r, e) =>
+                                {
+                                    if (e == null && r.Ok)
+                                    {
+                                        API.GetMap(r.Game.MapId, new Action<GetMapResponse, Exception>(
+                                            (mr, me) =>
+                                            {
+                                                if (me == null && mr.Ok)
+                                                {
+                                                    var scr = Manager.GetOrCreateScreen<GameScreen>();
+                                                    scr.Init(API, Player, r.Game, Map.FromStringRepresentation(r.Game.MapId, mr.Map));
+                                                    Manager.TransitionTo<GameScreen>();
+                                                }
+                                                else
+                                                {
+                                                    Guide.BeginShowMessageBox("Error", me == null ? mr.Message : me.Message, new string[] { "Ok" }, 0, MessageBoxIcon.Error, null, null);
+                                                }
+                                                btnCreate.Enabled = true;
+                                                if (creatingMessage != null)
+                                                    creatingMessage.Enabled = false;
+                                            }));
+                                    }
+                                    else
+                                    {
+                                        Guide.BeginShowMessageBox("Error", e == null ? r.Message : e.Message, new string[] { "Ok" }, 0, MessageBoxIcon.Error, null, null);
+                                        btnCreate.Enabled = true;
+                                        if (creatingMessage != null)
+                                            creatingMessage.Enabled = false;
+                                    }
+                                }));
+                        }
+                    };
             }
         }
 
@@ -90,7 +141,8 @@ namespace Samurai.Client.Wp7.Screens
 
         public override void OnNavigatedTo()
         {
-            // TODO: Reset all fields
+            // Reset all fields
+            gameName = "";
             base.OnNavigatedTo();
         }
     }
