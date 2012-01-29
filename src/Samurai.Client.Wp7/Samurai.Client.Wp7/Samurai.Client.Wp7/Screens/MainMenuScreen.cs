@@ -166,11 +166,11 @@ namespace Samurai.Client.Wp7.Screens
 
         private void Login()
         {
-        //    api.Login(Player.Name, Player.ApiKey, new Action<PlayerResponse, Exception>(
-        //        (p, e) =>
-        //        {
-        //            return;
-        //        }));
+            api.Login(Player.Name, Player.ApiKey, new Action<PlayerResponse, Exception>(
+                (p, e) =>
+                {
+                    return;
+                }));
         }
 
         private void UpdateButtons()

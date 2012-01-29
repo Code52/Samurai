@@ -46,7 +46,7 @@ namespace Samurai.Client.Wp7.Api
 
         public void Login(string name, string apiKey, Action<PlayerResponse, Exception> callback)
         {
-            Post("/Api/Players/Login", "name=" + System.Uri.EscapeDataString(name) + "&apiKey=" + System.Uri.EscapeDataString(apiKey), callback);
+            Post("/Api/Players/Login", "name=" + System.Uri.EscapeDataString(name) + "&token=" + System.Uri.EscapeDataString(apiKey), callback);
         }
 
         private void Get<T>(string url, Action<T, Exception> callback)
