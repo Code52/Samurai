@@ -138,7 +138,7 @@ namespace SamuraiServer.Data
             if (game == null) return ValidationResult<GameState>.Failure("Game could not be found");
 
             if(game.Players.Count < 2)
-                ValidationResult<GamePlayer>.Failure("Game must have at least 2 players to start");
+                return ValidationResult<GameState>.Failure("Game must have at least 2 players to start");
 
             var list = new List<GamePlayer>(game.Players);
 
