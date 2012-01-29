@@ -60,6 +60,18 @@ namespace SamuraiServer.Tests.Providers
             {
                 Assert.Equal(1, result.Events.Count());
             }
+
+            [Fact]
+            public void The_Event_Is_Formatted_In_A_Certain_Way()
+            {
+                Assert.Equal("aeoth has been eliminated", result.Events.First());
+            }
+
+            [Fact]
+            public void The_Second_Unit_Is_Returned_But_Has_Zero_Health()
+            {
+                Assert.Equal(0.0, result.Units.Last().CurrentHitPoints, 1);
+            }
         }
 
     }
