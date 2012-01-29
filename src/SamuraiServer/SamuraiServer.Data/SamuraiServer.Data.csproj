@@ -33,8 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.4.3.0-beta1\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,6 +50,8 @@
   <ItemGroup>
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\ValidationResult.cs" />
+    <Compile Include="Impl\Sql\GenericRepository.cs" />
+    <Compile Include="Impl\Sql\SamuraiContext.cs" />
     <Compile Include="Interfaces\IGenericRepository.cs" />
     <Compile Include="Models\GamePlayer.cs" />
     <Compile Include="Models\GameState.cs" />
@@ -80,6 +88,7 @@
   <ItemGroup>
     <None Include="Models\ClassDiagram.cd" />
     <None Include="Models\Persist.cd" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
