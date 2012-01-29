@@ -17,12 +17,12 @@ namespace SamuraiServer.Data
 
         public Guid MapId { get; set; }
 
-        public Dictionary<int, Guid> PlayerOrder { get; set; } 
+        public List<Guid> PlayerOrder { get; set; } 
 
         public GameState()
         {
             Players = new List<GamePlayer>();
-            PlayerOrder = new Dictionary<int, Guid>();
+            PlayerOrder = new List<Guid>();
         }
     }
 }

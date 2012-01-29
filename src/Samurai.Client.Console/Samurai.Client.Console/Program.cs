@@ -238,8 +238,8 @@ namespace Samurai.Client.ConsoleClient
             };
             if (CurrentGame.Started == false) {
                 options.Add('S', StartGame);
+                Console.WriteLine("[S] Start");
             }
-            Console.WriteLine("[S] Start");
             Console.WriteLine("[R] Refresh");
             Console.WriteLine("[X] Exit");
 
