@@ -138,7 +138,7 @@ namespace Samurai.Client.ConsoleClient
             api.CreateGameAndJoin(name, CurrentPlayer.Id, (data, e) =>
             {
                 if (e != null) { Error(e); return; }
-                if (!data.Ok) { BadResponse(); return; }
+                if (!data.Ok) { Welcome(data.Message); return; }
                 api.GetMap(data.Game.MapId, (mapResponse, ex) =>
                 {
                     if (ex != null) { Error(ex); return; }
@@ -176,7 +176,7 @@ namespace Samurai.Client.ConsoleClient
             api.JoinGame(id, CurrentPlayer.Id, (data, e) =>
             {
                 if (e != null) { Error(e); return; }
-                if (!data.Ok) { BadResponse(); return; }
+                if (!data.Ok) { Welcome(data.Message); return; }
 
                 UpdateGame(data.Game);
                 ViewGame(data.Game.Id);
