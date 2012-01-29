@@ -1,7 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Samurai.Client.Wp7.Screens;
 
 namespace Samurai.Client.Wp7
@@ -54,6 +53,7 @@ namespace Samurai.Client.Wp7
         {
             _screens = new ScreenManager(this);
             Components.Add(_screens);
+            _screens.LoadingScreen = new LoadingScreen();
 
             base.Initialize();
         }

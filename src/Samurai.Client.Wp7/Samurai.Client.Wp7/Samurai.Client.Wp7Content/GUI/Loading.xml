@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Window Size="100%">
+  <TextBlock Font="MenuFont.spritefont" Color="#FFFFFF" Format="{text}" Text="Loading..." VAlign="Middle" Align="Center" />
+</Window>
