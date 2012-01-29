@@ -60,6 +60,9 @@ namespace Samurai.Client.Wp7.Screens
             var loginBtn = window.GetChild<Button>("btnLogin");
             var logoutBtn = window.GetChild<Button>("btnLogout");
             var registerBtn = window.GetChild<Button>("btnRegister");
+            var status = window.GetChild<TextBlock>("status");
+            if (status != null)
+                status.Enabled = false;
 
             if (playBtn != null)
             {
@@ -167,19 +170,31 @@ namespace Samurai.Client.Wp7.Screens
 
         private void Login()
         {
-            api.Login(Player.Name, Player.ApiKey, new Action<PlayerResponse, Exception>(
+            var status = window.GetChild<TextBlock>("status");
+            if (status != null)
+                status.Enabled = true;
+            var name = Player.Name;
+            var key = Player.ApiKey;
+            Player = null;
+            api.Login(name, key, new Action<PlayerResponse, Exception>(
                 (p, e) =>
                 {
-                    if (e == null)
+                    if (e == null && p.Ok)
+                        Player = p.Player;
+                    else
                     {
-                        if (p.Ok)
-                        {
-                            Player = p.Player;
-                            return;
-                        }
+                        DeleteSave();
+                        Guide.BeginShowMessageBox("Error", "Failed to login: " + (e == null ? p.Message : e.Message), new string[] { "Ok" }, 0, MessageBoxIcon.Error, null, null);
                     }
-                    Guide.BeginShowMessageBox("Error", "Failed to login.", new string[] { "Ok" }, 0, MessageBoxIcon.Error, null, null);
+                    status.Enabled = false;
+                    UpdateButtons();
                 }));
+        }
+
+        private void DeleteSave()
+        {
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+                iso.DeleteFile("player.dat");
         }
 
         private void UpdateButtons()
