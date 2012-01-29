@@ -7,7 +7,7 @@ namespace SamuraiServer.Data
     {
         public Guid Id { get; set; }
 
-        public string Name { get; set; }  // NOTE: what does this represent?
+        public string Name { get; set; }  // NOTE: what does this represent? <csainty: Lets the user name a game so they can tell a friend which to join. Could use invites instead>
 
         public List<GamePlayer> Players { get; set; }
 
@@ -17,11 +17,12 @@ namespace SamuraiServer.Data
 
         public Guid MapId { get; set; }
 
-        public Dictionary<int, Guid> PlayerOrder { get; set; } 
+        public List<Guid> PlayerOrder { get; set; } 
 
         public GameState()
         {
             Players = new List<GamePlayer>();
+            PlayerOrder = new List<Guid>();
         }
     }
 }
