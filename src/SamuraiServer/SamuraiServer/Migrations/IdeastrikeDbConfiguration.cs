@@ -7,7 +7,7 @@ namespace SamuraiServer.Migrations
     {
         public SamuraiDbConfiguration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(SamuraiContext context)
