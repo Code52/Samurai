@@ -11,7 +11,26 @@ namespace SamuraiServer.Tests.Providers
 {
     public class CommandProcessorAttackTests
     {
-        public class Pirate : Unit { }
+        public class Pirate : Unit
+        {
+            public Pirate()
+            {
+                Id = Guid.NewGuid();
+                Range = 1;
+                HitPoints = 1.0;
+                CurrentHitPoints = 1.0;
+            }
+
+            public override string Name
+            {
+                get { return "Pirate"; }
+            }
+
+            public override string ImageSpriteResource
+            {
+                get { throw new NotImplementedException(); }
+            }
+        }
 
         private const string attackCommandTemplate = "[ {{ \"unitId\": \"{0}\", \"action\":\"attack\", \"X\":10, \"Y\":5 }}]";
 
@@ -29,8 +48,8 @@ namespace SamuraiServer.Tests.Providers
                 activeUnitId = Guid.NewGuid();
                 targetUnitId = Guid.NewGuid();
 
-                attackUnit = new Pirate { Id = activeUnitId, X = 10, Y = 4, Range = 1, HitPoints = 1.0, CurrentHitPoints = 1.0 };
-                targetUnit = new Pirate { Id = targetUnitId, X = 10, Y = 5, Range = 1, HitPoints = 1.0, CurrentHitPoints = 1.0 };
+                attackUnit = new Pirate { Id = activeUnitId, X = 10, Y = 4};
+                targetUnit = new Pirate { Id = targetUnitId, X = 10, Y = 5};
 
                 FirstPlayer.Units.Add(attackUnit);
                 SecondPlayer.Units.Add(targetUnit);
@@ -74,7 +93,7 @@ namespace SamuraiServer.Tests.Providers
             {
                 activeUnitId = Guid.NewGuid();
 
-                activeUnit = new Pirate { Id = activeUnitId, X = 10, Y = 4, Range = 1 };
+                activeUnit = new Pirate { Id = activeUnitId, X = 10, Y = 4 };
 
                 FirstPlayer.Units.Add(activeUnit);
 
