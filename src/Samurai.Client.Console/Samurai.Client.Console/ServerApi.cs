@@ -47,6 +47,10 @@ namespace Samurai.Client.ConsoleClient
             Post("/Api/Games/GetMap", "mapid=" + mapId, callback);
         }
 
+        public void StartGame(Guid gameId, Action<StartGameResponse, Exception> callback) {
+            Get("/Api/Games/StartGame?gameid=" + gameId, callback);
+        }
+
         // A sync method in an async pattern. Easier to work with for the console app.
         private void Get<T>(string url, Action<T, Exception> callback)
         {
@@ -153,5 +157,10 @@ namespace Samurai.Client.ConsoleClient
     public class GetMapResponse : ServerResponse
     {
         public string[] Map { get; set; }
+    }
+
+    public class StartGameResponse : ServerResponse
+    {
+        public GameState Game { get; set; }
     }
 }
