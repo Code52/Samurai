@@ -23,8 +23,8 @@ namespace SamuraiServer.Tests.API
                 return new MatchController(repo, calculator);
             }
 
-            private string userName;
-            private IEnumerable<dynamic> commands;
+            private string userName = null;
+           // private IEnumerable<dynamic> commands;
 
             public override void When()
             {
