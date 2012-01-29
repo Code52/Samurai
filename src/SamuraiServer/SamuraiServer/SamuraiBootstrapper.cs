@@ -12,8 +12,6 @@ namespace SamuraiServer
 {
     public class SamuraiBootstrapper
     {
-        private const string SqlClient = "System.Data.SqlClient";
-
         public IContainer CreateContainer()
         {
             var builder = new ContainerBuilder();
@@ -40,14 +38,13 @@ namespace SamuraiServer
         {
             if (ConfigurationManager.ConnectionStrings.Count > 0 && ConfigurationManager.ConnectionStrings["Samurai"] != null)
                 builder.RegisterType<SamuraiContext>()
-                    .WithParameter(new NamedParameter("nameOrConnectionString", ConfigurationManager.ConnectionStrings["Samurai"].ConnectionString + ";MultipleActiveResultSets=true"))
-                    .AsSelf()
-                    .InstancePerLifetimeScope();
-
+                       .WithParameter(new NamedParameter("nameOrConnectionString", ConfigurationManager.ConnectionStrings["Samurai"].ConnectionString + ";MultipleActiveResultSets=true"))
+                       .AsSelf()
+                       .InstancePerLifetimeScope();
             else
                 builder.RegisterType<SamuraiContext>()
-                .AsSelf()
-                .InstancePerLifetimeScope();
+                       .AsSelf()
+                       .InstancePerLifetimeScope();
 
             builder.RegisterAssemblyTypes(typeof(Player).Assembly)
                .Where(t => t.Name.EndsWith("Repository"))
