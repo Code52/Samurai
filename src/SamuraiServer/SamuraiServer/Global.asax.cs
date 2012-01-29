@@ -36,32 +36,37 @@ namespace SamuraiServer
         protected void Application_Start() {
             AreaRegistration.RegisterAllAreas();
 
-            RegisterContainer();
+            var bootstrapper = new SamuraiBootstrapper();
+            var container = bootstrapper.CreateContainer();
+            
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+
+            SamuraiBootstrapper.DoMigrations();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
         }
 
-        private static void RegisterContainer()
-        {
-            var builder = new ContainerBuilder();
-            builder.RegisterAssemblyTypes(typeof(Player).Assembly)
-                   .Where(t => t.Name.EndsWith("Repository"))
-                   .Where(t => t.Name.StartsWith("InMemory"))
-                   .AsImplementedInterfaces()
-                   .InstancePerHttpRequest();
+        //private static void RegisterContainer()
+        //{
+        //    var builder = new ContainerBuilder();
+        //    builder.RegisterAssemblyTypes(typeof(Player).Assembly)
+        //           .Where(t => t.Name.EndsWith("Repository"))
+        //           .Where(t => t.Name.StartsWith("InMemory"))
+        //           .AsImplementedInterfaces()
+        //           .InstancePerHttpRequest();
 
-            builder.RegisterAssemblyTypes(typeof(Player).Assembly)
-                   .Where(t => t.Name.EndsWith("Provider"))
-                   .AsImplementedInterfaces()
-                   .InstancePerHttpRequest();
+        //    builder.RegisterAssemblyTypes(typeof(Player).Assembly)
+        //           .Where(t => t.Name.EndsWith("Provider"))
+        //           .AsImplementedInterfaces()
+        //           .InstancePerHttpRequest();
 
-            builder.RegisterControllers(Assembly.GetExecutingAssembly());
+        //    builder.RegisterControllers(Assembly.GetExecutingAssembly());
 
-            builder.RegisterType<CombatCalculator>().AsImplementedInterfaces().SingleInstance();
+        //    builder.RegisterType<CombatCalculator>().AsImplementedInterfaces().SingleInstance();
 
-            var container = builder.Build();
-            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
-        }
+        //    var container = builder.Build();
+        //    DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+        //}
     }
 }
