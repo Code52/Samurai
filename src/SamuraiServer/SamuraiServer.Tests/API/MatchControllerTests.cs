@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 using NSubstitute;
 using SamuraiServer.Areas.Api.Controllers;
@@ -13,33 +12,37 @@ namespace SamuraiServer.Tests.API
     {
         public class When_User_Sends_No_Command_For_Match : SpecificationFor<MatchController>
         {
-            Guid gameId = Guid.NewGuid();
+            readonly GameState state = new GameState();
+            readonly Guid gameId = Guid.NewGuid();
+
+            IGameStateRepository repo = Substitute.For<IGameStateRepository>();
+            dynamic model;
 
             public override MatchController Given()
             {
-                var repo = Substitute.For<IGameStateRepository>();
                 var calculator = Substitute.For<ICombatCalculator>();
-                repo.Get(gameId).Returns(new GameState());
+                repo.Get(gameId).Returns(state);
                 return new MatchController(repo, calculator);
             }
 
-            private string userName = null;
-           // private IEnumerable<dynamic> commands;
-
             public override void When()
             {
-                var result = Subject.SendCommands(gameId, userName, null) as JsonResult;
+                var result = Subject.SendCommands(gameId, null, null) as JsonResult;
                 model = result.Data.AsDynamic();
             }
-
-            private dynamic model;
-
+            
             [Fact]
             public void Result_Is_Ok()
             {
                 Assert.True(model.status);
             }
-        }
 
+            [Fact]
+            public void Repository_Saves_Game()
+            {
+                repo.Received().Edit(state);
+                repo.Received().Save();
+            }
+        }
     }
 }
