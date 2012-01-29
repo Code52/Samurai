@@ -61,7 +61,7 @@ namespace Samurai.Client.ConsoleClient
 
                 if (!data.Ok)
                 {
-                    BadResponse();
+                    Welcome(data.Message);
                     return;
                 }
 
