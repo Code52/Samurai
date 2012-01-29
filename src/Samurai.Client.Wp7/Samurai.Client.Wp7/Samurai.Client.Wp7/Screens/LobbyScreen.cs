@@ -11,13 +11,19 @@ namespace Samurai.Client.Wp7.Screens
 {
     public class LobbyScreen : BaseScreen
     {
-        public ServerApi API;
-        public Player Player;
+        private ServerApi api;
+        private Player player;
 
         private ContentManager content;
         private SpriteBatch sb;
         private Window gui;
         private WP7Touch touch;
+
+        public void Init(ServerApi api, Player player)
+        {
+            this.api = api;
+            this.player = player;
+        }
 
         public override void LoadContent()
         {
@@ -51,9 +57,7 @@ namespace Samurai.Client.Wp7.Screens
                 btnCreateGame.Triggered +=
                     (b) =>
                     {
-                        var scr = Manager.GetOrCreateScreen<CreateGameScreen>();
-                        scr.API = API;
-                        scr.Player = Player;
+                        Manager.GetOrCreateScreen<CreateGameScreen>().Init(api, player);
                         Manager.TransitionTo<CreateGameScreen>();
                     };
             }
