@@ -21,8 +21,6 @@ namespace SamuraiServer.Tests.Providers
                 CurrentHitPoints = 1.0;
             }
 
-            public override Guid Id { get; set; }
-
             public override string Name
             {
                 get { return "Pirate"; }
@@ -32,28 +30,6 @@ namespace SamuraiServer.Tests.Providers
             {
                 get { throw new NotImplementedException(); }
             }
-
-            public override int Size
-            {
-                get { throw new NotImplementedException(); }
-                set { throw new NotImplementedException(); }
-            }
-
-            public override int Moves { get; set; }
-
-            public override double Attack { get; set; }
-
-            public override double Defence { get; set; }
-
-            public override double Range { get; set; }
-
-            public override double HitPoints { get; set; }
-
-            public override double CurrentHitPoints { get; set; }
-
-            public override int X { get; set; }
-
-            public override int Y { get; set; }
         }
 
         private const string attackCommandTemplate = "[ {{ \"unitId\": \"{0}\", \"action\":\"attack\", \"X\":10, \"Y\":5 }}]";

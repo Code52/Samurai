@@ -23,8 +23,6 @@ namespace SamuraiServer.Tests.Providers
                 CurrentHitPoints = 1;
             }
 
-            public override Guid Id { get; set; }
-
             public override string Name
             {
                 get { return "Ninja"; }
@@ -34,28 +32,6 @@ namespace SamuraiServer.Tests.Providers
             {
                 get { throw new NotImplementedException(); }
             }
-
-            public override int Size
-            {
-                get { throw new NotImplementedException(); }
-                set { throw new NotImplementedException(); }
-            }
-
-            public override int Moves { get; set; }
-
-            public override double Attack { get; set; }
-
-            public override double Defence { get; set; }
-
-            public override double Range { get; set; }
-
-            public override double HitPoints { get; set; }
-
-            public override double CurrentHitPoints { get; set; }
-
-            public override int X { get; set; }
-
-            public override int Y { get; set; }
         }
 
         const string moveCommandTemplate = " [{{\"unitId\": \"{0}\",\"action\":\"move\",\"X\":1,\"Y\":0}}] ";
