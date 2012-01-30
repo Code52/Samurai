@@ -18,10 +18,16 @@ namespace Samurai.Client.Wp7.Screens
         private Window gui;
         private WP7Touch touch;
 
-        public ServerApi API;
-        public Player Player;
+        private ServerApi api;
+        private Player player;
         private string gameName = "";
         private string defaultText;
+
+        public void Init(ServerApi api, Player player)
+        {
+            this.api = api;
+            this.player = player;
+        }
 
         public override void LoadContent()
         {
@@ -70,18 +76,18 @@ namespace Samurai.Client.Wp7.Screens
                             if (creatingMessage != null)
                                 creatingMessage.Enabled = true;
                             btnCreate.Enabled = false;
-                            API.CreateGameAndJoin(gameName, Player.Id, new Action<CreateGameAndJoinResponse, Exception>(
+                            api.CreateGameAndJoin(gameName, player.Id, new Action<CreateGameAndJoinResponse, Exception>(
                                 (r, e) =>
                                 {
                                     if (e == null && r.Ok)
                                     {
-                                        API.GetMap(r.Game.MapId, new Action<GetMapResponse, Exception>(
+                                        api.GetMap(r.Game.MapId, new Action<GetMapResponse, Exception>(
                                             (mr, me) =>
                                             {
                                                 if (me == null && mr.Ok)
                                                 {
                                                     var scr = Manager.GetOrCreateScreen<GameScreen>();
-                                                    scr.Init(API, Player, r.Game, Map.FromStringRepresentation(r.Game.MapId, mr.Map));
+                                                    scr.Init(api, player, r.Game, Map.FromStringRepresentation(r.Game.MapId, mr.Map));
                                                     Manager.TransitionTo<GameScreen>();
                                                 }
                                                 else
@@ -122,7 +128,7 @@ namespace Samurai.Client.Wp7.Screens
         public override void Update(double elapsedSeconds)
         {
             if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back))
-                Manager.TransitionTo<LobbyScreen>();
+                Manager.TransitionTo<MainMenuScreen>();
 
             touch.HandleGestures();
             gui.PerformLayout(Manager.GraphicsDevice.Viewport.Width, Manager.GraphicsDevice.Viewport.Height);

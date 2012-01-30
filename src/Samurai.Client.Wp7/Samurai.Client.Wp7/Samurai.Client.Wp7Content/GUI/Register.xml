@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Window Size="100%">
-  <StackPanel>
-    <TextBlock Font="MenuFont.spritefont" Color="#FFFFFF" Text="Username" />
-    <TextBlock Name="txtUsername" Font="MenuFont.spritefont" Color="#FFFFFF" Text="Tap here to enter your Username" />
+  <Image src="Textures\samurai_background_notext.png" Size="100%" />
 
-    <Button Name="btnRegister" Text="Register">
-      <TextBlock Font="MenuFont.spritefont" Color="#FFFFFF" Format="{parenttext}" />
-    </Button>
-    <TextBlock Name="busyMessage" Font="MenuFont.spritefont" Color="#FFFFFF" Text="Registering..." Visibility="Enabled" />
-  </StackPanel>
+  <TextBlock Position="15%" Font="MenuFont.spritefont" Color="#000000" Format="{text}" Text="Enter a Username:" />
+
+  <TextBlock Position="20%, 30%" Name="txtUsername" Font="MenuFont.spritefont" Color="#000000" Format="{text}" Text="Tap Here" />
+
+  <TextBlock Align="Center" VAlign="Middle" Name="busyMessage" Font="MenuFont.spritefont" Color="#000000" Format="{text}" Text="Registering..." Visibility="Enabled" />
+
+  <Button Position="15%, 80%" Name="btnRegister" Text="Register">
+    <TextBlock Font="MenuFont.spritefont" Color="#000000" Format="{parenttext}" />
+  </Button>
 </Window>

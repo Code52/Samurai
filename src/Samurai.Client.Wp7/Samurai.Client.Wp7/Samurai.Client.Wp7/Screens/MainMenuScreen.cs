@@ -10,6 +10,7 @@ using Samurai.Client.Wp7.Api;
 using SamuraiServer.Data;
 using XNInterface.Controls;
 using XNInterface.Input;
+using System.Threading;
 
 namespace Samurai.Client.Wp7.Screens
 {
@@ -69,10 +70,8 @@ namespace Samurai.Client.Wp7.Screens
                 playBtn.Triggered +=
                     (b) =>
                     {
-                        var scr = Manager.GetOrCreateScreen<LobbyScreen>();
-                        scr.API = api;
-                        scr.Player = Player;
-                        Manager.TransitionTo<LobbyScreen>();
+                        Manager.GetOrCreateScreen<CreateGameScreen>().Init(api, Player);
+                        Manager.TransitionTo<CreateGameScreen>();
                     };
             }
 
@@ -161,6 +160,7 @@ namespace Samurai.Client.Wp7.Screens
             api.Login(name, key, new Action<PlayerResponse, Exception>(
                 (p, e) =>
                 {
+                    Thread.Sleep(1000);
                     if (e == null && p.Ok)
                         Player = p.Player;
                     else
@@ -168,7 +168,8 @@ namespace Samurai.Client.Wp7.Screens
                         DeleteSave();
                         Guide.BeginShowMessageBox("Error", "Failed to login: " + (e == null ? p.Message : e.Message), new string[] { "Ok" }, 0, MessageBoxIcon.Error, null, null);
                     }
-                    status.Enabled = false;
+                    if (status != null)
+                        status.Enabled = false;
                     UpdateButtons();
                 }));
         }

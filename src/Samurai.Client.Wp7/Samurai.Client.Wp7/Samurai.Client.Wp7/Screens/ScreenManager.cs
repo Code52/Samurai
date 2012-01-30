@@ -8,7 +8,16 @@ namespace Samurai.Client.Wp7.Screens
     {
         private readonly List<BaseScreen> screens;
 
-        public BaseScreen LoadingScreen = null;
+        private BaseScreen loadingScreen = null;
+        public BaseScreen LoadingScreen
+        {
+            get { return loadingScreen; }
+            set
+            {
+                loadingScreen = value;
+                loadingScreen.Manager = this;
+            }
+        }
 
         private BaseScreen curScreen = null;
         private BaseScreen nextScreen = null;
@@ -28,8 +37,8 @@ namespace Samurai.Client.Wp7.Screens
             for (int i = 0; i < screens.Count; i++)
                 screens[i].LoadContent();
 
-            if (LoadingScreen != null)
-                LoadingScreen.LoadContent();
+            if (loadingScreen != null)
+                loadingScreen.LoadContent();
 
             base.LoadContent();
         }
@@ -39,8 +48,8 @@ namespace Samurai.Client.Wp7.Screens
             for (int i = 0; i < screens.Count; i++)
                 screens[i].UnloadContent();
 
-            if (LoadingScreen != null)
-                LoadingScreen.UnloadContent();
+            if (loadingScreen != null)
+                loadingScreen.UnloadContent();
 
             base.UnloadContent();
         }
@@ -93,11 +102,11 @@ namespace Samurai.Client.Wp7.Screens
             if (!nextScreen.IsReady)
                 nextScreen.LoadContent();
             // Switch to loading screen if it exists
-            if (LoadingScreen != null)
+            if (loadingScreen != null)
             {
                 if (curScreen != null)
                     curScreen.OnNavigatedFrom();
-                curScreen = LoadingScreen;
+                curScreen = loadingScreen;
                 curScreen.OnNavigatedTo();
             }
         }
