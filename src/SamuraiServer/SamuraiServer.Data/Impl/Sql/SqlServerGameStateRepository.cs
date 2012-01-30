@@ -1,53 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
+﻿using System.Linq;
 
-namespace SamuraiServer.Data.Impl
+namespace SamuraiServer.Data.Impl.Sql
 {
-    public class SqlServerGameStateRepository : IGameStateRepository
+    public class SqlServerGameStateRepository : GenericRepository<SamuraiContext, GameState>, IGameStateRepository
     {
         // TODO: We may also store our json in SQL nvarchar(MAX) if that is easier for people
 
-        public IQueryable<GameState> GetAll()
+        public SqlServerGameStateRepository(SamuraiContext ctx) 
+            : base(ctx)
         {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<GameState> FindBy(Expression<Func<GameState, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public GameState Get(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Add(GameState entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Edit(GameState entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save()
-        {
-            throw new NotImplementedException();
         }
 
         public GameState GetByName(string name)
         {
-            throw new NotImplementedException();
+            return FindBy(c => c.Name == name).FirstOrDefault();
         }
     }
 }
