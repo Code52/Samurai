@@ -1,7 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Samurai.Client.Wp7.Screens;
 
 namespace Samurai.Client.Wp7
@@ -13,6 +12,7 @@ namespace Samurai.Client.Wp7
     {
         GraphicsDeviceManager graphics;
         ScreenManager _screens;
+        Color clearColor = new Color(231, 220, 178);
 
         public SamuraiGame()
         {
@@ -54,6 +54,7 @@ namespace Samurai.Client.Wp7
         {
             _screens = new ScreenManager(this);
             Components.Add(_screens);
+            _screens.LoadingScreen = new LoadingScreen();
 
             base.Initialize();
         }
@@ -83,7 +84,7 @@ namespace Samurai.Client.Wp7
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(clearColor);
             // DrawableGameComponent automatically does this for our screens
             base.Draw(gameTime);
         }
