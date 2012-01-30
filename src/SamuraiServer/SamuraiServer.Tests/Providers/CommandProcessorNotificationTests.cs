@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using NSubstitute;
@@ -9,8 +9,10 @@ using Xunit;
 
 namespace SamuraiServer.Tests.Providers
 {
-    public class CommandProcessorAttackTests
+    public class CommandProcessorNotificationTests
     {
+        private const string attackCommandTemplate = "[ {{ \"unitId\": \"{0}\", \"action\":\"attack\", \"X\":10, \"Y\":5 }}]";
+
         public class Pirate : Unit
         {
             public Pirate()
@@ -32,8 +34,6 @@ namespace SamuraiServer.Tests.Providers
             }
         }
 
-        private const string attackCommandTemplate = "[ {{ \"unitId\": \"{0}\", \"action\":\"attack\", \"X\":10, \"Y\":5 }}]";
-
         public class When_Client_Sends_Attack_Command : TwoPlayerGame
         {
             Pirate attackUnit;
@@ -41,18 +41,23 @@ namespace SamuraiServer.Tests.Providers
             Guid activeUnitId;
             Guid targetUnitId;
 
-            double expectedDamage = 0.9;
+            private const double expectedDamage = 1.0;
 
             public override CommandProcessor Given()
             {
+                var firstPlayer = new Player {Name = "shiftkey"};
+                var secondPlayer = new Player { Name = "aeoth" };
+
                 activeUnitId = Guid.NewGuid();
                 targetUnitId = Guid.NewGuid();
 
-                attackUnit = new Pirate { Id = activeUnitId, X = 10, Y = 4};
-                targetUnit = new Pirate { Id = targetUnitId, X = 10, Y = 5};
+                attackUnit = new Pirate { Id = activeUnitId, X = 10, Y = 4, };
+                targetUnit = new Pirate { Id = targetUnitId, X = 10, Y = 5, CurrentHitPoints = expectedDamage };
 
                 FirstPlayer.Units.Add(attackUnit);
+                FirstPlayer.Player = firstPlayer;
                 SecondPlayer.Units.Add(targetUnit);
+                SecondPlayer.Player = secondPlayer;
 
                 Calculator.CalculateDamage(attackUnit, targetUnit).Returns(expectedDamage);
 
@@ -69,53 +74,23 @@ namespace SamuraiServer.Tests.Providers
             }
 
             [Fact]
-            public void Both_Units_Are_Sent_To_The_Client()
+            public void An_Event_Containing_The_Second_Player_Is_Received()
             {
-                Assert.Equal(2, result.Units.Count());
-
-                Assert.Equal(activeUnitId, result.Units.First().Id);
-                Assert.Equal(targetUnitId, result.Units.Last().Id);
+                Assert.Equal(1, result.Notifications.Count());
             }
 
             [Fact]
-            public void The_Target_Unit_Has_Taken_Damage()
+            public void The_Event_Is_Formatted_In_A_Certain_Way()
             {
-                Assert.Equal(0.1, targetUnit.CurrentHitPoints, 1);
-            }
-        }
-
-        public class When_Client_Attempts_To_Attack_Location_Without_Target : TwoPlayerGame
-        {
-            Pirate activeUnit;
-            Guid activeUnitId;
-
-            public override CommandProcessor Given()
-            {
-                activeUnitId = Guid.NewGuid();
-
-                activeUnit = new Pirate { Id = activeUnitId, X = 10, Y = 4 };
-
-                FirstPlayer.Units.Add(activeUnit);
-
-                return new CommandProcessor(Calculator, State);
-            }
-
-            CommandResult result;
-
-            public override void When()
-            {
-                var json = String.Format(attackCommandTemplate, activeUnitId);
-                var obj = JsonConvert.DeserializeObject<IEnumerable<dynamic>>(json);
-                result = Subject.Process(obj);
+                Assert.Equal("aeoth has been eliminated", result.Notifications.First());
             }
 
             [Fact]
-            public void An_Error_Is_Received_About_No_Location()
+            public void The_Second_Unit_Is_Returned_But_Has_Zero_Health()
             {
-                Assert.Equal(1, result.Errors.Count());
-                var error = result.Errors.First();
-                Assert.Equal("No unit found at this location [10,5]", error.Message);
+                Assert.Equal(0.0, result.Units.Last().CurrentHitPoints, 1);
             }
         }
+
     }
 }

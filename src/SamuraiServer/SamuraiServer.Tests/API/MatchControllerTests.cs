@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Web.Mvc;
 using NSubstitute;
+using Newtonsoft.Json;
 using SamuraiServer.Areas.Api.Controllers;
 using SamuraiServer.Data;
 using SamuraiServer.Data.Providers;
@@ -28,13 +31,25 @@ namespace SamuraiServer.Tests.API
             public override void When()
             {
                 var result = Subject.SendCommands(gameId, null, null) as JsonResult;
-                model = result.Data.AsDynamic();
+                model = JsonConvert.DeserializeObject<dynamic>(result.SerializeModel());
             }
-            
+
             [Fact]
             public void Result_Is_Ok()
             {
-                Assert.True(model.status);
+                Assert.Equal(true, model.status.Value);
+            }
+
+            [Fact]
+            public void Model_Contains_Empty_Units_Array()
+            {
+                Assert.True(model.data.units.Count == 0);
+            }
+
+            [Fact]
+            public void Model_Contains_Empty_Errors_Array()
+            {
+                Assert.True(model.data.errors.Count == 0);
             }
 
             [Fact]
@@ -42,6 +57,12 @@ namespace SamuraiServer.Tests.API
             {
                 repo.Received().Edit(state);
                 repo.Received().Save();
+            }
+
+            [Fact]
+            public void Model_Contains_Empty_Notifications_Array()
+            {
+                Assert.True(model.data.notifications.Count == 0);
             }
         }
     }
