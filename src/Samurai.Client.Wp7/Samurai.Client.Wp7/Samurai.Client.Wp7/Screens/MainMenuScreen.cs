@@ -11,6 +11,7 @@ using SamuraiServer.Data;
 using XNInterface.Controls;
 using XNInterface.Input;
 using System.Threading;
+using Samurai.Client.Services;
 
 namespace Samurai.Client.Wp7.Screens
 {
