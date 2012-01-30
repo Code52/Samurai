@@ -60,9 +60,9 @@ namespace SamuraiServer.Areas.Api.Controllers
 
                 return Json(new { ok = true, game = result.Data });
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { ok = false });
+                return Json(new { ok = false, message = ex.Message });
             }
         }
 
