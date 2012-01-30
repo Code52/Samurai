@@ -64,6 +64,7 @@
       <HintPath>..\..\packages\Newtonsoft.Json.4.0.7\lib\sl4-windowsphone71\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Windows, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -109,6 +110,7 @@
     <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Tiles\Water.cs">
       <Link>Api\Tiles\Water.cs</Link>
     </Compile>
+    <Compile Include="Api\Models\Settings.cs" />
     <Compile Include="Api\ServerApi.cs" />
     <Compile Include="BackgroundJobs.cs" />
     <Compile Include="Graphics\Renderer.cs" />

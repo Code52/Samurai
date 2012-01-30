@@ -138,14 +138,7 @@ namespace Samurai.Client.Wp7.Screens
             if (Player == null)
                 return;
 
-            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
-            using (var file = iso.OpenFile("player.dat", FileMode.Create, FileAccess.Write))
-            using (var bw = new BinaryWriter(file))
-            {
-                bw.Write(Player.Id.ToString());
-                bw.Write(Player.Name);
-                bw.Write(Player.ApiKey);
-            }
+            Settings.Instance.SetPlayer(Player);
         }
 
         private void LoadPlayer()
@@ -153,21 +146,8 @@ namespace Samurai.Client.Wp7.Screens
             if (Player != null)
                 return;
 
-            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (iso.FileExists("player.dat"))
-                {
-                    using (var file = iso.OpenFile("player.dat", FileMode.Open, FileAccess.Read))
-                    using (var br = new BinaryReader(file))
-                    {
-                        Player = new Player();
-                        Player.Id = Guid.Parse(br.ReadString());
-                        Player.Name = br.ReadString();
-                        Player.ApiKey = br.ReadString();
-                        Login();
-                    }
-                }
-            }
+            if (Settings.Instance.CurrentPlayer != null)
+                Player = Settings.Instance.CurrentPlayer;
         }
 
         private void Login()
