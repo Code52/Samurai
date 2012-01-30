@@ -60,9 +60,9 @@ namespace SamuraiServer.Areas.Api.Controllers
 
                 return Json(new { ok = true, game = result.Data });
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { ok = false });
+                return Json(new { ok = false, message = ex.ToString() });
             }
         }
 
@@ -88,9 +88,9 @@ namespace SamuraiServer.Areas.Api.Controllers
             {
                 currentGames = _gameStateProvider.ListCurrentGames(userName);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return Json(new { ok = false });
+                return Json(new { ok = false, message = ex.Message });
 
             }
             return Json(new { ok = true, games = currentGames });
