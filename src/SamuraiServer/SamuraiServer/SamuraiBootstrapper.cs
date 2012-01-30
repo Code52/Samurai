@@ -1,8 +1,10 @@
 using System.Configuration;
 using System.Data.Entity.Migrations;
+using System.Linq;
 using System.Reflection;
 using Autofac;
 using Autofac.Integration.Mvc;
+using MongoDB.Driver;
 using SamuraiServer.Data;
 using SamuraiServer.Data.Impl.Sql;
 using SamuraiServer.Data.Providers;
@@ -45,6 +47,27 @@ namespace SamuraiServer
                 builder.RegisterType<SamuraiContext>()
                        .AsSelf()
                        .InstancePerLifetimeScope();
+
+            var connString = ConfigurationManager.AppSettings["MONGOHQ_URL"];
+            var databaseName = connString.Split('/').Last();
+            var server = MongoServer.Create(connString);
+            var database = server.GetDatabase(databaseName);
+
+            if (!database.CollectionExists("Messages"))
+                database.CreateCollection("Messages");
+
+            builder.RegisterInstance(server)
+                   .As<MongoServer>();
+            builder.RegisterInstance(database)
+                   .As<MongoDatabase>();
+            builder.RegisterInstance(database.GetCollection<GameState>("GameState"))
+                   .As<MongoCollection<GameState>>();
+
+            builder.RegisterAssemblyTypes(typeof(Player).Assembly)
+               .Where(t => t.Name.EndsWith("Repository"))
+               .Where(t => t.Name.StartsWith("MongoDb"))
+               .AsImplementedInterfaces()
+               .InstancePerHttpRequest();
 
             builder.RegisterAssemblyTypes(typeof(Player).Assembly)
                .Where(t => t.Name.EndsWith("Repository"))
