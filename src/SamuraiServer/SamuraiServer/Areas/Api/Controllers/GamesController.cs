@@ -62,7 +62,7 @@ namespace SamuraiServer.Areas.Api.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { ok = false, message = ex.Message });
+                return Json(new { ok = false, message = ex.ToString() });
             }
         }
 
