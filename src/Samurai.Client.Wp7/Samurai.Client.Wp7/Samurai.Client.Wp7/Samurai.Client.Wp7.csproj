@@ -118,6 +118,7 @@
     <Compile Include="Screens\CreateGameScreen.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
+    <Compile Include="Screens\LobbyScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\RegisterScreen.cs" />
     <Compile Include="Screens\ScreenManager.cs" />
