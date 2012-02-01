@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Window Size="100%">
+  <StackPanel>
+    <Button Name="btnSound" Text="Sound">
+      <TextBlock Font="MenuFont.spritefont" Color="#FFFFFF" Format="{parenttext}" />
+    </Button>
+  </StackPanel>
+</Window>
