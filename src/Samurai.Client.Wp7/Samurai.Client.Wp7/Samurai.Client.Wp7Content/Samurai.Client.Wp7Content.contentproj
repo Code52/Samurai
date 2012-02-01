@@ -41,13 +41,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainMenuFont.spritefont">
+      <Name>MainMenuFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <SubType>Designer</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="MenuFont.spritefont">
+      <SubType>Designer</SubType>
       <Name>MenuFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config">
       <Name>packages</Name>
     </None>
@@ -64,6 +71,7 @@
       <Name>MainMenu</Name>
       <Importer>XNIImporter</Importer>
       <Processor>XNIProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +119,32 @@
       <Name>Settings</Name>
       <Importer>XNIImporter</Importer>
       <Processor>XNIProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GUI\Loading.xml">
+      <Name>Loading</Name>
+      <Importer>XNIImporter</Importer>
+      <Processor>XNIProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\samurai_background_800x480.png">
+      <Name>samurai_background_800x480</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\samurai_background_notext.png">
+      <Name>samurai_background_notext</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\samurai_red_64.png">
+      <Name>samurai_red_64</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

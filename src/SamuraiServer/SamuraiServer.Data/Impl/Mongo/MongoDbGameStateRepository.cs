@@ -1,52 +1,62 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 
 namespace SamuraiServer.Data.Impl
 {
     public class MongoDbGameStateRepository : IGameStateRepository
     {
-        // TODO: If we decide to launch with MongoDb then we need to be able to store our game state
+        private readonly MongoCollection<GameState> games;
+
+        public MongoDbGameStateRepository(MongoCollection<GameState> games)
+        {
+            this.games = games;
+        }
 
         public IQueryable<GameState> GetAll()
         {
-            throw new NotImplementedException();
+            return games.FindAll().AsQueryable();
         }
 
         public IQueryable<GameState> FindBy(Expression<Func<GameState, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return games.FindAll().Where(predicate.Compile()).AsQueryable();
         }
 
         public GameState Get(Guid id)
         {
-            throw new NotImplementedException();
+            var query = Query.EQ("Id", id);
+            return games.Find(query).FirstOrDefault();
         }
 
         public void Add(GameState entity)
         {
-            throw new NotImplementedException();
+            games.Save(entity);
         }
 
         public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var query = Query.EQ("Id", id); // TODO: confirm this is right query
+            var sort = SortBy.Null;
+            games.FindAndRemove(query, sort);
         }
 
         public void Edit(GameState entity)
         {
-            throw new NotImplementedException();
+            games.Save(entity);
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            // no-op
         }
 
         public GameState GetByName(string name)
         {
-            throw new NotImplementedException();
+            var query = Query.EQ("Name", name); // TODO: confirm this is right query
+            return games.Find(query).FirstOrDefault();
         }
     }
 }
