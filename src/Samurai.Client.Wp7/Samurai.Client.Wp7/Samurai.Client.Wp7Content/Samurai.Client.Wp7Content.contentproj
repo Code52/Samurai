@@ -115,6 +115,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\Settings.xml">
+      <Name>Settings</Name>
+      <Importer>XNIImporter</Importer>
+      <Processor>XNIProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="GUI\Loading.xml">
       <Name>Loading</Name>
       <Importer>XNIImporter</Importer>
@@ -129,6 +136,13 @@
     </Compile>
     <Compile Include="Textures\samurai_background_notext.png">
       <Name>samurai_background_notext</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\samurai_red_64.png">
+      <Name>samurai_red_64</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
