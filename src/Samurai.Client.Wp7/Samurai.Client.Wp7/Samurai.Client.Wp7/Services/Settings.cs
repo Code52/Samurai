@@ -8,12 +8,12 @@ using System.IO;
 
 namespace Samurai.Client.Services
 {
-    public class Settings
+    public class Setting
     {
         const int SETTINGSVERSION = 1;
         private IsolatedStorageSettings SettingsStore { get; set; }
         private bool _isMute = false;
-        private static volatile Settings _instance = null;
+        private static volatile Setting _instance = null;
 
         public Player CurrentPlayer { get; private set; }
         
@@ -27,14 +27,14 @@ namespace Samurai.Client.Services
             } 
         }
         
-        public static Settings Instance
+        public static Setting Instance
         {
             get {
                 if (_instance == null)
                 {
-                    lock (typeof(Settings))
+                    lock (typeof(Setting))
                     {
-                        _instance = new Settings();
+                        _instance = new Setting();
                         _instance.LoadSettings();
                     }
                 }
@@ -44,7 +44,7 @@ namespace Samurai.Client.Services
         }
 
 
-        public Settings()
+        public Setting()
         {
             SettingsStore = IsolatedStorageSettings.ApplicationSettings;
 

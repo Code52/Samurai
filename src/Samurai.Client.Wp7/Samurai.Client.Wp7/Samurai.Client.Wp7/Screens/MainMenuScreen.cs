@@ -138,7 +138,7 @@ namespace Samurai.Client.Wp7.Screens
             if (Player == null)
                 return;
 
-            Settings.Instance.SetPlayer(Player);
+            Setting.Instance.SetPlayer(Player);
         }
 
         private void LoadPlayer()
@@ -146,8 +146,8 @@ namespace Samurai.Client.Wp7.Screens
             if (Player != null)
                 return;
 
-            if (Settings.Instance.CurrentPlayer != null)
-                Player = Settings.Instance.CurrentPlayer;
+            if (Setting.Instance.CurrentPlayer != null)
+                Player = Setting.Instance.CurrentPlayer;
         }
 
         private void Login()
