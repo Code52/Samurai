@@ -76,6 +76,8 @@ namespace Samurai.Client.Services
                             iso.DeleteFile("player.dat");
                         }
                     }
+                    SaveSetting<Player>("CurrentPlayer", CurrentPlayer);
+
                     SaveSetting<int>("Version", 1);
                     return;
 
