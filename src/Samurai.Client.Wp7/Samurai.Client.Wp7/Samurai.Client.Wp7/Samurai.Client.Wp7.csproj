@@ -119,9 +119,12 @@
     <Compile Include="Screens\CreateGameScreen.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
+    <Compile Include="Screens\LobbyScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\RegisterScreen.cs" />
     <Compile Include="Screens\ScreenManager.cs" />
+    <Compile Include="Screens\SettingsScreen.cs" />
+    <Compile Include="Settings.cs" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
