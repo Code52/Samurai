@@ -17,12 +17,13 @@ namespace Samurai.Client.Wp7.Screens
         private SpriteBatch sb;
         private Window gui;
         private WP7Touch touch;
-        private Settings settings;
 
         private Button btnSound;
+        private TextBlock lblPlayer;
 
         private const string soundOn = "Sound: On";
         private const string soundOff = "Sound: Off";
+        private const string playerText = "Player: {0}";
 
         public override void LoadContent()
         {
@@ -36,8 +37,8 @@ namespace Samurai.Client.Wp7.Screens
                     gui.LoadGraphics(Manager.GraphicsDevice, content);
                     touch = new WP7Touch(gui);
                     touch.EnableTap();
-                    settings = new Settings();
                     BindInput();
+                    lblPlayer = gui.GetChild<TextBlock>("lblPlayer");
                     LoadSettings();
 
                     IsReady = true;
@@ -52,7 +53,7 @@ namespace Samurai.Client.Wp7.Screens
             btnSound.Triggered +=
                 (b) =>
                 {
-                    settings.Sound = !settings.Sound;
+                    Settings.Instance.IsMute = !Settings.Instance.IsMute;
                     UpdateSoundLabel();
                 };
         }
@@ -64,7 +65,7 @@ namespace Samurai.Client.Wp7.Screens
 
         private void UpdateSoundLabel()
         {
-            if (settings.Sound)
+            if (!Settings.Instance.IsMute)
                 btnSound.Text = soundOn;
             else
                 btnSound.Text = soundOff;
@@ -91,6 +92,16 @@ namespace Samurai.Client.Wp7.Screens
             sb.End();
 
             base.Draw(elapsedSeconds, device);
+        }
+
+        public override void OnNavigatedTo()
+        {
+            if (Settings.Instance.CurrentPlayer != null)
+            {
+                lblPlayer.Text = String.Format(playerText, Settings.Instance.CurrentPlayer.Name);
+            }
+
+            base.OnNavigatedTo();
         }
     }
 }

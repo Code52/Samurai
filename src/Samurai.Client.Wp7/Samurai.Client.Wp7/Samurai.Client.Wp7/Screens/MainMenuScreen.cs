@@ -61,6 +61,7 @@ namespace Samurai.Client.Wp7.Screens
             var loginBtn = window.GetChild<Button>("btnLogin");
             var logoutBtn = window.GetChild<Button>("btnLogout");
             var registerBtn = window.GetChild<Button>("btnRegister");
+            var settingsBtn = window.GetChild<Button>("btnSettings");
             var status = window.GetChild<TextBlock>("status");
             if (status != null)
                 status.Enabled = false;
@@ -82,6 +83,15 @@ namespace Samurai.Client.Wp7.Screens
                     {
                         Manager.GetOrCreateScreen<RegisterScreen>().API = api;
                         Manager.TransitionTo<RegisterScreen>();
+                    };
+            }
+
+            if (settingsBtn != null)
+            {
+                settingsBtn.Triggered +=
+                    (b) =>
+                    {
+                        Manager.TransitionTo<SettingsScreen>();
                     };
             }
 
@@ -137,14 +147,7 @@ namespace Samurai.Client.Wp7.Screens
             if (Player == null)
                 return;
 
-            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
-            using (var file = iso.OpenFile("player.dat", FileMode.Create, FileAccess.Write))
-            using (var bw = new BinaryWriter(file))
-            {
-                bw.Write(Player.Id.ToString());
-                bw.Write(Player.Name);
-                bw.Write(Player.ApiKey);
-            }
+            Settings.Instance.CurrentPlayer = Player;
         }
 
         private void LoadPlayer()
@@ -152,21 +155,8 @@ namespace Samurai.Client.Wp7.Screens
             if (Player != null)
                 return;
 
-            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (iso.FileExists("player.dat"))
-                {
-                    using (var file = iso.OpenFile("player.dat", FileMode.Open, FileAccess.Read))
-                    using (var br = new BinaryReader(file))
-                    {
-                        Player = new Player();
-                        Player.Id = Guid.Parse(br.ReadString());
-                        Player.Name = br.ReadString();
-                        Player.ApiKey = br.ReadString();
-                        Login();
-                    }
-                }
-            }
+            if (Settings.Instance.CurrentPlayer != null)
+                Player = Settings.Instance.CurrentPlayer;
         }
 
         private void Login()

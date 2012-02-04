@@ -10,6 +10,10 @@
       <TextBlock Format="{parenttext}" Font="MainMenuFont.spritefont" Color="#000000" />
     </Button>
 
+    <Button Name="btnSettings" Text="Settings" Visibility="Enabled">
+      <TextBlock Format="{parenttext}" Font="MainMenuFont.spritefont" Color="#000000" />
+    </Button>
+
     <!--<Button Text="Quickmatch" Visibility="Enabled">
       <TextBlock Format="{parenttext}" Font="MainMenuFont.spritefont" Color="#000000" />
     </Button>
