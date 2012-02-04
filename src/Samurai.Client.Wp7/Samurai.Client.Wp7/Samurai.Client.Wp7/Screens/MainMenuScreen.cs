@@ -62,6 +62,7 @@ namespace Samurai.Client.Wp7.Screens
             var loginBtn = window.GetChild<Button>("btnLogin");
             var logoutBtn = window.GetChild<Button>("btnLogout");
             var registerBtn = window.GetChild<Button>("btnRegister");
+            var settingsBtn = window.GetChild<Button>("btnSettings");
             var status = window.GetChild<TextBlock>("status");
             if (status != null)
                 status.Enabled = false;
@@ -83,6 +84,15 @@ namespace Samurai.Client.Wp7.Screens
                     {
                         Manager.GetOrCreateScreen<RegisterScreen>().API = api;
                         Manager.TransitionTo<RegisterScreen>();
+                    };
+            }
+
+            if (settingsBtn != null)
+            {
+                settingsBtn.Triggered +=
+                    (b) =>
+                    {
+                        Manager.TransitionTo<SettingsScreen>();
                     };
             }
 

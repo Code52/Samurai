@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Window Size="100%">
-  <StackPanel>
-    <Button Name="btnSound" Text="Sound">
-      <TextBlock Font="MenuFont.spritefont" Color="#FFFFFF" Format="{parenttext}" />
+  <Image src="Textures\samurai_background_800x480.png" Size="100%" />
+  <StackPanel Position="50%, 50%" Size="50%, 40%">
+    <Button Name="btnSound" Text="Sound" Visibility="Enabled">
+      <TextBlock Format="{parenttext}" Font="MainMenuFont.spritefont" Color="#000000" />
     </Button>
   </StackPanel>
 </Window>
