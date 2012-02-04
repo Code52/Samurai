@@ -11,7 +11,6 @@ using SamuraiServer.Data;
 using XNInterface.Controls;
 using XNInterface.Input;
 using System.Threading;
-using Samurai.Client.Services;
 
 namespace Samurai.Client.Wp7.Screens
 {
@@ -148,7 +147,7 @@ namespace Samurai.Client.Wp7.Screens
             if (Player == null)
                 return;
 
-            Setting.Instance.SetPlayer(Player);
+            Settings.Instance.CurrentPlayer = Player;
         }
 
         private void LoadPlayer()
@@ -156,8 +155,8 @@ namespace Samurai.Client.Wp7.Screens
             if (Player != null)
                 return;
 
-            if (Setting.Instance.CurrentPlayer != null)
-                Player = Setting.Instance.CurrentPlayer;
+            if (Settings.Instance.CurrentPlayer != null)
+                Player = Settings.Instance.CurrentPlayer;
         }
 
         private void Login()

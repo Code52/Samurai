@@ -17,7 +17,6 @@ namespace Samurai.Client.Wp7.Screens
         private SpriteBatch sb;
         private Window gui;
         private WP7Touch touch;
-        private Settings settings;
 
         private Button btnSound;
 
@@ -36,7 +35,6 @@ namespace Samurai.Client.Wp7.Screens
                     gui.LoadGraphics(Manager.GraphicsDevice, content);
                     touch = new WP7Touch(gui);
                     touch.EnableTap();
-                    settings = new Settings();
                     BindInput();
                     LoadSettings();
 
@@ -52,7 +50,7 @@ namespace Samurai.Client.Wp7.Screens
             btnSound.Triggered +=
                 (b) =>
                 {
-                    settings.Sound = !settings.Sound;
+                    Settings.Instance.IsMute = !Settings.Instance.IsMute;
                     UpdateSoundLabel();
                 };
         }
@@ -64,7 +62,7 @@ namespace Samurai.Client.Wp7.Screens
 
         private void UpdateSoundLabel()
         {
-            if (settings.Sound)
+            if (!Settings.Instance.IsMute)
                 btnSound.Text = soundOn;
             else
                 btnSound.Text = soundOff;

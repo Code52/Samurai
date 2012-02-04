@@ -110,7 +110,6 @@
     <Compile Include="..\..\..\SamuraiServer\SamuraiServer.Data\Tiles\Water.cs">
       <Link>Api\Tiles\Water.cs</Link>
     </Compile>
-    <Compile Include="Services\Settings.cs" />
     <Compile Include="Api\ServerApi.cs" />
     <Compile Include="BackgroundJobs.cs" />
     <Compile Include="Graphics\Renderer.cs" />
