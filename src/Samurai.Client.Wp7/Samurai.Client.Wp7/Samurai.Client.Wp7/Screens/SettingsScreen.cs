@@ -19,9 +19,11 @@ namespace Samurai.Client.Wp7.Screens
         private WP7Touch touch;
 
         private Button btnSound;
+        private TextBlock lblPlayer;
 
         private const string soundOn = "Sound: On";
         private const string soundOff = "Sound: Off";
+        private const string playerText = "Player: {0}";
 
         public override void LoadContent()
         {
@@ -36,6 +38,7 @@ namespace Samurai.Client.Wp7.Screens
                     touch = new WP7Touch(gui);
                     touch.EnableTap();
                     BindInput();
+                    lblPlayer = gui.GetChild<TextBlock>("lblPlayer");
                     LoadSettings();
 
                     IsReady = true;
@@ -89,6 +92,16 @@ namespace Samurai.Client.Wp7.Screens
             sb.End();
 
             base.Draw(elapsedSeconds, device);
+        }
+
+        public override void OnNavigatedTo()
+        {
+            if (Settings.Instance.CurrentPlayer != null)
+            {
+                lblPlayer.Text = String.Format(playerText, Settings.Instance.CurrentPlayer.Name);
+            }
+
+            base.OnNavigatedTo();
         }
     }
 }
