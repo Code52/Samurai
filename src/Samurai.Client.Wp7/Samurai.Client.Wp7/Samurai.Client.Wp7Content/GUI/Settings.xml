@@ -1,8 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Window Size="100%">
-  <StackPanel>
-    <Button Name="btnSound" Text="Sound">
-      <TextBlock Font="MenuFont.spritefont" Color="#FFFFFF" Format="{parenttext}" />
+  <Image src="Textures\samurai_background_notext.png" Size="100%" />
+  <StackPanel Position="15%" Size="60%, 60%">
+    <TextBlock Font="MainMenuFont.spritefont" Color="#CC0033" Format="{text}" Text="Settings" />
+    
+    <Button Name="btnSound" Text="Sound" Visibility="Enabled">
+      <TextBlock Format="{parenttext}" Font="MainMenuFont.spritefont" Color="#000000" />
     </Button>
+    
+    <TextBlock Font="MainMenuFont.spritefont" Color="#000000" Format="{text}" Text=" " />
+    
+    <TextBlock  Name="lblPlayer" Font="MainMenuFont.spritefont" Color="#000000" Format="{text}" Text="Player: " />
   </StackPanel>
 </Window>
