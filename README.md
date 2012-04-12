@@ -4,4 +4,4 @@
 
 This game is developed by [Code52](http://code52.org/), which means the community - AKA **you**.
 
-For more information, API documentation etc. visit the [wiki](https://github.com/Code52/Samurai/wiki).
+[For more information, API documentation etc. visit the wiki](https://github.com/Code52/Samurai/wiki).
