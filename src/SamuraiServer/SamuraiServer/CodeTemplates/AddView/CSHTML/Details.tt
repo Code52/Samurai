@@ -35,10 +35,9 @@ if (!String.IsNullOrEmpty(mvcHost.MasterPageFile)) {
 #>
 }
 
-<div class="content">
-    <div class="page-header">
-		<h2><#= mvcHost.ViewName#></h2>
-	</div>
+<div class="page-header">
+	<h2><#= mvcHost.ViewName#></h2>
+</div>
 
 <#
 } else {
@@ -55,33 +54,30 @@ if (!String.IsNullOrEmpty(mvcHost.MasterPageFile)) {
     <title><#= mvcHost.ViewName #></title>
 </head>
 <body>
-<div class="content">
-	<div class="page-header">
-	</div>
+<div class="page-header">
+</div>
 <#
     PushIndent("    ");
 }
 #>
-	<div class="form">
 		<fieldset>
 			<legend><#= mvcHost.ViewDataType.Name #></legend>
+			<br />
 <#
 foreach (ModelProperty property in GetModelProperties(mvcHost.ViewDataType)) {
     if (!property.IsPrimaryKey) {
 #>
 
-			<div class="clearfix">
-				@Html.LabelFor(model => model.<#= property.Name #>)
-				<div class="input">
-					@Html.DisplayFor(model => model.<#= property.Name #>)
-				</div>
-			</div>
+            <div class="row">
+                <div class="span2">@Html.LabelFor(model => model.<#= property.Name #>)</div>
+                <div class="span10">@Html.DisplayFor(model => model.<#= property.Name #>)</div>
+            </div>
 <#
     }
 }
 #>
 		</fieldset>
-	</div>
+		<br />
 	<p>
 <#
 string pkName = GetPrimaryKeyName(mvcHost.ViewDataType);
