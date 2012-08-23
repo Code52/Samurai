@@ -34,10 +34,9 @@ if (!String.IsNullOrEmpty(mvcHost.MasterPageFile)) {
 }
 #>
 }
-<div class="content">
-    <div class="page-header">
-		<h2><#= mvcHost.ViewName#></h2>
-	</div>
+<div class="page-header">
+	<h2><#= mvcHost.ViewName#></h2>
+</div>
 
 <#
 } else {
@@ -54,9 +53,8 @@ if (!String.IsNullOrEmpty(mvcHost.MasterPageFile)) {
     <title><#= mvcHost.ViewName #></title>
 </head>
 <body>
-	<div class="content">
-		<div class="page-header">
-		</div>
+	<div class="page-header">
+	</div>
 <#
     PushIndent("    ");
 }
@@ -81,19 +79,21 @@ if (mvcHost.ReferenceScriptLibraries) {
 		@Html.ValidationSummary(true)
 		<fieldset>
 			<legend><#= mvcHost.ViewDataType.Name #></legend>
-
 <#
 foreach (ModelProperty property in GetModelProperties(mvcHost.ViewDataType)) {
     if (property.IsPrimaryKey) {
 #>
-        @Html.HiddenFor(model => model.<#= property.Name #>)
-
+			<div class="control-group">
+				<div class="controls">
+					@Html.HiddenFor(model => model.<#= property.Name #>)
+				</div>
+			</div>
 <#
     } else if (!property.IsReadOnly) {
 #>
-			<div class="clearfix">
+			<div class="control-group">
 				@Html.LabelFor(model => model.<#= property.Name #>)
-				<div class="input">
+				<div class="controls">
 					@Html.EditorFor(model => model.<#= property.Name #>)
 					@Html.ValidationMessageFor(model => model.<#= property.Name #>)
 				</div>
@@ -103,16 +103,15 @@ foreach (ModelProperty property in GetModelProperties(mvcHost.ViewDataType)) {
     }
 }
 #>
+		<div class="form-actions">
+				<input type="submit" class="btn btn-primary" value="Submit" />
+		</div>
 	</fieldset>
-    <div class="actions">
-			<input type="submit" class="btn primary" value="Submit" />
-    </div>
     
 }
 
-	<div>
-		@Html.ActionLink("Back to List", "Index")
-	</div>
+<div>
+	@Html.ActionLink("Back to List", "Index")
 </div>
 <#
 // The following code closes the asp:Content tag used in the case of a master page and the body and html tags in the case of a regular view page

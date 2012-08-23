@@ -26,10 +26,9 @@ if (!String.IsNullOrEmpty(mvcHost.MasterPageFile)) {
 #>
 }
 
-<div class="content">
-    <div class="page-header">
-		<h2><#= mvcHost.ViewName#></h2>
-	</div>
+<div class="page-header">
+	<h2><#= mvcHost.ViewName#></h2>
+</div>
 <#
 } else {
 #>
@@ -44,9 +43,8 @@ if (!String.IsNullOrEmpty(mvcHost.MasterPageFile)) {
     <title><#= mvcHost.ViewName #></title>
 </head>
 <body>
-	<div class="content">
-	    <div class="page-header">
-		</div>
+	<div class="page-header">
+	</div>
 <#
     PushIndent("    ");
 }
@@ -60,7 +58,6 @@ if(!mvcHost.IsPartialView && !mvcHost.IsContentPage) {
 <#
 }
 #>
-</div>
 <#
 if(!mvcHost.IsPartialView && !mvcHost.IsContentPage) {
     ClearIndent();
