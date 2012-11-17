@@ -11,7 +11,6 @@ TileType.prototype.toString = function () {
   //TODO: String representation of this base obj?
 };
 
-//public class Grass : TileType
 function Grass() {
     this.name = 'Grass';
     this.canMoveOn = true;
@@ -23,7 +22,6 @@ Grass.prototype.toString = function () {
   return '.';
 };
 
-//public class Water : TileType
 function Water() {
   this.name = 'Water';
   this.canMoveOn = false;
