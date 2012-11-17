@@ -12,7 +12,7 @@ Coord.prototype.initialize = function (opt) {
         'y' : 0
       };
 
-  opt = (opt || default_args);
+  opt || (opt = default_args);
 
   for(key in default_args) {
     if(typeof opt[key] == "undefined") opt[key] = default_args[key];

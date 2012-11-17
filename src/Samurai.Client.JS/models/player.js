@@ -15,7 +15,7 @@ Player.prototype.initialize = function (opt) {
     'isActive' : false
   };
 
-  opt = (opt || default_args);
+  opt || (opt = default_args);
 
   for(key in default_args) {
     if(typeof opt[key] == "undefined")
