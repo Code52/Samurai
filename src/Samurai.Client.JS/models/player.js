@@ -1,22 +1,5 @@
 function Player(opt) {
-  if(opt)
-    this.initialize(opt);
-  else {
-  //Guid
-    this.id = null;
-
-    this.name = '';
-    this. apiKey = '';
-
-    this.wins = 0;
-    this.gamesPlayed = 0;
-
-  //DateTime LastSeen { get; set; }
-    this.lastSeen = new Date();
-
-    this.isOnline = false;
-    this.isActive = false;
-  }
+  this.initialize(opt);
 }
 
 Player.prototype.initialize = function (opt) {
