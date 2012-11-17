@@ -1,14 +1,19 @@
 function Program() {
-  static api = new ServerApi("http://samuraitest.apphb.com/");
+  //static api = new ServerApi("http://samuraitest.apphb.com/");
+  var api = new ServerApi("http://samuraitest.apphb.com/"),
 
 //  static Player CurrentPlayer = null;
-  static currentPlayer = null;
+   currentPlayer = null,
 //  static Dictionary<Guid, GameState> CurrentGames = new Dictionary<Guid, GameState>();
-  static currentGames = {};
+   currentGames = {},
 //  static Dictionary<Guid, string[]> CurrentMaps = new Dictionary<Guid, string[]>();
-  static currentMaps = {};
+   currentMaps = {},
 //  static GameState CurrentGame = null;
-  static currentGame = null;
+   currentGame = null;
+
+  function run() {
+
+  }
 
 //  private static void Welcome(string message = "")
   function welcome(message) {
@@ -34,7 +39,8 @@ function Program() {
 //    });
   }
 
-  return {
 
+  return {
+    run : run
   };
 };
