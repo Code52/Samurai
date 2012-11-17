@@ -20,7 +20,7 @@ Unit.prototype.initialize = function (opt) {
         'hitPoints' : 0,
 
         'x' : 0,
-        'y' : 0,
+        'y' : 0
       };
 
   opt || (opt = default_args);
