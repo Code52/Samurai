@@ -1,8 +1,6 @@
 /** Coordinate object. Represents a point in 2-space.
  */
 function Coord(opt) {
-  this.x = 0;
-  this.y = 0;
   this.initialize(opt);
 }
 
