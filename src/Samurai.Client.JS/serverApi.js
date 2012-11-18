@@ -6,13 +6,11 @@ function ServerApi(serverUrl) {
 
 //  function createPlayer(string name, Action<CreatePlayerResponse, Exception> callback) {
   function createPlayer(name, callback) {
-      //post("/Api/Players/CreatePlayer", "name=" + System.Uri.EscapeDataString(name), callback);
     post("/Api/Players/CreatePlayer", {name : name}, callback);
   }
 
 //  function login(string name, string key, Action<CreatePlayerResponse, Exception> callback) {
   function login(name, key, callback) {
-//      post("/Api/Players/Login", "name=" + System.Uri.EscapeDataString(name) + "&token=" + System.Uri.EscapeDataString(key), callback);
     post("/Api/Players/Login", {name : name, token : key}, callback);
   }
 
@@ -23,105 +21,77 @@ function ServerApi(serverUrl) {
 
 //  function createGameAndJoin(string name, Guid playerId, Action<CreateGameAndJoinResponse, Exception> callback) {
   function createGameAndJoin(name, playerId, callback) {
-//      post("/Api/Games/CreateGameAndJoin", "name=" + System.Uri.EscapeDataString(name) + "&playerid=" + playerId, callback);
     post("/Api/Games/CreateGameAndJoin", {name : name, playerid : playerId}, callback);
   }
 
 //  function joinGame(Guid gameId, Guid playerId, Action<CreateGameAndJoinResponse, Exception> callback) {
   function joinGame(gameId, playerId, callback) {
-//      post("/Api/Games/JoinGame", "gameid=" + gameId + "&playerid=" + playerId, callback);
     post("/Api/Games/JoinGame", {gameid : gameId, playerid : playerId}, callback);
   }
 
 //  function getMap(Guid mapId, Action<GetMapResponse, Exception> callback) {
   function getMap(mapId, callback) {
-//    post("/Api/Games/GetMap", "mapid=" + mapId, callback);
     post("/Api/Games/GetMap", {mapid : mapId}, callback);
   }
 
 //  function startGame(Guid gameId, Action<StartGameResponse, Exception> callback) {
   function startGame(gameId, callback) {
-//    get("/Api/Games/StartGame?gameid=" + gameId, callback);
     get("/Api/Games/StartGame", callback, {gameid: gameId});
   }
 
   //function getGame(Guid gameId, Action<GetGameResponse, Exception> callback) {
   function getGame(gameId, callback) {
-    //get("/Api/Games/GetGame?gameid=" + gameId, callback);
     get("/Api/Games/GetGame", callback, {gameid: gameId});
   }
 
 //A sync method in an async pattern. Easier to work with for the console app.
 //  private void Get<T>(string url, Action<T, Exception> callback) {
   function get(url, callback, data) {
-      try {
-/******************/
-        $.ajax(serverUrl + url, {
-          async: false,
-          dataType: json,
-          data: data,
-          success: function (data) {
-            callback(data, null);
-          },
-          error: function (jqXHR, textStatus) {
-            //'Unexpected server response ' + jqXHR.status
-            //callback(null, );
-          },
-        });
-/******************/
-//          var request = (HttpWebRequest)HttpWebRequest.Create(Uri(url));
-//          request.Accept = "application/json";
-//          var response = (HttpWebResponse)request.GetResponse();
+    try {
+      $.ajax(serverUrl + url, {
+        async: false,
+        dataType: json,
+        data: data,
+        success: function (data) {
+          callback(data, null);
+        },
+        error: function (jqXHR, textStatus) {
 //          if (response.StatusCode != HttpStatusCode.OK) callback(default(T), new Exception("Unexpected server response " + response.StatusCode));
-//
-//          string json;
-//          using (var reader = new StreamReader(response.GetResponseStream()))
-//          {
-//              json = reader.ReadToEnd();
-//              reader.BaseStream.Close();
-//          }
-//          response.Close();
-//
-//          var data = JsonConvert.DeserializeObject<T>(json);
-//          callback(data, null);
-      }
-//      catch (Exception e) {
-      catch(e) {
+          callback(null,  'Unexpected server response ' + jqXHR.status);
+        },
+      });
+    } catch(e) {
 //          callback(default(T), e);
-        //callback(default(T), e);
-      }
+      callback(null, e);
+    }
   }
 
-  // A sync method in an async pattern. Easier to work with for the console app.
-//  private void Post<T>(string url, string data, Action<T, Exception> callback) {
-    function post(url, data, callback) {
-      try {
-/******************/
-        $.ajax(serverUrl + url, {
-          type: "POST",
-          async: false,
-          dataType: json,
-          data: data,
-          success: function (data /*textStatus, jqXHR*/) {
+  function post(url, data, callback) {
+    try {
+      $.ajax(serverUrl + url, {
+        type: "POST",
+        async: false,
+        dataType: json,
+        data: data,
+        success: function (responseData) {
 //          callback(responseData, null);
-              callback(data, null);
-           },
-          error: function (jqXHR, textStatus) {
+            callback(responseData, null);
+         },
+        error: function (jqXHR, textStatus) {
 //          if (response.StatusCode != HttpStatusCode.OK) callback(default(T), new Exception("Unexpected server response " + response.StatusCode));
-            callback(null, 'Unexpected server response ' + jqXHR.status);
-          }
-        });
+          callback(null, 'Unexpected server response ' + jqXHR.status);
+        }
+      });
 /******************/
 //          var responseData = JsonConvert.DeserializeObject<T>(json);
-//          Debug.WriteLine(String.Format("Request: {0} at {1}", url, DateTime.Now));
-//          Debug.WriteLine(String.Format("Data: {0}", data));
-//          Debug.WriteLine("Response:");
-//          Debug.WriteLine(json);
-//          Debug.WriteLine("=========================================================");
-      } catch(e) {
+//          console.log('Request: ' + url + ' at ' + Date.Now());
+//          console.log('Data: ', data);
+//          console.log('Response: ');
+//          console.log(json);
+    } catch(e) {
 //          callback(default(T), e);
-        callback(null, e);
-      }
+      callback(null, e);
+    }
   }
 
   return {
