@@ -5,14 +5,14 @@ function Player(opt) {
 Player.prototype.initialize = function (opt) {
   var key = null,
   default_args = {
-    'id' : null,
-    'name' : '',
-    'apiKey' : '',
-    'wins' : 0,
-    'gamesPlayed' : 0,
-    'lastSeen' : new Date(),
-    'isOnline' : false,
-    'isActive' : false
+    'Id' : null,
+    'Name' : '',
+    'ApiKey' : '',
+    'Wins' : 0,
+    'GamesPlayed' : 0,
+    'LastSeen' : new Date(),
+    'IsOnline' : false,
+    'IsActive' : false
   };
 
   opt || (opt = default_args);
