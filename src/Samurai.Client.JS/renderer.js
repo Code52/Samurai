@@ -9,13 +9,29 @@ function Renderer() {
 
 //    public void LoadContent(ContentManager content) {
   function loadContent(content) {
+    var tmpImg = new Image();
 //        textures.Clear();
     textures = [];
+
 //    textures.Add(content.Load<Texture2D>("Textures\\grass"));
-    //textures.push();
+    //textures.push(content.loadTexture2D('../textures/grass.png');
+    tmpImg.src = '../textures/grass.png';
+    textures.push(tmpImg);
+
 //    textures.Add(content.Load<Texture2D>("Textures\\rock"));
+    tmpImg = new Image();
+    tmpImg.src = '../textures/rock.png';
+    textures.push(tmpImg);
+
 //    textures.Add(content.Load<Texture2D>("Textures\\trees"));
+    tmpImg = new Image();
+    tmpImg.src = '../textures/trees.png';
+    textures.push(tmpImg);
+
 //    textures.Add(content.Load<Texture2D>("Textures\\water"));
+    tmpImg = new Image();
+    tmpImg.src = '../textures/water.png';
+    textures.push(tmpImg);
   }
 
 //    public void DrawMap(GraphicsDevice device, SpriteBatch sb, Map map, int xOffset, int yOffset) {
@@ -37,17 +53,14 @@ function Renderer() {
 
     drawRect.x = -xStart;
 
-//        for (int xIndex = xOffset / CELL_WIDTH; xIndex < width && xIndex >= 0; ++xIndex) {
     for( ; xIndex < width && xIndex >= 0; ++xIndex) {
-//            drawRect.Y = -yStart;
       drawRect.y = -yStart;
 
-//            for (int yIndex = yOffset / CELL_WIDTH; yIndex < height && yIndex >= 0; ++yIndex) {
       for( ; yIndex < height && yIndex >= 0; ++yIndex) {
-          tex = GetTex(map.Tiles[xIndex][yIndex]);
-//                if (tex != null)
+          tex = getTex(map.Tiles[xIndex][yIndex]);
+
           if(tex)
-//                    sb.Draw(tex, drawRect, Color.White);
+            //sb.Draw(tex, drawRect, Color.White);
             context.drawImage(tex, drawRect.x, drawRect.y, drawRect.width, drawRect.height);
 
         drawRect.y += CELL_WIDTH;
@@ -61,7 +74,7 @@ function Renderer() {
   function getMapSize(map) {
     var x = map.Tiles.Length;
         y = map.Tiles[0].Length;
-//        return new Point(x * CELL_WIDTH, y * CELL_WIDTH);
+
       return new Coord({x : x * CELL_WIDTH, y : y * CELL_WIDTH});
   }
 
