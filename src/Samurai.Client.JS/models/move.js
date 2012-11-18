@@ -8,9 +8,9 @@ function Move(opt) {
 Move.prototype.initialize = function (opt) {
   var key = null,
       default_args = {
-        'player' : null,
-        'playersUnits' : [],
-        'affectedUnits' : {}
+        Player : null,
+        PlayersUnits : [],
+        AffectedUnits : {}
       };
 
   opt || (opt = default_args);

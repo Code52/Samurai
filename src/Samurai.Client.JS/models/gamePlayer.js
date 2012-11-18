@@ -1,4 +1,4 @@
-function GamePlayer(opt) {            
+function GamePlayer(opt) {
   //Units = new List<Unit>();
   this.initialize(opt);
 }
@@ -6,14 +6,14 @@ function GamePlayer(opt) {
 GamePlayer.prototype.initialize = function (opt) {
   var key = null,
       default_args = {
-        //Guid 
-        id  : '',
-        //Player 
-        player  : null,
-        //IList<Unit> 
-        units  : [],
-        score : 0,
-        isAlive : true,
+        //Guid
+        Id  : '',
+        //Player
+        Player  : null,
+        //IList<Unit>
+        Units  : [],
+        Score : 0,
+        IsAlive : true,
       };
 
   opt || (opt = default_args);

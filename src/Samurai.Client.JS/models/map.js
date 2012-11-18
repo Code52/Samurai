@@ -30,15 +30,15 @@ Map.prototype.initialize = function (opt) {
   var key = null,
   default_args = {
 //      public Guid Id { get; private set; }
-      'id' : null,
-      name : '',
-      imageResource : '',
-      minPlayers : 0,
-      maxPlayers : 0,
+      Id : null,
+      Name : '',
+      ImageResource : '',
+      MinPlayers : 0,
+      MaxPlayers : 0,
 //      public Dictionary<int, List<Unit>> StartingUnits { get; set; }
-      startingUnits : {},
+      StartingUnits : {},
 //      public TileType[][] Tiles
-      'tiles' : []
+      Tiles : []
   };
 
   opt || (opt = default_args);

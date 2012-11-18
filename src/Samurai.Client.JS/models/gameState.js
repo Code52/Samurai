@@ -5,17 +5,17 @@ function GameState(opts) {
 GameState.prototype.initialize = function (opt) {
   var key = null,
       default_args = {
-        //public Guid Id 
-        'id' : '',
-        'name' : '',  // NOTE: what does this represent? <csainty: Lets the user name a game so they can tell a friend which to join. Could use invites instead>
+        //public Guid Id
+        Id : '',
+        Name : '',  // NOTE: what does this represent? <csainty: Lets the user name a game so they can tell a friend which to join. Could use invites instead>
         //List<GamePlayer>
-        'players' : [],
-        'turn' : 0,
-        'started' : false,
+        Players : [],
+        Turn : 0,
+        Started : false,
         //public Guid
-        'mapId' : '',
+        MapId : '',
         //List<Guid>
-        'playerOrder' : [], 
+        PlayerOrder : [],
       };
 
   opt || (opt = default_args);

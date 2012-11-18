@@ -2,9 +2,9 @@
  *
  */
 function TileType() {
-  this.name = '';
-  this.canMoveOn = false;
-  this.canShootOver = false;
+  this.Name = '';
+  this.CanMoveOn = false;
+  this.CanShootOver = false;
 }
 
 TileType.prototype.toString = function () {
@@ -12,9 +12,9 @@ TileType.prototype.toString = function () {
 };
 
 function Grass() {
-    this.name = 'Grass';
-    this.canMoveOn = true;
-    this.canShootOver = true;
+    this.Name = 'Grass';
+    this.CanMoveOn = true;
+    this.CanShootOver = true;
 }
 
 Grass.prototype = new TileType();
@@ -23,9 +23,9 @@ Grass.prototype.toString = function () {
 };
 
 function Water() {
-  this.name = 'Water';
-  this.canMoveOn = false;
-  this.canShootOver = true;
+  this.Name = 'Water';
+  this.CanMoveOn = false;
+  this.CanShootOver = true;
 }
 
 Water.prototype = new TileType();
@@ -34,9 +34,9 @@ Water.prototype.toString = function () {
 };
 
 function Rock() {
-  this.name = 'Rock';
-  this.canMoveOn = false;
-  this.canShootOver = true;
+  this.Name = 'Rock';
+  this.CanMoveOn = false;
+  this.CanShootOver = true;
 }
 
 Rock.prototype = new TileType();
@@ -45,9 +45,9 @@ Rock.prototype.toString = function () {
 };
 
 function Tree() {
-  this.name = 'Tree';
-  this.canMoveOn = false;
-  this.canShootOver = false;
+  this.Name = 'Tree';
+  this.CanMoveOn = false;
+  this.CanShootOver = false;
 }
 
 Tree.prototype = new TileType();

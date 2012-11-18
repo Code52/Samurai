@@ -1,8 +1,8 @@
 function MoveSet () {
   //Player
-  this.player = null;
+  this.Player = null;
   //GameState Game
-  this.game = null;
+  this.Game = null;
 
-  this.moves = []; 
+  this.Moves = [];
 }
