@@ -1,0 +1,92 @@
+@CHARSET "ISO-8859-1";
+
+/* @font-face {
+    font-family: 'samurai';
+    src: local('☺'), url('../samurai.ttf')  format('truetype');
+} */
+
+@font-face {
+    font-family: 'samurai';
+    src: url('samurai-webfont.eot');
+    src: url('samurai-webfont.eot?#iefix') format('embedded-opentype'),
+         url('samurai-webfont.woff') format('woff'),
+         url('../samurai.ttf') format('truetype'),
+         url('samurai-webfont.svg#samurairegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+  font-family: samurai;
+}
+
+button {
+  font-family: samurai;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  border: 2px outset;
+}
+
+button:active {
+  background: rgba(255, 255, 255, 0.5);
+  border: 2px inset;
+}
+
+canvas {
+  position: absolute;
+  width: inherit;
+  height: inherit;
+/*     width: 800px;
+  height: 480px; */
+}
+
+#viewport {
+  margin: auto;
+  width: 800px;
+  height: 480px;
+/*   background: url('./textures/samurai_background_800x480.png') no-repeat center center, black */
+}
+
+#menu {
+  position: relative;
+  left: 30%;
+  top: 75%;
+  z-index: 2;
+}
+
+#divChat {
+  position: relative;
+  left: 10%;
+  top: 83%;
+  z-index: 2;
+}
+
+#chatbox {
+  width: 80%;
+  font-family: samurai;
+  background: rgba(255, 255, 255, .4);
+}
+
+#chatbox:focus {
+  background: rgba(255, 255, 255, .75);
+}
+
+#cvsBg {
+  z-index: 0;
+}
+
+#cvsFg {
+  z-index: 1;
+}
+
+#status {
+  position: relative;
+  display: block;
+  top: 50%;
+  text-align: center;
+  text-baseline
+}
+
+#btnChat {
+  
+}
