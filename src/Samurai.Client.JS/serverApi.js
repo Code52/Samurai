@@ -102,53 +102,27 @@ function ServerApi(serverUrl) {
           async: false,
           dataType: json,
           data: data,
-          success: function (data) {
+          success: function (data /*textStatus, jqXHR*/) {
+//          callback(responseData, null);
               callback(data, null);
            },
           error: function (jqXHR, textStatus) {
-            //'Unexpected server response ' + jqXHR.status
-          //callback(null, );
+//          if (response.StatusCode != HttpStatusCode.OK) callback(default(T), new Exception("Unexpected server response " + response.StatusCode));
+            callback(null, 'Unexpected server response ' + jqXHR.status);
           }
         });
 /******************/
-//          byte[] bytes = Encoding.UTF8.GetBytes(data);
-//          var request = (HttpWebRequest)HttpWebRequest.Create(Uri(url));
-//          request.Method = "POST";
-//          request.Accept = "application/json";
-//          request.ContentType = "application/x-www-form-urlencoded";
-//          using (var stream = request.GetRequestStream())
-//          {
-//              stream.Write(bytes, 0, bytes.Length);
-//          }
-//          var response = (HttpWebResponse)request.GetResponse();
-//          if (response.StatusCode != HttpStatusCode.OK) callback(default(T), new Exception("Unexpected server response " + response.StatusCode));
-//
-//          string json;
-//          using (var reader = new StreamReader(response.GetResponseStream()))
-//          {
-//              json = reader.ReadToEnd();
-//              reader.BaseStream.Close();
-//          }
-//          response.Close();
-//
 //          var responseData = JsonConvert.DeserializeObject<T>(json);
 //          Debug.WriteLine(String.Format("Request: {0} at {1}", url, DateTime.Now));
 //          Debug.WriteLine(String.Format("Data: {0}", data));
 //          Debug.WriteLine("Response:");
 //          Debug.WriteLine(json);
 //          Debug.WriteLine("=========================================================");
-//          callback(responseData, null);
-      }
-//      catch (Exception e) {
-      catch(e) {
+      } catch(e) {
 //          callback(default(T), e);
+        callback(null, e);
       }
   }
-
-//  private Uri Uri(string relativePath) {
-//  function Uri(relativePath) {
-//      return new Uri(new Uri(serverUrl), relativePath);
-//  }
 
   return {
      createPlayer : createPlayer,
