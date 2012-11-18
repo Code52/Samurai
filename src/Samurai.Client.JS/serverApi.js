@@ -50,7 +50,7 @@ function ServerApi(serverUrl) {
     try {
       $.ajax(serverUrl + url, {
         async: false,
-        dataType: json,
+        dataType: "json",
         data: data,
         success: function (data) {
           callback(data, null);
@@ -71,7 +71,7 @@ function ServerApi(serverUrl) {
       $.ajax(serverUrl + url, {
         type: "POST",
         async: false,
-        dataType: json,
+        dataType: "json",
         data: data,
         success: function (responseData) {
 //          callback(responseData, null);
@@ -149,7 +149,8 @@ CreatePlayerResponse.prototype.constructor = CreatePlayerResponse();
 function LoginResponse() {
 //    public Player Player { get; set; }
   ServerResponse.call(this);
-  this.Player = new Player();
+//  this.Player = new Player();
+  this.Player = null;
 }
 LoginResponse.prototype = new ServerResponse();
 LoginResponse.prototype.constructor = LoginResponse();
