@@ -6,42 +6,42 @@ function ServerApi(serverUrl) {
 
 //  function createPlayer(string name, Action<CreatePlayerResponse, Exception> callback) {
   function createPlayer(name, callback) {
-    post("/Api/Players/CreatePlayer", {name : name}, callback);
+    post("api/Players/CreatePlayer", {name : name}, callback);
   }
 
 //  function login(string name, string key, Action<CreatePlayerResponse, Exception> callback) {
   function login(name, key, callback) {
-    post("/Api/Players/Login", {name : name, token : key}, callback);
+    post("api/Players/Login", {name : name, token : key}, callback);
   }
 
 //  function getOpenGames(Action<GetOpenGamesResponse, Exception> callback) {
   function getOpenGames(callback) {
-    get("/Api/Games/GetOpenGames", callback);
+    get("Api/Games/GetOpenGames", callback);
   }
 
 //  function createGameAndJoin(string name, Guid playerId, Action<CreateGameAndJoinResponse, Exception> callback) {
   function createGameAndJoin(name, playerId, callback) {
-    post("/Api/Games/CreateGameAndJoin", {name : name, playerid : playerId}, callback);
+    post("Api/Games/CreateGameAndJoin", {name : name, playerid : playerId}, callback);
   }
 
 //  function joinGame(Guid gameId, Guid playerId, Action<CreateGameAndJoinResponse, Exception> callback) {
   function joinGame(gameId, playerId, callback) {
-    post("/Api/Games/JoinGame", {gameid : gameId, playerid : playerId}, callback);
+    post("Api/Games/JoinGame", {gameid : gameId, playerid : playerId}, callback);
   }
 
 //  function getMap(Guid mapId, Action<GetMapResponse, Exception> callback) {
   function getMap(mapId, callback) {
-    post("/Api/Games/GetMap", {mapid : mapId}, callback);
+    post("api/Games/GetMap", {mapid : mapId}, callback);
   }
 
 //  function startGame(Guid gameId, Action<StartGameResponse, Exception> callback) {
   function startGame(gameId, callback) {
-    get("/Api/Games/StartGame", callback, {gameid: gameId});
+    get("api/Games/StartGame", callback, {gameid: gameId});
   }
 
   //function getGame(Guid gameId, Action<GetGameResponse, Exception> callback) {
   function getGame(gameId, callback) {
-    get("/Api/Games/GetGame", callback, {gameid: gameId});
+    get("api/Games/GetGame", callback, {gameid: gameId});
   }
 
 //A sync method in an async pattern. Easier to work with for the console app.
@@ -50,6 +50,7 @@ function ServerApi(serverUrl) {
     try {
       $.ajax(serverUrl + url, {
         async: false,
+//        contentType: "application/json",
         dataType: "json",
         data: data,
         success: function (data) {
@@ -71,6 +72,7 @@ function ServerApi(serverUrl) {
       $.ajax(serverUrl + url, {
         type: "POST",
         async: false,
+//        contentType: "application/json",
         dataType: "json",
         data: data,
         success: function (responseData) {
