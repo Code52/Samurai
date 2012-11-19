@@ -43,6 +43,7 @@ canvas {
 }
 
 #viewport {
+  position: relative;
   margin: auto;
   width: 800px;
   height: 480px;
@@ -50,19 +51,20 @@ canvas {
 }
 
 #menu {
-  position: relative;
-  left: 30%;
-  top: 75%;
+  position: absolute;
+  left: 20%;
+  top: 85%;
 }
 
 #divChat {
-  position: relative;
-  left: 10%;
-  top: 83%;
+  position: absolute;
+  width: 100%;
+  top: 93%;
 }
 
 #chatbox {
   width: 80%;
+  margin-left: 10%;
   font-family: samurai;
   background: rgba(255, 255, 255, .4);
 }
@@ -80,7 +82,8 @@ canvas {
 }
 
 #status {
-  position: relative;
+  position: absolute;
+  width: 100%;
   display: block;
   top: 50%;
   text-align: center;
@@ -98,6 +101,8 @@ canvas {
 #divList {
   max-height: 300px;
   overflow: auto;
+  position: relative;
+  top: 10%;
 }
 
 #btnChat {
