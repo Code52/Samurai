@@ -15,58 +15,58 @@ function Renderer() {
 
 //    textures.Add(content.Load<Texture2D>("Textures\\grass"));
     //textures.push(content.loadTexture2D('../textures/grass.png');
-    tmpImg.src = '../textures/grass.png';
+    tmpImg.src = './textures/grass.png';
     textures.push(tmpImg);
 
 //    textures.Add(content.Load<Texture2D>("Textures\\rock"));
     tmpImg = new Image();
-    tmpImg.src = '../textures/rock.png';
+    tmpImg.src = './textures/rock.png';
     textures.push(tmpImg);
 
 //    textures.Add(content.Load<Texture2D>("Textures\\trees"));
     tmpImg = new Image();
-    tmpImg.src = '../textures/trees.png';
+    tmpImg.src = './textures/trees.png';
     textures.push(tmpImg);
 
 //    textures.Add(content.Load<Texture2D>("Textures\\water"));
     tmpImg = new Image();
-    tmpImg.src = '../textures/water.png';
+    tmpImg.src = './textures/water.png';
     textures.push(tmpImg);
   }
 
 //    public void DrawMap(GraphicsDevice device, SpriteBatch sb, Map map, int xOffset, int yOffset) {
-  function drawMap(context, sb, map, xOffset, yOffset) {
+  function drawMap(context, /*sb,*/ map, xOffset, yOffset) {
 //        if (sb == null || map == null)
-    if(!sb || !map)
+    if(/*!sb ||*/ !map) {
+      console.log('map', map);
       return;
+    }
 
     var xIndex = xOffset / CELL_WIDTH,
         yIndex = yOffset / CELL_WIDTH,
         xStart = xOffset % CELL_WIDTH,
         yStart = yOffset % CELL_WIDTH,
-//      int width = Math.Min((xOffset / CELL_WIDTH) + (device.Viewport.Width / CELL_WIDTH) + 2, map.Tiles.Length);
-        //width = Math.Min((xOffset / CELL_WIDTH) + (device.Viewport.Width / CELL_WIDTH) + 2, map.Tiles.Length),
+        width = Math.min((xOffset / CELL_WIDTH) + ($('#viewport').width() / CELL_WIDTH) + 2, map.Tiles.length),
         //All columns are of equal height.
-//      int height = Math.Min((yOffset / CELL_WIDTH) + (device.Viewport.Height / CELL_WIDTH) + 2, map.Tiles[0].Length); // All columns are of equal height
-        //height = Math.Min((yOffset / CELL_WIDTH) + (device.Viewport.Height / CELL_WIDTH) + 2, map.Tiles[0].Length),
+        height = Math.min((yOffset / CELL_WIDTH) + ($('#viewport').height() / CELL_WIDTH) + 2, map.Tiles[0].length),
         tex = null;
 
-    drawRect.x = -xStart;
+    drawRect.y = -yStart;
 
     for( ; xIndex < width && xIndex >= 0; ++xIndex) {
-      drawRect.y = -yStart;
+      drawRect.x = -xStart;
 
-      for( ; yIndex < height && yIndex >= 0; ++yIndex) {
-          tex = getTex(map.Tiles[xIndex][yIndex]);
+      for(yIndex = yOffset / CELL_WIDTH; yIndex < height && yIndex >= 0; ++yIndex) {
+        tex = getTex(map.Tiles[xIndex][yIndex]);
 
-          if(tex)
+        if(tex) {
             //sb.Draw(tex, drawRect, Color.White);
-            context.drawImage(tex, drawRect.x, drawRect.y, drawRect.width, drawRect.height);
+          context.drawImage(tex, drawRect.x, drawRect.y, drawRect.width, drawRect.height);
+        }
 
-        drawRect.y += CELL_WIDTH;
+        drawRect.x += CELL_WIDTH;
       }
-
-      drawRect.x += CELL_WIDTH;
+      drawRect.y += CELL_WIDTH;
     }
   }
 
