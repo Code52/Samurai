@@ -1,34 +1,39 @@
 function Program() {
-  var api = new ServerApi("http://samuraitest.apphb.com/"),
+  //static api = new ServerApi("http://samuraitest.apphb.com/");
+//  var api = new ServerApi("http://samuraitest.apphb.com/"),
+  var api = new ServerApi("./"),
 
 //  static Player CurrentPlayer = null;
-   currentPlayer = null,
-   currentGames = {},
-   currentMaps = {},
-//  static GameState CurrentGame = null;
-   currentGame = null,
+     currentPlayer = null,
+     currentGames = {},
+     currentMaps = {},
+  //  static GameState CurrentGame = null;
+     currentGame = null,
 
-   userList = [],
+     userList = [],
 
-   //Canvas vars
-   $cvsFg = $('#cvsFg'),
-   $cvsBg = $('#cvsBg'),
-   ctxFg = $cvsFg[0].getContext("2d"),
-   ctxBg = $cvsBg[0].getContext("2d"),
-   cX,
-   cY,
+     //Canvas vars
+     $cvsFg = $('#cvsFg'),
+     $cvsBg = $('#cvsBg'),
+     ctxFg = $cvsFg[0].getContext("2d"),
+     ctxBg = $cvsBg[0].getContext("2d"),
+     cX,
+     cY,
 
-   //HTMLElements
-   $chatbox = $('#chatbox'),
-   $status = $('#status'),
-   $btnChat = $('#btnChat'),
-   $divList = $('#divList'),
+     //HTMLElements
+     $chatbox = $('#chatbox'),
+     $status = $('#status'),
+     $btnChat = $('#btnChat'),
+     $divList = $('#divList'),
+     $menu = $('#menu'),
 
-   //
-   content = new ContentManager(),
-   renderer = new Renderer();
-   renderer.loadContent(content);
+     //
+     content = new ContentManager(),
+     renderer = new Renderer();
 
+
+  renderer.loadContent(content);
+  //Size the canvases.
   $cvsBg[0].width = $cvsFg[0].width = $cvsFg.parent().width();
   $cvsBg[0].height = $cvsFg[0].height = $cvsFg.parent().height();
   cX = cvsFg.width;
@@ -37,30 +42,19 @@ function Program() {
   ctxFg.font = '30px samurai';
   ctxFg.textBaseline = 'middle';
 
+  //Event hookups!
+  $('#btnPlay').click(listGames);
+  $('#btnLogin').click(login);
+  $('#btnLogout').click(logout);
+
   function run() {
     //Load main menu screen.
     welcome('Welcome');
-    var i = 0;
-    $('#btnPlay').on('click', function (data) {
-      /*welcome('Welcome ' + i);
-      i += 1;*/
-      currentPlayer = {Name: 'bob', ApiKey: 'someValue', Id: '3bad43e6-6cd1-1d26-dd9b-bff419941c79'};
-      listGames();
-    });
 
-    $('#btnLogin').on('click', function (data) {
-      login();
-    });
-
-    var testObject = [
-                       {name: 'bob', key: 'someValue'},
-                       {name: 'tom', key: 'someOtherValue'}
-                     ];
-
-   // Put the object into storage
-   localStorage.setItem('userList', JSON.stringify(testObject));
-   // Retrieve the object from storage
-   var retrievedObject = localStorage.getItem('userList');
+    //Saved user test
+    userList.push({name: 'shiftkey', key: 'someValue'});
+    saveUsers();
+    //loadUsers();
   }
 
 //  private static void Welcome(string message = "")
@@ -74,7 +68,8 @@ function Program() {
 
     //Clear foreground canvas.
     $cvsFg[0].width = $cvsFg[0].width;
-//    Console.WriteLine("Welcome to Samurai");
+    $status.empty();
+
 //    ctxFg.fillText(message, cX / 2 - ctxFg.measureText(message).width / 2, cY / 2);
     if(message) {
       $status.html(message + '<br />')
@@ -82,13 +77,9 @@ function Program() {
     }
 
     if(currentPlayer != null) {
-//        Console.WriteLine("Logged in as " + CurrentPlayer.Name + " " + CurrentPlayer.Id);
       $status.append('Logged in as </br>'+ currentPlayer.Name + " " + currentPlayer.Id);
     }
-//    if (!String.IsNullOrEmpty(message)) {
-//        Console.WriteLine("----");
-//        Console.WriteLine(message);
-//    }
+
 //    Console.WriteLine("----");
 //    Console.WriteLine("[C] Create user");
 //    Console.WriteLine("[O] Login");
@@ -115,7 +106,7 @@ function Program() {
         $chatbox.focus();
       } else {
         name = $chatbox.val();
-        console.log(name);
+        $chatbox.attr('placeholder', '');
         $btnChat.off('click', gotName);
 
         api.createPlayer(name, function (data, e) {
@@ -145,15 +136,11 @@ function Program() {
   }
 
   function login() {
-//    var status = window.GetChild<TextBlock>("status");
-//    if (status != null)
-//        status.Enabled = true;
     var name/* = currentPlayer.Name*/,
         key/* = currentPlayer.ApiKey*/;
 
     $status.text('');
     $('#tblList tbody').empty();
-
 
     //Load saved users.
     loadUsers();
@@ -165,6 +152,7 @@ function Program() {
       $('#tblList tbody').append('<tr><td>'+user.name+'</td><td>'+user.key+'</td></tr>');
     });
     $('#tblList tbody').append('<tr><td>New user</td><td></td></tr>');
+
     $divList.show();
 
     $('#tblList tbody').one('click', 'tr', function selectUser() {
@@ -180,26 +168,29 @@ function Program() {
 
       //Attempt login.
       $status.html('Logging in as </br>' + name + ' ' + key);
-      $divList.show();
-    });
 
 //    currentPlayer = null;
 
-    return;
+      api.login(name, key, function (data, e) {
+        if(e != null) {
+//            Error(e);
+          console.log('e', e);
+          return;
+        }
 
-//    api.Login(name, key, new Action<PlayerResponse, Exception>(
-    api.login(name, key, function (response, e) {
-//        (p, e) => {
-//            Thread.Sleep(1000);
-          if (e == null && p.Ok) {
-            currentPlayer = response.Player;
-          } else {
-//                DeleteSave();
-//                Guide.BeginShowMessageBox("Error", "Failed to login: " + (e == null ? p.Message : e.Message), new string[] { "Ok" }, 0, MessageBoxIcon.Error, null, null);
-          }
-//            if(status != null)
-//                status.Enabled = false;
-//            UpdateButtons();
+        if(!data.ok) {
+          welcome(data.Message);
+          return;
+        }
+
+        currentPlayer = data.Player;
+        welcome();
+//           DeleteSave();
+//           Guide.BeginShowMessageBox("Error", "Failed to login: " + (e == null ? p.Message : e.Message), new string[] { "Ok" }, 0, MessageBoxIcon.Error, null, null);
+//              if(status != null)
+//                  status.Enabled = false;
+//              UpdateButtons();
+      });
     });
   }
 
@@ -218,6 +209,7 @@ function Program() {
       }
       if(!data.ok) {
 //        BadResponse();
+        welcome(data.message);
         return;
       }
 
@@ -225,10 +217,7 @@ function Program() {
 //          actions.Add("C", CreateGame);
 //          actions.Add("X", () => Welcome());
 
-//          Console.Clear();
-//          Console.WriteLine("Choose a game to join");
-//          Console.WriteLine("---");
-      $('#menu').hide();
+      $menu.hide();
       $status.text('');
       $('#tblList tbody').empty();
       $('#tblList thead').html('<tr><th></th><th>Name</th><th>Id</th></tr>');
@@ -253,7 +242,7 @@ function Program() {
           return;
         }
 
-        //Attempt to join game.
+        //Attempt to join existing game.
         $status.html('Joining ' + name);
         joinGame(id);
       });
@@ -288,6 +277,7 @@ function Program() {
                   return;
                 }
 
+                $chatbox.attr('placeholder', '');
                 updateGame(data.game);
                 viewGame(data.game.Id);
             });
@@ -397,7 +387,7 @@ function Program() {
 //      int col2Left = Console.WindowWidth - 20;
 
     //Hide the buttons.
-    $('#menu').hide();
+    $menu.hide();
 
     $status.hide();
     $chatbox.val('');
@@ -408,6 +398,8 @@ function Program() {
 
     //Draw the map.
     renderer.drawMap(ctxBg, currentMaps[currentGame.MapId], 0, 0);
+
+    //Draw the players/units?
 
 //      Console.SetCursorPosition(0, 0);
 //      Console.Write("Map");
@@ -444,12 +436,18 @@ function Program() {
 //      Choose(options);
   }
 
+  /** Clear the current user and return to main menu.*/
+  function logout() {
+    currentPlayer = null;
+    welcome('Welcome');
+  }
+
   /** Loads previous users from localStorage */
   function loadUsers() {
     userList = JSON.parse(localStorage.getItem('userList'));
   }
 
-  //Save user list to local storage
+  /** Save user list to local storage */
   function saveUsers() {
     localStorage.setItem('userList', JSON.stringify(userList));
   }
