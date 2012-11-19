@@ -1,28 +1,90 @@
 function Program() {
-  //static api = new ServerApi("http://samuraitest.apphb.com/");
   var api = new ServerApi("http://samuraitest.apphb.com/"),
 
 //  static Player CurrentPlayer = null;
    currentPlayer = null,
-//  static Dictionary<Guid, GameState> CurrentGames = new Dictionary<Guid, GameState>();
    currentGames = {},
-//  static Dictionary<Guid, string[]> CurrentMaps = new Dictionary<Guid, string[]>();
    currentMaps = {},
 //  static GameState CurrentGame = null;
-   currentGame = null;
+   currentGame = null,
+
+   userList = [],
+
+   //Canvas vars
+   $cvsFg = $('#cvsFg'),
+   $cvsBg = $('#cvsBg'),
+   ctxFg = $cvsFg[0].getContext("2d"),
+   ctxBg = $cvsBg[0].getContext("2d"),
+   cX,
+   cY,
+
+   //HTMLElements
+   $chatbox = $('#chatbox'),
+   $status = $('#status'),
+   $btnChat = $('#btnChat'),
+   $divList = $('#divList'),
+
+   //
+   content = new ContentManager(),
+   renderer = new Renderer();
+   renderer.loadContent(content);
+
+  $cvsBg[0].width = $cvsFg[0].width = $cvsFg.parent().width();
+  $cvsBg[0].height = $cvsFg[0].height = $cvsFg.parent().height();
+  cX = cvsFg.width;
+  cY = cvsFg.height;
+
+  ctxFg.font = '30px samurai';
+  ctxFg.textBaseline = 'middle';
 
   function run() {
     //Load main menu screen.
+    welcome('Welcome');
+    var i = 0;
+    $('#btnPlay').on('click', function (data) {
+      /*welcome('Welcome ' + i);
+      i += 1;*/
+      currentPlayer = {Name: 'bob', ApiKey: 'someValue', Id: '3bad43e6-6cd1-1d26-dd9b-bff419941c79'};
+      listGames();
+    });
 
+    $('#btnLogin').on('click', function (data) {
+      login();
+    });
+
+    var testObject = [
+                       {name: 'bob', key: 'someValue'},
+                       {name: 'tom', key: 'someOtherValue'}
+                     ];
+
+   // Put the object into storage
+   localStorage.setItem('userList', JSON.stringify(testObject));
+   // Retrieve the object from storage
+   var retrievedObject = localStorage.getItem('userList');
   }
 
 //  private static void Welcome(string message = "")
   function welcome(message) {
-//    Console.Clear();
+    var imgBg = content.loadTexture2D('./textures/samurai_background_800x480.png');
+
+    //Draw menu background.
+    $(imgBg).one('load', function () {
+      ctxBg.drawImage(imgBg, 0, 0, imgBg.width, imgBg.height);
+    });
+
+    //Clear foreground canvas.
+    $cvsFg[0].width = $cvsFg[0].width;
 //    Console.WriteLine("Welcome to Samurai");
-//    if (CurrentPlayer != null) {
+//    ctxFg.fillText(message, cX / 2 - ctxFg.measureText(message).width / 2, cY / 2);
+    if(message) {
+      $status.html(message + '<br />')
+          .show();
+    }
+
+    if(currentPlayer != null) {
 //        Console.WriteLine("Logged in as " + CurrentPlayer.Name + " " + CurrentPlayer.Id);
-//    }
+      $status.append('Logged in as </br>'+ currentPlayer.Name + " " + currentPlayer.Id);
+    }
 //    if (!String.IsNullOrEmpty(message)) {
 //        Console.WriteLine("----");
 //        Console.WriteLine(message);
@@ -41,62 +103,123 @@ function Program() {
   }
 
   function createUser() {
-//    Console.Clear();
-//    var name = GetText("Please enter your username", s => !String.IsNullOrWhiteSpace(s));
-//    api.CreatePlayer(name, (data, e) =>
-//    {
-//        if (e != null)
-//        {
+    var name = '';
+
+    $status.text('New player!');
+    $chatbox.attr('placeholder', 'Please enter your username');
+    $chatbox.focus();
+
+    $btnChat.on('click', function gotName(data) {
+      if(/\s/.test($chatbox.val()) || $chatbox.val() == '') {
+        $status.text('Please enter your username. No whitespaces!');
+        $chatbox.focus();
+      } else {
+        name = $chatbox.val();
+        console.log(name);
+        $btnChat.off('click', gotName);
+
+        api.createPlayer(name, function (data, e) {
+          if(e != null) {
 //            Error(e);
-//            return;
-//        }
-//
-//        if (!data.Ok)
-//        {
-//            Welcome(data.Message);
-//            return;
-//        }
-//
-//        CurrentPlayer = data.Player;
-//        Console.WriteLine("Your generated key: {0}", CurrentPlayer.ApiKey);
-//        Console.ReadKey();
-//        Welcome();
-//    });
+            $status.html('An error has occured:</br>' + e);
+            console.log(e);
+            return;
+          }
+          if(!data.ok) {
+            welcome(data.Message);
+            return;
+          }
+
+          currentPlayer = data.Player;
+          console.log(currentPlayer);
+          userList.push({name : currentPlayer.Name, key : currentPlayer.ApiKey});
+          saveUsers();
+//          Console.WriteLine("Your generated key: {0}", CurrentPlayer.ApiKey);
+//          Console.ReadKey();
+          $chatbox.val('');
+
+          welcome();
+        });
+      }
+    });
   }
 
   function login() {
 //    var status = window.GetChild<TextBlock>("status");
 //    if (status != null)
 //        status.Enabled = true;
-    var name = Player.Name,
-        key = Player.ApiKey;
-    currentPlayer = null;
+    var name/* = currentPlayer.Name*/,
+        key/* = currentPlayer.ApiKey*/;
+
+    $status.text('');
+    $('#tblList tbody').empty();
+
+
+    //Load saved users.
+    loadUsers();
+
+    //Display user table and allow selection
+    $.each(userList, function (index, user) {
+      //TODO: Clientside templating, amiright?
+      $('#tblList thead').html('<tr><th>Name</th><th>Key</th></tr>');
+      $('#tblList tbody').append('<tr><td>'+user.name+'</td><td>'+user.key+'</td></tr>');
+    });
+    $('#tblList tbody').append('<tr><td>New user</td><td></td></tr>');
+    $divList.show();
+
+    $('#tblList tbody').one('click', 'tr', function selectUser() {
+      name = $(this).children().first().text();
+      key = $(this).children().last().text();
+
+      $divList.hide();
+
+      if(name == 'New user') {
+        createUser();
+        return;
+      }
+
+      //Attempt login.
+      $status.html('Logging in as </br>' + name + ' ' + key);
+      $divList.show();
+    });
+
+//    currentPlayer = null;
+
+    return;
 
 //    api.Login(name, key, new Action<PlayerResponse, Exception>(
     api.login(name, key, function (response, e) {
 //        (p, e) => {
 //            Thread.Sleep(1000);
-            if (e == null && p.Ok) {
-              currentPlayer = response.Player;
-            } else {
+          if (e == null && p.Ok) {
+            currentPlayer = response.Player;
+          } else {
 //                DeleteSave();
 //                Guide.BeginShowMessageBox("Error", "Failed to login: " + (e == null ? p.Message : e.Message), new string[] { "Ok" }, 0, MessageBoxIcon.Error, null, null);
-            }
-//            if (status != null)
+          }
+//            if(status != null)
 //                status.Enabled = false;
 //            UpdateButtons();
     });
   }
 
   function listGames() {
+    var i = 0;
     if(currentPlayer == null) {
-//          Welcome("Please log in");
-//          return;
+      welcome("Please log in.");
+      return;
     }
 
     api.getOpenGames( function (data, e) {
-//          if (e != null) { Error(e); return; }
-//          if (!data.Ok) { BadResponse(); return; }
+      if(e != null) {
+        //Error(e);
+        console.log(e);
+        return;
+      }
+      if(!data.ok) {
+//        BadResponse();
+        return;
+      }
 
 //          Dictionary<string, Action> actions = new Dictionary<string, Action>();
 //          actions.Add("C", CreateGame);
@@ -105,72 +228,141 @@ function Program() {
 //          Console.Clear();
 //          Console.WriteLine("Choose a game to join");
 //          Console.WriteLine("---");
-//          for (int i = 0; i < data.Games.Length; i++) {
-//              UpdateGame(data.Games[i]);
-//              Console.WriteLine(String.Format("[{0}] {1} - {2}", i + 1, data.Games[i].Name, data.Games[i].Id));
-//              var id = data.Games[i].Id;  // This copy of the variable is for the lambda below. Passing a reference to [i] into it is broken by the loop.
-//              actions.Add((i + 1).ToString(), () => JoinGame(id));
-//          }
-//          Console.WriteLine("---");
-//          Console.WriteLine("[C] Create a new game");
-//          Console.WriteLine("[X] Exit");
-//          Choose(actions);
+      $('#menu').hide();
+      $status.text('');
+      $('#tblList tbody').empty();
+      $('#tblList thead').html('<tr><th></th><th>Name</th><th>Id</th></tr>');
+
+      //Add each game to the list of options.
+      $.each(data.games, function (index, game){
+        updateGame(game);
+        $('#tblList tbody').append('<tr><td>'+(index+1)+'</td><td>'+game.Name+'</td><td>'+game.Id+'</td></tr>');
+      });
+      $('#tblList tbody').append('<tr><td></td><td>Create New</td><td></td></tr>');
+
+      $divList.show();
+
+      $('#tblList tbody').one('click', 'tr', function selectGame() {
+        name = $(this).children().first().next().text();
+        id = $(this).children().last().text();
+
+        $divList.hide();
+
+        if(name == 'Create New') {
+          createGame();
+          return;
+        }
+
+        //Attempt to join game.
+        $status.html('Joining ' + name);
+        joinGame(id);
+      });
     });
   }
 
-//  private static void CreateGame()
+  /** Create a new game. */
   function createGame() {
     //Get game name.
-//      string name = GetText("Enter the name of your game", s => !String.IsNullOrWhiteSpace(s));
+    $chatbox.attr('placeholder', 'Enter the name of your game.')
+        .val('')
+        .show();
+    $status.text('Enter the name of your game below.');
 
-    //Send create request to server
-    api.CreateGameAndJoin(name, currentPlayer.id, function (data, e) {
-//          if (e != null) { Error(e); return; }
-//          if (!data.Ok) { Welcome(data.Message); return; }
-//          UpdateGame(data.Game);
-//          ViewGame(data.Game.Id);
-    });
+    $btnChat.show()
+        .one('click', function gotGameName() {
+          if($chatbox.val() == '') {
+            $chatbox.focus();
+            $btnChat.one('click', gotGameName);
+          } else {
+            $btnChat.off('click', gotGameName);
+
+            //Send create request to server
+            api.createGameAndJoin($chatbox.val(), currentPlayer.Id, function (data, e) {
+                if(e != null) {
+                  //Error(e);
+                  console.log(e);
+                  return;
+                }
+                if(!data.ok) {
+                  welcome(data.Message);
+                  return;
+                }
+
+                updateGame(data.game);
+                viewGame(data.game.Id);
+            });
+          }
+        });
   }
 
-//  private static void GetMap(GameState game)
+  /** Retrieve a map from the server.
+   * @param {GameState} game
+   */
   function getMap(game) {
-    api.getMap(game.mapId, function (data, e) {
-//          if (ex != null) { Error(ex); return; }
-//          if (!data.Ok) { BadResponse(); return; }
-//          UpdateMap(game, data.Map);
+    var map;
+
+    api.getMap(game.MapId, function (data, e) {
+      if(e != null) {
+//        Error(e);
+        console.log('data:',data);
+        console.log(e);
+        return;
+      }
+      if(!data.ok) {
+//        BadResponse();
+        return;
+      }
+
+      //Parse string representation and create new map object
+      map = new Map().fromStringRepresentation(game.MapId, data.Map.Tiles);
+
+      updateMap(game, map);
     });
   }
 
-//  private static void UpdateGame(GameState game)
+  /** Update or create GameState in currentGames list.
+   * @param {GameState} game
+   */
   function updateGame(game) {
-    //Update or create GameState in currentGames list.
-    currentGames[game.id] = game;
+    currentGames[game.Id] = game;
   }
 
-//  private static void UpdateMap(GameState game, string[] map) {
+  /** Update a map in client's list of saved maps.
+   * @param {GameState} game
+   * @param {Map} map
+   */
   function updateMap(game, map) {
-    currentMaps[game.mapId] = map;
+    currentMaps[game.MapId] = map;
   }
 
 //  private static void JoinGame(Guid id)
+  /** Join the game specified by id. Id should be a GUID...
+   * @param {String} id
+   */
   function joinGame(id) {
-//      Console.Clear();
     var game = currentGames[id];
 
-//      if(game.Players.Any(d => d.Player.Id == CurrentPlayer.Id)) {
-      for(player in game.players) {
-        if(player.id == currentPlayer.id) {
-//          ViewGame(id);
-//          return;
-        }
+    $.each(game.Players, function (index, player) {
+      if(player.Id == currentPlayer.Id) {
+        viewGame(id);
+        //TODO: Test this. Potential bug.
+        return;
+      }
+    });
+
+    api.joinGame(id, currentPlayer.Id, function (data, e) {
+      if(e != null) {
+//        Error(e);
+        console.log(e);
+        return;
+      }
+      if(!data.ok) {
+        welcome(data.Message);
+        return;
       }
 
-    api.joinGame(id, currentPlayer.id, function (data, e) {
-//          if (e != null) { Error(e); return; }
-//          if (!data.Ok) { Welcome(data.Message); return; }
-
-//          UpdateGame(data.Game);
-//          ViewGame(data.Game.Id);
+      updateGame(data.Game);
+      viewGame(data.Game.Id);
     });
   }
 
@@ -179,29 +371,44 @@ function Program() {
     api.startGame(currentGame.id, function (data, e) {
       if(e != null) {
           //Error(e);
+        console.log(e);
         return;
       }
-      if(!data.Ok) {
-        //Welcome(data.Message);
+      if(!data.ok) {
+        welcome(data.Message);
         return;
       }
 
-      UpdateGame(data.Game);
-      ViewGame(CurrentGame.Id);
+      updateGame(data.Game);
+      viewGame(CurrentGame.Id);
     });
   }
 
 //  private static void ViewGame(Guid id)
+  /**
+   * @param {String} id
+   */
   function viewGame(id) {
-//      Console.Clear();
     currentGame = currentGames[id];
 
-//      if (!CurrentMaps.ContainsKey(CurrentGame.MapId))
-//          GetMap(CurrentGame);
+    if(!currentMaps[currentGame.MapId])
+      getMap(currentGame);
 
 //      int col2Left = Console.WindowWidth - 20;
 
-//      // Draw the map
+    //Hide the buttons.
+    $('#menu').hide();
+
+    $status.hide();
+    $chatbox.val('');
+
+    //Clear the background.
+    ctxBg.fillStyle = 'rgb(230, 219, 181)';
+    ctxBg.fillRect(0, 0, cX, cY);
+
+    //Draw the map.
+    renderer.drawMap(ctxBg, currentMaps[currentGame.MapId], 0, 0);
+
 //      Console.SetCursorPosition(0, 0);
 //      Console.Write("Map");
 //      Console.SetCursorPosition(col2Left, 0);
@@ -235,6 +442,25 @@ function Program() {
 //      Console.WriteLine("[X] Exit");
 
 //      Choose(options);
+  }
+
+  /** Loads previous users from localStorage */
+  function loadUsers() {
+    userList = JSON.parse(localStorage.getItem('userList'));
+  }
+
+  //Save user list to local storage
+  function saveUsers() {
+    localStorage.setItem('userList', JSON.stringify(userList));
+  }
+
+  //From diveintohtml5.info
+  function supports_html5_storage() {
+    try {
+      return 'localStorage' in window && window['localStorage'] !== null;
+    } catch (e) {
+      return false;
+    }
   }
 
   return {
