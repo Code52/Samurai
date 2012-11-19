@@ -15,11 +15,12 @@ Map.prototype.toString = function () {
 
 Map.prototype.stringRepresentation = function () {
   var strMap = [],
-      r = c = 0;
+      r = 0, c = 0;
 
-  for( ; r < this.tiles.length; r++) {
-    for(; c < this.tiles[0].length; c++) {
-      strMap[r][c] = this.tiles[r][c].toString();
+  for( ; r < this.Tiles.length; r++) {
+    strMap[r] = [];
+    for(c = 0; c < this.Tiles[0].length; c++) {
+      strMap[r][c] = this.Tiles[r][c].toString();
     }
   }
 
@@ -55,16 +56,16 @@ Map.prototype.initialize = function (opt) {
 
 Map.prototype.fromStringRepresentation = function fromString(id, rows) {
   var m = new Map({
-        id : id,
-        tiles : new Array(rows[0].length)
+        Id : id,
+        Tiles : new Array(rows[0].length)
       }),
-      x = y = 0,
+      x = 0, y = 0,
       t;          //TileType t;
 
-  for( ; x < m.tiles.length; x++) {
-    m.tiles[x] = new Array(rows.length);
-      for( ; y < rows.length; y++) {
-        switch (rows[y][x]) {
+  for( ; x < m.Tiles.length; x++) {
+    m.Tiles[x] = new Array(rows.length);
+      for(y = 0; y < rows.length; y++) {
+        switch(rows[x][y]) {
           case '.':
               t = new Grass();
               break;
@@ -85,9 +86,9 @@ Map.prototype.fromStringRepresentation = function fromString(id, rows) {
               continue;
         }
 
-        m.tiles[x][y] = t;
+        m.Tiles[x][y] = t;
       }
-  }
+    }
 
   return m;
 };
