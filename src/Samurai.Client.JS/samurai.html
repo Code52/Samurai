@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Main menu template</title>
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body>
+  <div id="viewport" style="">
+      <canvas id="cvsFg" style=""></canvas>
+      <canvas id="cvsBg" style=""></canvas>
+      <span id="status"></span>
+      <div id="menu" style="">
+        <button id="btnPlay">Play</button>
+        <button id="btnLogin">Login</button>
+        <button id="btnLogout">Logout</button>
+        <button id="btnRegister">Register</button>
+        <button id="btnSettings">Settings</button>        
+      </div>
+      <div id="divChat">
+        <input id="chatbox" type="text" value="">
+        <button id="btnChat">Ok</button>
+      </div>
+      <div id="divList">
+        <table id="tblList">
+            <thead>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+      </div>
+  </div>
+</body>
+<script src="lib/jquery-1.8.2.min.js"></script>
+<script src="models/player.js"></script>
+<script src="models/gameState.js"></script>
+<script src="serverApi.js"></script>
+<script src="contentManager.js"></script>
+<script src="renderer.js"></script>
+<script src=""></script>
+<script src="program.js"></script>
+<script type="text/javascript">
+  $(function() {
+    var samurai = new Program().run();
+  });
+</script>
+</html>
