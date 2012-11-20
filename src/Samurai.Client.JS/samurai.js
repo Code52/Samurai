@@ -1,8 +1,8 @@
 define(['contentmanager', 'map', 'renderer', 'serverApi'], function (ContentManager, Map, Renderer, ServerApi) {
 
   function Program() {
-    var api = new ServerApi("http://samuraitest.apphb.com/"),
-
+  //  var api = new ServerApi("http://samuraitest.apphb.com/"),
+    var api = new ServerApi("./"),
 
   //  static Player CurrentPlayer = null;
        currentPlayer = null,

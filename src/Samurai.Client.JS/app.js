@@ -13,9 +13,9 @@ require.config({
   }
 });
 
-require(['jquery', 'program'], function ($, Program) {
+require(['jquery', 'samurai'], function ($, Samurai) {
   $(function() {
-      var samurai = new Program();
+      var samurai = new Samurai();
 
       samurai.run();
   });
