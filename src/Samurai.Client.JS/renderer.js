@@ -11,7 +11,9 @@ define(['coord', 'map', 'contentmanager'], function (Coord, Map, ContentManager)
             height: CELL_WIDTH
         };
 
-  //    public void LoadContent(ContentManager content) {
+    /**
+     * @param {ContentManager} content
+     */
     function loadContent(content) {
       var tmpImg = new Image();
 
@@ -32,7 +34,6 @@ define(['coord', 'map', 'contentmanager'], function (Coord, Map, ContentManager)
      * @returns
      */
     function drawMap(context, /*sb,*/ map, xOffset, yOffset) {
-  //        if (sb == null || map == null)
       if(/*!sb ||*/ !map) {
         console.log('map', map);
         return;
@@ -56,7 +57,6 @@ define(['coord', 'map', 'contentmanager'], function (Coord, Map, ContentManager)
           tex = getTex(map.Tiles[xIndex][yIndex]);
 
           if(tex) {
-              //sb.Draw(tex, drawRect, Color.White);
             context.drawImage(tex, drawRect.x, drawRect.y, drawRect.width, drawRect.height);
           }
 
@@ -66,7 +66,11 @@ define(['coord', 'map', 'contentmanager'], function (Coord, Map, ContentManager)
       }
     }
 
-  //    public Point GetMapSize(Map map) {
+
+    /**
+     * @param {Map} map
+     * @returns {Coord}
+     */
     function getMapSize(map) {
       var x = map.Tiles.Length;
           y = map.Tiles[0].Length;
@@ -74,7 +78,11 @@ define(['coord', 'map', 'contentmanager'], function (Coord, Map, ContentManager)
         return new Coord({x : x * CELL_WIDTH, y : y * CELL_WIDTH});
     }
 
-  //    protected Texture2D GetTex(TileType cell) {
+
+    /**
+     * @param {TileType} cell
+     * @returns {Image}
+     */
     function getTex(cell) {
       switch (cell.Name) {
           case "Grass":
