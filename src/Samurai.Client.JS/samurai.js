@@ -1,4 +1,4 @@
-define(['contentmanager', 'map', 'renderer', 'serverApi'], function (ContentManager, Map, Renderer, ServerApi) {
+define(['contentManager', 'map', 'renderer', 'serverApi', 'jsrender'], function (ContentManager, Map, Renderer, ServerApi) {
 
   function Program() {
   //  var api = new ServerApi("http://samuraitest.apphb.com/"),
@@ -34,6 +34,7 @@ define(['contentmanager', 'map', 'renderer', 'serverApi'], function (ContentMana
 
 
     renderer.loadContent(content);
+
     //Size the canvases.
     $cvsBg[0].width = $cvsFg[0].width = $cvsFg.parent().width();
     $cvsBg[0].height = $cvsFg[0].height = $cvsFg.parent().height();
@@ -47,6 +48,20 @@ define(['contentmanager', 'map', 'renderer', 'serverApi'], function (ContentMana
     $('#btnPlay').click(listGames);
     $('#btnLogin').click(login);
     $('#btnLogout').click(logout);
+
+
+    //Compile markup as named templates.
+    $.get('tmpl/tmplGametable.htm', function (data, textStatus, jqXHR) {
+      $.templates({
+        tmplGametable: data,
+      });
+    });
+    $.get('tmpl/tmplUserlist.htm', function (data, textStatus, jqXHR) {
+      $.templates({
+        tmplUserlist: data,
+      });
+    });
+
 
     function run() {
       //Load main menu screen.
@@ -141,18 +156,14 @@ define(['contentmanager', 'map', 'renderer', 'serverApi'], function (ContentMana
           key/* = currentPlayer.ApiKey*/;
 
       $status.text('');
-      $('#tblList tbody').empty();
 
       //Load saved users.
       loadUsers();
 
       //Display user table and allow selection
-      $.each(userList, function (index, user) {
-        //TODO: Clientside templating, amiright?
-        $('#tblList thead').html('<tr><th>Name</th><th>Key</th></tr>');
-        $('#tblList tbody').append('<tr><td>'+user.name+'</td><td>'+user.key+'</td></tr>');
-      });
-      $('#tblList tbody').append('<tr><td>New user</td><td></td></tr>');
+      /* If you pass JsRender an array, the template will be rendered once for each array item.
+         So I'm wrapping the userList array. Annoying. */
+      $('#tblList').html( $.render.tmplUserlist({userList:userList}) );
 
       $divList.show();
 
@@ -216,15 +227,17 @@ define(['contentmanager', 'map', 'renderer', 'serverApi'], function (ContentMana
 
         $menu.hide();
         $status.text('');
-        $('#tblList tbody').empty();
-        $('#tblList thead').html('<tr><th></th><th>Name</th><th>Id</th></tr>');
 
         //Add each game to the list of options.
         $.each(data.games, function (index, game){
           updateGame(game);
-          $('#tblList tbody').append('<tr><td>'+(index+1)+'</td><td>'+game.Name+'</td><td>'+game.Id+'</td></tr>');
         });
-        $('#tblList tbody').append('<tr><td></td><td>Create New</td><td></td></tr>');
+
+        try{
+          $('#tblList').html( $.render.tmplGametable(data) );
+        } catch(e) {
+          console.log(e.message);
+        }
 
         $divList.show();
 
@@ -436,6 +449,7 @@ define(['contentmanager', 'map', 'renderer', 'serverApi'], function (ContentMana
     /** Clear the current user and return to main menu.*/
     function logout() {
       currentPlayer = null;
+      $divList.hide();
       welcome('Welcome');
     }
 

@@ -1,0 +1,13 @@
+<thead>
+  <tr>
+    <th></th><th>Name</th><th>Id</th>
+  </tr>
+</thead>
+<tbody>
+  {{for games}}
+      <tr>
+        <td>{{:#index+1}}</td><td>{{>Name}}</td><td>{{>Id}}</td>
+      </tr>
+  {{/for}}
+  <tr><td></td><td>Create New</td><td></td></tr>
+</tbody>

@@ -1,0 +1,13 @@
+<thead>
+  <tr>
+    <th>Name</th><th>Key</th>
+  </tr>
+</thead>
+<tbody>
+  {{for userList}}
+    <tr>
+      <td>{{>name}}</td><td>{{>key}}</td>
+    </tr>
+  {{/for}}  
+  <tr><td>New user</td><td></td></tr>
+</tbody>
